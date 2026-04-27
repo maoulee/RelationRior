@@ -1,0 +1,52 @@
+{
+  "WebQTest-361": {
+    "question": "What museum established before 1971 is there to see in Vienna, Austria?",
+    "output": "[MAIN] What museums are there to see in Vienna, Austria? | [FOLLOW-UP] which one was established before 1971?",
+    "status": "ok"
+  },
+  "WebQTrn-60": {
+    "question": "What Portuguese-speaking country had the net migration number of -10000?",
+    "output": "[MAIN] Which Portuguese-speaking country had a net migration number of -10000?",
+    "status": "ok"
+  },
+  "WebQTrn-557": {
+    "question": "In the film with teh character named Winged Monkey #7, who played Dorothy?",
+    "output": "[MAIN] Which film features the character named Winged Monkey #7? | [FOLLOW-UP] who played Dorothy in that film?",
+    "status": "ok"
+  },
+  "WebQTest-743": {
+    "question": "Which of JFK's brother held the latest governmental position?",
+    "output": "[MAIN] Who were JFK's brothers? | [FOLLOW-UP] what governmental positions did they hold? | [FOLLOW-UP] which brother held the latest position?",
+    "status": "ok"
+  },
+  "WebQTest-832": {
+    "question": "Lou Seal is the mascot for the team that last won the World Series when?",
+    "output": "[MAIN] Which team does Lou Seal represent? | [FOLLOW-UP] when did that team last win the World Series?",
+    "status": "ok"
+  },
+  "WebQTrn-1841": {
+    "question": "Which popular sports team in Spain, that won the 2014 Eurocup Finals championship?",
+    "output": "[MAIN] Which sports team in Spain won the 2014 Eurocup Finals championship? | [FOLLOW-UP] is it considered popular?",
+    "status": "ok"
+  },
+  "WebQTest-1785": {
+    "question": "What TV series that had 3 episodes was Kim Richards in?",
+    "output": "[MAIN] Which TV series did Kim Richards appear in? | [FOLLOW-UP] how many episodes did that series have? | [FOLLOW-UP] was it 3 episodes?",
+    "status": "ok"
+  },
+  "WebQTrn-493": {
+    "question": "What region is the country whose national anthem is Brabançonne located in?",
+    "output": "[MAIN] Which country has the national anthem Brabançonne? | [FOLLOW-UP] what region is that country in?",
+    "status": "ok"
+  },
+  "WebQTest-576": {
+    "question": "What country in Central America appointed Otto Pérez Molina to a governmental position?",
+    "output": "[MAIN] Which country appointed Otto Pérez Molina to a governmental position? | [FOLLOW-UP] is that country in Central America?",
+    "status": "ok"
+  },
+  "WebQTrn-3376": {
+    "question": "What educational institution with men's basketball sports team named Temple Owls did Kevin Hart go to school?",
+    "output": "[MAIN] Which educational institution has a men's basketball team named the Temple Owls? | [FOLLOW-UP] did Kevin Hart go to school there?",
+    "status": "ok"
+  }
+}

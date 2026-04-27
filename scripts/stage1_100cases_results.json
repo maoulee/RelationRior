@@ -1,0 +1,920 @@
+{
+  "WebQTest-6": {
+    "question": "where is jamarcus russell from",
+    "raw_output": "[MAIN] Where is Jamarcus Russell from?",
+    "main": "Where is Jamarcus Russell from?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-7": {
+    "question": "where was george washington carver from",
+    "raw_output": "[MAIN] Where was George Washington Carver from?",
+    "main": "Where was George Washington Carver from?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-9": {
+    "question": "who was richard nixon married to",
+    "raw_output": "[MAIN] Who was Richard Nixon married to?",
+    "main": "Who was Richard Nixon married to?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-12": {
+    "question": "who is governor of ohio 2011",
+    "raw_output": "[MAIN] Who was the governor of Ohio in 2011?",
+    "main": "Who was the governor of Ohio in 2011?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-13": {
+    "question": "who was vice president after kennedy died",
+    "raw_output": "[MAIN] Who was vice president after Kennedy died?",
+    "main": "Who was vice president after Kennedy died?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-19": {
+    "question": "what is my timezone in louisiana",
+    "raw_output": "[MAIN] What is the timezone in Louisiana?",
+    "main": "What is the timezone in Louisiana?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-23": {
+    "question": "what town was martin luther king assassinated in",
+    "raw_output": "[MAIN] Where was Martin Luther King assassinated? | [FOLLOW-UP] what town is that?",
+    "main": "Where was Martin Luther King assassinated?",
+    "followups": [
+      "what town is that?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-24": {
+    "question": "where did edgar allan poe died",
+    "raw_output": "[MAIN] Where did Edgar Allan Poe die?",
+    "main": "Where did Edgar Allan Poe die?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-28": {
+    "question": "what electorate does anna bligh represent",
+    "raw_output": "[MAIN] What electorate does Anna Bligh represent?",
+    "main": "What electorate does Anna Bligh represent?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-33": {
+    "question": "what timezone is sweden",
+    "raw_output": "[MAIN] What timezone is Sweden in?",
+    "main": "What timezone is Sweden in?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-34": {
+    "question": "who did cam newton sign with",
+    "raw_output": "[MAIN] Who did Cam Newton sign with?",
+    "main": "Who did Cam Newton sign with?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-35": {
+    "question": "what county is frederick md in",
+    "raw_output": "[MAIN] What county is Frederick, MD in?",
+    "main": "What county is Frederick, MD in?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-36": {
+    "question": "what highschool did harper lee go to",
+    "raw_output": "[MAIN] What high school did Harper Lee go to?",
+    "main": "What high school did Harper Lee go to?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-37": {
+    "question": "what timezone is utah in",
+    "raw_output": "[MAIN] What timezone is Utah in?",
+    "main": "What timezone is Utah in?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-39": {
+    "question": "who is niall ferguson 's wife",
+    "raw_output": "[MAIN] Who is Niall Ferguson's wife?",
+    "main": "Who is Niall Ferguson's wife?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-44": {
+    "question": "what is the state flower of arizona",
+    "raw_output": "[MAIN] What is the state flower of Arizona?",
+    "main": "What is the state flower of Arizona?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-45": {
+    "question": "where was rihanna born and raised",
+    "raw_output": "[MAIN] Where was Rihanna born? | [FOLLOW-UP] Where was Rihanna raised?",
+    "main": "Where was Rihanna born?",
+    "followups": [
+      "Where was Rihanna raised?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-47": {
+    "question": "where george lopez was born",
+    "raw_output": "[MAIN] Where was George Lopez born?",
+    "main": "Where was George Lopez born?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-48": {
+    "question": "where are samsung based",
+    "raw_output": "[MAIN] Where is Samsung based?",
+    "main": "Where is Samsung based?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-51": {
+    "question": "who will play mr gray in the film",
+    "raw_output": "[MAIN] Who will play Mr. Gray in the film?",
+    "main": "Who will play Mr. Gray in the film?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-52": {
+    "question": "what did george orwell died of",
+    "raw_output": "[MAIN] What did George Orwell die of?",
+    "main": "What did George Orwell die of?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-54": {
+    "question": "what country did adolf hitler control",
+    "raw_output": "[MAIN] What country did Adolf Hitler control?",
+    "main": "What country did Adolf Hitler control?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-56": {
+    "question": "what county is kansas city kansas",
+    "raw_output": "[MAIN] What county is Kansas City, Kansas in?",
+    "main": "What county is Kansas City, Kansas in?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-58": {
+    "question": "who did jackie robinson first play for",
+    "raw_output": "[MAIN] Who did Jackie Robinson first play for?",
+    "main": "Who did Jackie Robinson first play for?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-60": {
+    "question": "where did eleanor roosevelt die",
+    "raw_output": "[MAIN] Where did Eleanor Roosevelt die?",
+    "main": "Where did Eleanor Roosevelt die?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-62": {
+    "question": "what was jesse james killed with",
+    "raw_output": "[MAIN] What was Jesse James killed with?",
+    "main": "What was Jesse James killed with?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-65": {
+    "question": "who was the first dictator of the soviet union",
+    "raw_output": "[MAIN] Who was the first dictator of the Soviet Union?",
+    "main": "Who was the first dictator of the Soviet Union?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-66": {
+    "question": "what is the currency of puerto rico called",
+    "raw_output": "[MAIN] What is the currency of Puerto Rico called?",
+    "main": "What is the currency of Puerto Rico called?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-68": {
+    "question": "who plays the voice of kitt in knight rider",
+    "raw_output": "[MAIN] Who plays the voice of KITT in Knight Rider?",
+    "main": "Who plays the voice of KITT in Knight Rider?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-69": {
+    "question": "what county is brentwood tennessee in",
+    "raw_output": "[MAIN] What county is Brentwood, Tennessee in?",
+    "main": "What county is Brentwood, Tennessee in?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-71": {
+    "question": "who did michael j fox marry",
+    "raw_output": "[MAIN] Who did Michael J. Fox marry?",
+    "main": "Who did Michael J. Fox marry?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-73": {
+    "question": "what language do the maasai tribe speak",
+    "raw_output": "[MAIN] What language do the Maasai tribe speak?",
+    "main": "What language do the Maasai tribe speak?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-74": {
+    "question": "who did benjamin franklin get married to",
+    "raw_output": "[MAIN] Who did Benjamin Franklin get married to?",
+    "main": "Who did Benjamin Franklin get married to?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-75": {
+    "question": "what disease did patrick swayze died from",
+    "raw_output": "[MAIN] What disease did Patrick Swayze die from?",
+    "main": "What disease did Patrick Swayze die from?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-77": {
+    "question": "what capital of austria",
+    "raw_output": "[MAIN] What is the capital of Austria?",
+    "main": "What is the capital of Austria?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-78": {
+    "question": "what type of cancer did eva peron have",
+    "raw_output": "[MAIN] What type of cancer did Eva Perón have?",
+    "main": "What type of cancer did Eva Perón have?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-79": {
+    "question": "what country did buddha come from",
+    "raw_output": "[MAIN] What country did Buddha come from?",
+    "main": "What country did Buddha come from?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-80": {
+    "question": "what county is greeley colorado in",
+    "raw_output": "[MAIN] What county is Greeley, Colorado in?",
+    "main": "What county is Greeley, Colorado in?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-86": {
+    "question": "which country does greenland belong to",
+    "raw_output": "[MAIN] Which country does Greenland belong to?",
+    "main": "Which country does Greenland belong to?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-88": {
+    "question": "who is willow smith mom name",
+    "raw_output": "[MAIN] Who is Willow Smith's mother?",
+    "main": "Who is Willow Smith's mother?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-93": {
+    "question": "what continent does armenia belong to",
+    "raw_output": "[MAIN] What continent does Armenia belong to?",
+    "main": "What continent does Armenia belong to?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-94": {
+    "question": "what did randy savage died of",
+    "raw_output": "[MAIN] What did Randy Savage die of?",
+    "main": "What did Randy Savage die of?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-96": {
+    "question": "where did richard nixon die",
+    "raw_output": "[MAIN] Where did Richard Nixon die?",
+    "main": "Where did Richard Nixon die?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-98": {
+    "question": "who was vice president when jfk was president",
+    "raw_output": "[MAIN] Who was vice president when JFK was president?",
+    "main": "Who was vice president when JFK was president?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-99": {
+    "question": "what is serbian language called",
+    "raw_output": "[MAIN] What is the Serbian language called?",
+    "main": "What is the Serbian language called?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-104": {
+    "question": "where is jay leno from",
+    "raw_output": "[MAIN] Where is Jay Leno from?",
+    "main": "Where is Jay Leno from?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-109": {
+    "question": "who did tim tebow play college football for",
+    "raw_output": "[MAIN] Who did Tim Tebow play college football for?",
+    "main": "Who did Tim Tebow play college football for?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-110": {
+    "question": "who does peyton manning play football for",
+    "raw_output": "[MAIN] Which team does Peyton Manning play football for?",
+    "main": "Which team does Peyton Manning play football for?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-111": {
+    "question": "where is the carpathian mountain range located",
+    "raw_output": "[MAIN] Where is the Carpathian mountain range located?",
+    "main": "Where is the Carpathian mountain range located?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-114": {
+    "question": "who did the voice of darth vader in episode 3",
+    "raw_output": "[MAIN] Who voiced Darth Vader in episode 3?",
+    "main": "Who voiced Darth Vader in episode 3?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-115": {
+    "question": "what super bowl did peyton manning win",
+    "raw_output": "[MAIN] Which Super Bowls did Peyton Manning win?",
+    "main": "Which Super Bowls did Peyton Manning win?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-116": {
+    "question": "which country was justin bieber born in",
+    "raw_output": "[MAIN] Where was Justin Bieber born?",
+    "main": "Where was Justin Bieber born?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-119": {
+    "question": "who plays london tipton in suite life on deck",
+    "raw_output": "[MAIN] Who plays London Tipton in Suite Life on Deck?",
+    "main": "Who plays London Tipton in Suite Life on Deck?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-121": {
+    "question": "what team did david beckham play for in 2011",
+    "raw_output": "[MAIN] What team did David Beckham play for in 2011?",
+    "main": "What team did David Beckham play for in 2011?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-122": {
+    "question": "where did francisco coronado come from",
+    "raw_output": "[MAIN] Where did Francisco Coronado come from?",
+    "main": "Where did Francisco Coronado come from?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-124": {
+    "question": "what language does egyptian people speak",
+    "raw_output": "[MAIN] What language do Egyptian people speak?",
+    "main": "What language do Egyptian people speak?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-127": {
+    "question": "what type of cancer did gilda radner die of",
+    "raw_output": "[MAIN] What type of cancer did Gilda Radner die of?",
+    "main": "What type of cancer did Gilda Radner die of?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-128": {
+    "question": "who plays juni cortez",
+    "raw_output": "[MAIN] Who plays Juni Cortez?",
+    "main": "Who plays Juni Cortez?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-132": {
+    "question": "who is michael j fox wife",
+    "raw_output": "[MAIN] Who is Michael J. Fox's wife?",
+    "main": "Who is Michael J. Fox's wife?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-133": {
+    "question": "where did dolly parton grow up",
+    "raw_output": "[MAIN] Where did Dolly Parton grow up?",
+    "main": "Where did Dolly Parton grow up?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-139": {
+    "question": "where is the nra headquarters located",
+    "raw_output": "[MAIN] Where is the NRA headquarters located?",
+    "main": "Where is the NRA headquarters located?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-141": {
+    "question": "who is gimli 's father in the hobbit",
+    "raw_output": "[MAIN] Who is Gimli's father? | [FOLLOW-UP] Is this information from The Hobbit?",
+    "main": "Who is Gimli's father?",
+    "followups": [
+      "Is this information from The Hobbit?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-147": {
+    "question": "who is the state governor of tennessee",
+    "raw_output": "[MAIN] Who is the governor of Tennessee? | [FOLLOW-UP] is this person the state governor?",
+    "main": "Who is the governor of Tennessee?",
+    "followups": [
+      "is this person the state governor?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-149": {
+    "question": "what do portuguese people speak",
+    "raw_output": "[MAIN] What language do Portuguese people speak?",
+    "main": "What language do Portuguese people speak?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-156": {
+    "question": "what time zone am i in california",
+    "raw_output": "[MAIN] What time zone is California in?",
+    "main": "What time zone is California in?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-159": {
+    "question": "what time in hilo hawaii",
+    "raw_output": "[MAIN] What is the current time in Hilo, Hawaii?",
+    "main": "What is the current time in Hilo, Hawaii?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-161": {
+    "question": "what university did gordon brown attend",
+    "raw_output": "[MAIN] What university did Gordon Brown attend?",
+    "main": "What university did Gordon Brown attend?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-163": {
+    "question": "what year did the seahawks win the superbowl",
+    "raw_output": "[MAIN] What year did the Seahawks win the Super Bowl?",
+    "main": "What year did the Seahawks win the Super Bowl?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-165": {
+    "question": "who plays donna noble",
+    "raw_output": "[MAIN] Who plays Donna Noble?",
+    "main": "Who plays Donna Noble?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-167": {
+    "question": "where did queensland get its name from",
+    "raw_output": "[MAIN] Where did Queensland get its name from?",
+    "main": "Where did Queensland get its name from?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-170": {
+    "question": "who played bilbo in lord of the rings",
+    "raw_output": "[MAIN] Who played Bilbo in Lord of the Rings?",
+    "main": "Who played Bilbo in Lord of the Rings?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-174": {
+    "question": "what team does colin kaepernick play for",
+    "raw_output": "[MAIN] What team does Colin Kaepernick play for?",
+    "main": "What team does Colin Kaepernick play for?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-175": {
+    "question": "where did joe flacco attend college",
+    "raw_output": "[MAIN] Where did Joe Flacco attend college?",
+    "main": "Where did Joe Flacco attend college?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-176": {
+    "question": "who is emma stone father",
+    "raw_output": "[MAIN] Who is Emma Stone's father?",
+    "main": "Who is Emma Stone's father?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-177": {
+    "question": "where was theodore roosevelt buried",
+    "raw_output": "[MAIN] Where was Theodore Roosevelt buried?",
+    "main": "Where was Theodore Roosevelt buried?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-180": {
+    "question": "where the missouri river ends",
+    "raw_output": "[MAIN] Where does the Missouri River end?",
+    "main": "Where does the Missouri River end?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-181": {
+    "question": "what type of currency do they use in thailand",
+    "raw_output": "[MAIN] What currency is used in Thailand? | [FOLLOW-UP] what type is it?",
+    "main": "What currency is used in Thailand?",
+    "followups": [
+      "what type is it?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-182": {
+    "question": "who is khloe kardashian 's husband",
+    "raw_output": "[MAIN] Who is Khloe Kardashian's husband?",
+    "main": "Who is Khloe Kardashian's husband?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-184": {
+    "question": "what state does romney live in",
+    "raw_output": "[MAIN] Where does Romney live? | [FOLLOW-UP] what state is that?",
+    "main": "Where does Romney live?",
+    "followups": [
+      "what state is that?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-187": {
+    "question": "what did stephen hawking study",
+    "raw_output": "[MAIN] What did Stephen Hawking study?",
+    "main": "What did Stephen Hawking study?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-189": {
+    "question": "what region of the world is egypt associated with",
+    "raw_output": "[MAIN] What region of the world is Egypt associated with?",
+    "main": "What region of the world is Egypt associated with?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-193": {
+    "question": "what school did ben roethlisberger go to",
+    "raw_output": "[MAIN] What school did Ben Roethlisberger go to?",
+    "main": "What school did Ben Roethlisberger go to?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-201": {
+    "question": "who did gerald ford select as his vice president when he became president",
+    "raw_output": "[MAIN] Who did Gerald Ford select as his vice president? | [FOLLOW-UP] when did Gerald Ford become president?",
+    "main": "Who did Gerald Ford select as his vice president?",
+    "followups": [
+      "when did Gerald Ford become president?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-202": {
+    "question": "what is the currency used in italy",
+    "raw_output": "[MAIN] What is the currency used in Italy?",
+    "main": "What is the currency used in Italy?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-204": {
+    "question": "what is the capital of modern egypt",
+    "raw_output": "[MAIN] What is the capital of modern Egypt?",
+    "main": "What is the capital of modern Egypt?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-209": {
+    "question": "where is laos in world map",
+    "raw_output": "[MAIN] Where is Laos located on the world map?",
+    "main": "Where is Laos located on the world map?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-210": {
+    "question": "where is tyrese gibson from",
+    "raw_output": "[MAIN] Where is Tyrese Gibson from?",
+    "main": "Where is Tyrese Gibson from?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-215": {
+    "question": "where was elvis costello born",
+    "raw_output": "[MAIN] Where was Elvis Costello born?",
+    "main": "Where was Elvis Costello born?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-216": {
+    "question": "where are the gobi desert located on a map",
+    "raw_output": "[MAIN] Where is the Gobi Desert located? | [FOLLOW-UP] How does it appear on a map?",
+    "main": "Where is the Gobi Desert located?",
+    "followups": [
+      "How does it appear on a map?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-218": {
+    "question": "in which continent is germany",
+    "raw_output": "[MAIN] What continent is Germany in?",
+    "main": "What continent is Germany in?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-221": {
+    "question": "who does jeremy lin play for",
+    "raw_output": "[MAIN] Which team does Jeremy Lin play for?",
+    "main": "Which team does Jeremy Lin play for?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-225": {
+    "question": "what state is mount st. helens in",
+    "raw_output": "[MAIN] What state is Mount St. Helens in?",
+    "main": "What state is Mount St. Helens in?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-231": {
+    "question": "when did florida marlins join mlb",
+    "raw_output": "[MAIN] When did the Florida Marlins join MLB?",
+    "main": "When did the Florida Marlins join MLB?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-234": {
+    "question": "what countries does the panama canal go through",
+    "raw_output": "[MAIN] Which countries does the Panama Canal go through?",
+    "main": "Which countries does the Panama Canal go through?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-239": {
+    "question": "where do american bulldogs originate from",
+    "raw_output": "[MAIN] Where do American bulldogs originate from?",
+    "main": "Where do American bulldogs originate from?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-241": {
+    "question": "who plays the voice of brian on family guy",
+    "raw_output": "[MAIN] Who plays the voice of Brian on Family Guy?",
+    "main": "Who plays the voice of Brian on Family Guy?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-243": {
+    "question": "where did george w bush live as a child",
+    "raw_output": "[MAIN] Where did George W. Bush live as a child?",
+    "main": "Where did George W. Bush live as a child?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-248": {
+    "question": "what state new york city belong to",
+    "raw_output": "[MAIN] What state does New York City belong to?",
+    "main": "What state does New York City belong to?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-249": {
+    "question": "what was the cause of death for bruce lee",
+    "raw_output": "[MAIN] What was the cause of death for Bruce Lee?",
+    "main": "What was the cause of death for Bruce Lee?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-251": {
+    "question": "what type of currency do they use in england",
+    "raw_output": "[MAIN] What currency is used in England? | [FOLLOW-UP] what type of currency is it?",
+    "main": "What currency is used in England?",
+    "followups": [
+      "what type of currency is it?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  }
+}

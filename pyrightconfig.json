@@ -1,0 +1,15 @@
+{
+  "include": [
+    "graph_server.py",
+    "plug.py",
+    "evaluate.py",
+    "src",
+    "*.py"
+  ],
+  "extraPaths": [
+    ".",
+    "./src"
+  ],
+  "venvPath": ".",
+  "reportMissingImports": true
+}

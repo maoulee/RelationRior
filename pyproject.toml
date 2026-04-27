@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "subgraph-kgqa"
+version = "0.1.0"
+description = "Unified project layout for the Subgraph KGQA RL agent and graph backend."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "aiohttp",
+  "fastapi",
+  "httpx",
+  "openai",
+  "pydantic>=1.10,<3",
+  "pyyaml",
+  "requests",
+  "tqdm",
+  "uvicorn",
+]
+
+[project.scripts]
+subgraph-kgqa = "subgraph_kgqa.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

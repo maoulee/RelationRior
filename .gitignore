@@ -1,0 +1,63 @@
+# Data & large files
+data/
+checkpoint/
+reports/
+output/
+logs/
+backups/
+tmp/
+
+# OMC generated
+skills/
+skill_runtime_lab/
+.omc/
+.omx/
+.claude/
+
+# Model / training artifacts
+backend_branches/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# IDE / tool cache
+.vscode/
+.pytest_cache/
+.ruff_cache/
+
+# Old plugin versions (not core pipeline)
+plug_v10.py
+plug_v10_prompts.py
+plug_v11.py
+plug_v12_feedback.py
+
+# Non-core scripts
+analyze_failed_cases.py
+run_prompt_comparison.py
+collate_server.sh
+colloate_gym.sh
+colloate_gym_lora.sh
+fix.sh
+
+# Old test files
+test_graph.py
+test_pipe6.py
+test_prompt_v2.py
+test_server.py
+test_server_debug.py
+v10_environment.py
+
+# Misc non-code files
+*.pdf
+*.csv
+*.jsonl
+action_fail_case_details.csv
+action_skill_correlation_analysis.txt
+reranker_comparison.json
+tmp_webqtest39.jsonl
+scripts/prompt_on_skill_data_results.json

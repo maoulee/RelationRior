@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "anchor": {
+      "type": "string",
+      "description": "Exact entity mention from the question that starts the reasoning chain"
+    },
+    "intent_chain": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Sequential order of execution"
+          },
+          "intent": {
+            "type": "string",
+            "description": "Description of what this intent step accomplishes"
+          },
+          "relation_candidates": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 5,
+            "items": {
+              "type": "string"
+            },
+            "description": "Short descriptive phrases (2-4 words) for semantic retrieval"
+          }
+        },
+        "required": ["step", "intent", "relation_candidates"]
+      }
+    },
+    "target_entity": {
+      "type": ["string", "null"],
+      "description": "Optional entity constraint that the final answer must satisfy"
+    }
+  },
+  "required": ["anchor", "intent_chain", "target_entity"]
+}

@@ -1,0 +1,776 @@
+{
+  "WebQTrn-3136": {
+    "question": "Which of the regions included in the United Kingdom is governed by the Scottish government?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Which regions are included in the United Kingdom? | [FOLLOW-UP] which of those regions is governed by the Scottish government?",
+    "main": "Which regions are included in the United Kingdom?",
+    "followups": [
+      "which of those regions is governed by the Scottish government?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-493": {
+    "question": "Which continent was Saheb Sarbib born in that is also where Belgium is at?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which continent was Saheb Sarbib born in? | [FOLLOW-UP] Which continent is Belgium located on?",
+    "main": "Which continent was Saheb Sarbib born in?",
+    "followups": [
+      "Which continent is Belgium located on?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-64": {
+    "question": "What did the person who lived in Marin City once do?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Who lived in Marin City? | [FOLLOW-UP] what did that person once do?",
+    "main": "Who lived in Marin City?",
+    "followups": [
+      "what did that person once do?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2664": {
+    "question": "Who is a main trading partners of China that appointed Abdelaziz Bouterflika to a governmental position?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Who appointed Abdelaziz Bouterflika to a governmental position? | [FOLLOW-UP] is that person a main trading partner of China?",
+    "main": "Who appointed Abdelaziz Bouterflika to a governmental position?",
+    "followups": [
+      "is that person a main trading partner of China?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-1785": {
+    "question": "Of the films in which Kim Richards acted, which was released latest?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Which films did Kim Richards act in? | [FOLLOW-UP] which one was released latest?",
+    "main": "Which films did Kim Richards act in?",
+    "followups": [
+      "which one was released latest?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-1528": {
+    "question": "In which movies, does Logan Lerman act in, that was production designed by Andrew Menzies?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which movies were production designed by Andrew Menzies? | [FOLLOW-UP] which of those movies does Logan Lerman act in?",
+    "main": "Which movies were production designed by Andrew Menzies?",
+    "followups": [
+      "which of those movies does Logan Lerman act in?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-1012": {
+    "question": "What venue at 6801 Hollywood Boulevard might you attend during a weekend in Hollywood, California?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] What venue is located at 6801 Hollywood Boulevard? | [FOLLOW-UP] is it in Hollywood, California? | [FOLLOW-UP] is it suitable for attending during a weekend?",
+    "main": "What venue is located at 6801 Hollywood Boulevard?",
+    "followups": [
+      "is it in Hollywood, California?",
+      "is it suitable for attending during a weekend?"
+    ],
+    "n_parts": 3,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-1168": {
+    "question": "What kind of guitar did the author who published Kurt Cobain's journals play?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Who is the author that published Kurt Cobain's journals? | [FOLLOW-UP] What kind of guitar did that author play?",
+    "main": "Who is the author that published Kurt Cobain's journals?",
+    "followups": [
+      "What kind of guitar did that author play?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-60": {
+    "question": "In which countries do the people speak Portuguese, where the child labor percentage was once 1.8?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] In which countries do people speak Portuguese? | [FOLLOW-UP] which of those countries had a child labor percentage of 1.8?",
+    "main": "In which countries do people speak Portuguese?",
+    "followups": [
+      "which of those countries had a child labor percentage of 1.8?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1646": {
+    "question": "In the country that uses the DOminican Peso, which currnecy is used?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which country uses the DOminican Peso? | [FOLLOW-UP] which currency is used in that country?",
+    "main": "Which country uses the DOminican Peso?",
+    "followups": [
+      "which currency is used in that country?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-212": {
+    "question": "What states through which the Colorado River flows have administrative division location symbols that were adapted prior to 1899?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which states does the Colorado River flow through? | [FOLLOW-UP] which of those states have administrative division location symbols adapted prior to 1899?",
+    "main": "Which states does the Colorado River flow through?",
+    "followups": [
+      "which of those states have administrative division location symbols adapted prior to 1899?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-1797": {
+    "question": "Who left government office before Mar 11, 1877 and also fought at the Battle of Vicksburg?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Who fought at the Battle of Vicksburg? | [FOLLOW-UP] who left government office before Mar 11, 1877?",
+    "main": "Who fought at the Battle of Vicksburg?",
+    "followups": [
+      "who left government office before Mar 11, 1877?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-213": {
+    "question": "Who did Scarlett Johansson date that also wrote the music for \"The Devil and the Deep Blue Sea\"?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Who wrote the music for \"The Devil and the Deep Blue Sea\"? | [FOLLOW-UP] who did Scarlett Johansson date?",
+    "main": "Who wrote the music for \"The Devil and the Deep Blue Sea\"?",
+    "followups": [
+      "who did Scarlett Johansson date?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-750": {
+    "question": "Which World Series was the first won by the Dodgers?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Which World Series was the first won by the Dodgers?",
+    "main": "Which World Series was the first won by the Dodgers?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-3249": {
+    "question": "In which television show does Tamera Mowry act in, that has the smallest number of seasons?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which television shows does Tamera Mowry act in? | [FOLLOW-UP] which one has the smallest number of seasons?",
+    "main": "Which television shows does Tamera Mowry act in?",
+    "followups": [
+      "which one has the smallest number of seasons?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1155": {
+    "question": "What monetary currency that is used in the country where Romansh language is used?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] In which country is the Romansh language used? | [FOLLOW-UP] what monetary currency is used in that country?",
+    "main": "In which country is the Romansh language used?",
+    "followups": [
+      "what monetary currency is used in that country?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-25": {
+    "question": "What film has a character named Kate and Taylor Lautner played in?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Which film did Taylor Lautner play in that has a character named Kate? | [FOLLOW-UP] what is the name of the character named Kate in that film?",
+    "main": "Which film did Taylor Lautner play in that has a character named Kate?",
+    "followups": [
+      "what is the name of the character named Kate in that film?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-237": {
+    "question": "Who is the coach of the sports team that plays at Pitt Stadium?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Which sports team plays at Pitt Stadium? | [FOLLOW-UP] who is their coach?",
+    "main": "Which sports team plays at Pitt Stadium?",
+    "followups": [
+      "who is their coach?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-61": {
+    "question": "Mary is a notable figure in which religion that is observed in Indonesia?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which religion is Mary a notable figure in? | [FOLLOW-UP] is that religion observed in Indonesia?",
+    "main": "Which religion is Mary a notable figure in?",
+    "followups": [
+      "is that religion observed in Indonesia?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-1923": {
+    "question": "What film had Tobin Armbrust as a producer and featured Miley Cyrus?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Which film had Tobin Armbrust as a producer? | [FOLLOW-UP] did that film feature Miley Cyrus?",
+    "main": "Which film had Tobin Armbrust as a producer?",
+    "followups": [
+      "did that film feature Miley Cyrus?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-710": {
+    "question": "When did one of the 2010 World Series teams last win a previous World Series?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Which teams won the 2010 World Series? | [FOLLOW-UP] when did each of those teams last win a previous World Series?",
+    "main": "Which teams won the 2010 World Series?",
+    "followups": [
+      "when did each of those teams last win a previous World Series?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2558": {
+    "question": "What Indonesian language has the initials MLY?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Which Indonesian language has the initials MLY? | [FOLLOW-UP] what is the full name of that language?",
+    "main": "Which Indonesian language has the initials MLY?",
+    "followups": [
+      "what is the full name of that language?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1557": {
+    "question": "Amherst College is where charles drew go to college and is the university that Zen Ashcroft graduated from.?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Did Charles Drew attend Amherst College? | [FOLLOW-UP] Did Zen Ashcroft graduate from Amherst College?",
+    "main": "Did Charles Drew attend Amherst College?",
+    "followups": [
+      "Did Zen Ashcroft graduate from Amherst College?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-3335": {
+    "question": "What currency is used where Bochkarev Krepkoe beer is made?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Where is Bochkarev Krepkoe beer made? | [FOLLOW-UP] what currency is used there?",
+    "main": "Where is Bochkarev Krepkoe beer made?",
+    "followups": [
+      "what currency is used there?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2784": {
+    "question": "Which movie did Tupac act in, and that was released on February 15, 1991?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Which movie did Tupac act in that was released on February 15, 1991?",
+    "main": "Which movie did Tupac act in that was released on February 15, 1991?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-497": {
+    "question": "In what country was the film adaptation \"The Diary of Anne Frank\" filmed?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Where was the film adaptation \"The Diary of Anne Frank\" filmed? | [FOLLOW-UP] what country is that location in?",
+    "main": "Where was the film adaptation \"The Diary of Anne Frank\" filmed?",
+    "followups": [
+      "what country is that location in?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1939": {
+    "question": "What office position was held from March 19, 1790 and was Abraham Lincoln's political experience?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] What office position did Abraham Lincoln hold from March 19, 1790? | [FOLLOW-UP] was this his political experience?",
+    "main": "What office position did Abraham Lincoln hold from March 19, 1790?",
+    "followups": [
+      "was this his political experience?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2047": {
+    "question": "What is the name of the facility where the Chicago Cubs and Mesa Solar Sox play?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Where do the Chicago Cubs and Mesa Solar Sox play?",
+    "main": "Where do the Chicago Cubs and Mesa Solar Sox play?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1677": {
+    "question": "What movie starring Adam Sandler was nominated for the \"and his diapers\" Award?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Which movies starring Adam Sandler were nominated for the \"and his diapers\" Award? | [FOLLOW-UP] which one is the most popular?",
+    "main": "Which movies starring Adam Sandler were nominated for the \"and his diapers\" Award?",
+    "followups": [
+      "which one is the most popular?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2189": {
+    "question": "What language is spoken in the region that contains a segment of Gebel Elba?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] What region contains a segment of Gebel Elba? | [FOLLOW-UP] what language is spoken in that region?",
+    "main": "What region contains a segment of Gebel Elba?",
+    "followups": [
+      "what language is spoken in that region?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1812": {
+    "question": "Of the countries that are in the Caribbean, which has the Dutch Language as an official language?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which countries in the Caribbean have Dutch as an official language?",
+    "main": "Which countries in the Caribbean have Dutch as an official language?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2859": {
+    "question": "What jobs were done by the author who wrote \"The New Atlantis\"?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Who wrote \"The New Atlantis\"? | [FOLLOW-UP] what jobs did that author do?",
+    "main": "Who wrote \"The New Atlantis\"?",
+    "followups": [
+      "what jobs did that author do?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-452": {
+    "question": "Lala Anthony lives in the Lefcourt National Building. Where is that located?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Where is the Lefcourt National Building located? | [FOLLOW-UP] does Lala Anthony live there?",
+    "main": "Where is the Lefcourt National Building located?",
+    "followups": [
+      "does Lala Anthony live there?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2400": {
+    "question": "Who played the character Ratty Nepalese in the film Raiders of the Lost Ark?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Who played the character Ratty Nepalese in the film Raiders of the Lost Ark?",
+    "main": "Who played the character Ratty Nepalese in the film Raiders of the Lost Ark?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-261": {
+    "question": "Where is the topic of the image \"Whistler Skilift 040\" found?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] What is the topic of the image \"Whistler Skilift 040\"? | [FOLLOW-UP] where is it found?",
+    "main": "What is the topic of the image \"Whistler Skilift 040\"?",
+    "followups": [
+      "where is it found?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2218": {
+    "question": "What is the hometown of the subject of the movie \"George Washington's First War: The Battles for Fort Duquesne\"?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Who is the subject of the movie \"George Washington's First War: The Battles for Fort Duquesne\"? | [FOLLOW-UP] what is that person's hometown?",
+    "main": "Who is the subject of the movie \"George Washington's First War: The Battles for Fort Duquesne\"?",
+    "followups": [
+      "what is that person's hometown?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-894": {
+    "question": "Which nominee at the 37th Tony Awards also inspired Scott Fitzgerald?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Who was a nominee at the 37th Tony Awards? | [FOLLOW-UP] who inspired Scott Fitzgerald? | [FOLLOW-UP] which nominee matches both criteria?",
+    "main": "Who was a nominee at the 37th Tony Awards?",
+    "followups": [
+      "who inspired Scott Fitzgerald?",
+      "which nominee matches both criteria?"
+    ],
+    "n_parts": 3,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2215": {
+    "question": "Can anyone tell me where the composer of Letter to Me came from?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Who composed the song Letter to Me? | [FOLLOW-UP] where did that composer come from?",
+    "main": "Who composed the song Letter to Me?",
+    "followups": [
+      "where did that composer come from?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2653": {
+    "question": "What war had the First Indochina War with france?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] What war had the First Indochina War with France?",
+    "main": "What war had the First Indochina War with France?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-412": {
+    "question": "What language is spoken by the people who live in the place that is the setting for the film \"Holland Carries On?\"?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] What is the setting of the film \"Holland Carries On\"? | [FOLLOW-UP] What language is spoken by the people who live there?",
+    "main": "What is the setting of the film \"Holland Carries On\"?",
+    "followups": [
+      "What language is spoken by the people who live there?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1077": {
+    "question": "The Holy Quran is the religious text of which religion that is observed in Afghanistan?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which religion observes the Holy Quran? | [FOLLOW-UP] is that religion observed in Afghanistan?",
+    "main": "Which religion observes the Holy Quran?",
+    "followups": [
+      "is that religion observed in Afghanistan?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-568": {
+    "question": "What county is home to The Charlotte News?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] What county is home to The Charlotte News?",
+    "main": "What county is home to The Charlotte News?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-3384": {
+    "question": "What language is spoken by the people governed by the government of Denmark?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] What language is spoken by the people governed by the government of Denmark?",
+    "main": "What language is spoken by the people governed by the government of Denmark?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2834": {
+    "question": "What is the major religion called that is the subject of \"Lies My Father Told Me\" in the United States?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] What is the major religion called that is the subject of \"Lies My Father Told Me\"? | [FOLLOW-UP] is this religion the subject of the book in the United States?",
+    "main": "What is the major religion called that is the subject of \"Lies My Father Told Me\"?",
+    "followups": [
+      "is this religion the subject of the book in the United States?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-783": {
+    "question": "what region is the place that has the area Lakes of Parkway, Houston tx in?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] What is the area of Lakes of Parkway, Houston tx? | [FOLLOW-UP] what region is that area in?",
+    "main": "What is the area of Lakes of Parkway, Houston tx?",
+    "followups": [
+      "what region is that area in?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-3543": {
+    "question": "What country that Japan exports to has an ISO of 3166-1 alpha-3?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Which country does Japan export to? | [FOLLOW-UP] does that country have an ISO 3166-1 alpha-3 code?",
+    "main": "Which country does Japan export to?",
+    "followups": [
+      "does that country have an ISO 3166-1 alpha-3 code?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1180": {
+    "question": "The city of Wellsville can be found where in the United States?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Where is the city of Wellsville located in the United States?",
+    "main": "Where is the city of Wellsville located in the United States?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2904": {
+    "question": "What city has location GNIS feature ID is greater than 277593 and was home to Lauren Conrad?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] What city has location GNIS feature ID greater than 277593? | [FOLLOW-UP] was that city home to Lauren Conrad?",
+    "main": "What city has location GNIS feature ID greater than 277593?",
+    "followups": [
+      "was that city home to Lauren Conrad?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2570": {
+    "question": "Who was the US president during World War 2, having been originally appointed by Woodrow Wilson to his governmental position?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Who was the US president during World War 2? | [FOLLOW-UP] was that president originally appointed by Woodrow Wilson?",
+    "main": "Who was the US president during World War 2?",
+    "followups": [
+      "was that president originally appointed by Woodrow Wilson?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-3083": {
+    "question": "In 1948. who was the leader of the place that created the Moscow Watchdog breed?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which place created the Moscow Watchdog breed? | [FOLLOW-UP] who was the leader of that place in 1948?",
+    "main": "Which place created the Moscow Watchdog breed?",
+    "followups": [
+      "who was the leader of that place in 1948?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-983": {
+    "question": "Where did Tennessee Williams go to college with the number of undergraduates less than 23,799?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Which colleges did Tennessee Williams attend? | [FOLLOW-UP] which of those colleges had fewer than 23,799 undergraduates?",
+    "main": "Which colleges did Tennessee Williams attend?",
+    "followups": [
+      "which of those colleges had fewer than 23,799 undergraduates?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-105": {
+    "question": "What is the type of currency that one is advised to bring when visiting the nation where the Red Sea Governorate 2013 was located?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Where was the Red Sea Governorate 2013 located? | [FOLLOW-UP] what currency is advised to bring when visiting that nation?",
+    "main": "Where was the Red Sea Governorate 2013 located?",
+    "followups": [
+      "what currency is advised to bring when visiting that nation?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2809": {
+    "question": "In which city, did the author that published, A Catcher in the Rye, died?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Who is the author of A Catcher in the Rye? | [FOLLOW-UP] in which city did that author die?",
+    "main": "Who is the author of A Catcher in the Rye?",
+    "followups": [
+      "in which city did that author die?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-436": {
+    "question": "Who played Dumbledore in which film, that has a character named, Ghost of the Cavalier?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which film has a character named Ghost of the Cavalier? | [FOLLOW-UP] who played Dumbledore in that film?",
+    "main": "Which film has a character named Ghost of the Cavalier?",
+    "followups": [
+      "who played Dumbledore in that film?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-1379": {
+    "question": "How did the composer of \"Canzone, S. 162 no. 2\" earn a living?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Who composed \"Canzone, S. 162 no. 2\"? | [FOLLOW-UP] how did that person earn a living?",
+    "main": "Who composed \"Canzone, S. 162 no. 2\"?",
+    "followups": [
+      "how did that person earn a living?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1283": {
+    "question": "In the location where the film \"fight for survival\" is located, what is the timezone?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Where is the film \"fight for survival\" located? | [FOLLOW-UP] what is the timezone in that location?",
+    "main": "Where is the film \"fight for survival\" located?",
+    "followups": [
+      "what is the timezone in that location?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-3694": {
+    "question": "What is the type of money used where the Cubalaya breed is from?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Where is the Cubalaya breed from? | [FOLLOW-UP] what type of money is used there?",
+    "main": "Where is the Cubalaya breed from?",
+    "followups": [
+      "what type of money is used there?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-537": {
+    "question": "Which Charlie Hunnam film was released to Blu-ray disc?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Which films starring Charlie Hunnam were released to Blu-ray disc?",
+    "main": "Which films starring Charlie Hunnam were released to Blu-ray disc?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-712": {
+    "question": "What countries use The New Zealand dollar and have territories in Oceania?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] Which countries use The New Zealand dollar? | [FOLLOW-UP] which of those countries have territories in Oceania?",
+    "main": "Which countries use The New Zealand dollar?",
+    "followups": [
+      "which of those countries have territories in Oceania?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-1875": {
+    "question": "What type of political system includes the Superior Court of Justice?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] What type of political system includes the Superior Court of Justice?",
+    "main": "What type of political system includes the Superior Court of Justice?",
+    "followups": [],
+    "n_parts": 1,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-3038": {
+    "question": "Where is the childhood home of the person who said \"Who is rich? He that rejoices in his portion.\"?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Who said \"Who is rich? He that rejoices in his portion.\"? | [FOLLOW-UP] where is that person's childhood home?",
+    "main": "Who said \"Who is rich? He that rejoices in his portion.\"?",
+    "followups": [
+      "where is that person's childhood home?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-484": {
+    "question": "What language did L. L. Zamenhof invent that Australia uses?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] What language did L. L. Zamenhof invent? | [FOLLOW-UP] does Australia use that language?",
+    "main": "What language did L. L. Zamenhof invent?",
+    "followups": [
+      "does Australia use that language?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-2316": {
+    "question": "Who was the person who influenced Jackson Pollock that died latest?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Who influenced Jackson Pollock? | [FOLLOW-UP] when did each person die? | [FOLLOW-UP] which person died latest?",
+    "main": "Who influenced Jackson Pollock?",
+    "followups": [
+      "when did each person die?",
+      "which person died latest?"
+    ],
+    "n_parts": 3,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-1484": {
+    "question": "What style paintings - such as those by Frida Kahlo - are featured in the film The Golden Age?",
+    "complexity": "easy",
+    "raw_output": "[MAIN] What style paintings are featured in the film The Golden Age? | [FOLLOW-UP] do those paintings include works by Frida Kahlo?",
+    "main": "What style paintings are featured in the film The Golden Age?",
+    "followups": [
+      "do those paintings include works by Frida Kahlo?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTest-576": {
+    "question": "Of the seven countries making up Central America, which countries have an ISO numeric larger than 188?",
+    "complexity": "medium",
+    "raw_output": "[MAIN] Which countries make up Central America? | [FOLLOW-UP] what is the ISO numeric code for each? | [FOLLOW-UP] which have a code larger than 188?",
+    "main": "Which countries make up Central America?",
+    "followups": [
+      "what is the ISO numeric code for each?",
+      "which have a code larger than 188?"
+    ],
+    "n_parts": 3,
+    "has_main": true,
+    "status": "ok"
+  },
+  "WebQTrn-3033": {
+    "question": "In which state is the governmental jurisdiction that includes a governmental body called Toronto City Council located?",
+    "complexity": "hard",
+    "raw_output": "[MAIN] Which state includes the governmental body called Toronto City Council? | [FOLLOW-UP] does that state have a governmental jurisdiction including Toronto City Council?",
+    "main": "Which state includes the governmental body called Toronto City Council?",
+    "followups": [
+      "does that state have a governmental jurisdiction including Toronto City Council?"
+    ],
+    "n_parts": 2,
+    "has_main": true,
+    "status": "ok"
+  }
+}

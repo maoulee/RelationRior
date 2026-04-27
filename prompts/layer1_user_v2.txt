@@ -1,0 +1,119 @@
+Decompose this question into an ordered intent chain: {question}
+
+Return ONLY a JSON object with this structure:
+{
+  "anchor": "entity from question",
+  "intent_chain": [
+    {"step": 1, "intent": "what this does", "relation_candidates": ["phrase1", "phrase2", "phrase3"]}
+  ],
+  "target_entity": "entity or null"
+}
+
+FEW-SHOT EXAMPLES:
+
+Example 1:
+Question: Which nation has the Alta Verapaz Department and is in Central America?
+
+{
+  "anchor": "Alta Verapaz Department",
+  "intent_chain": [
+    {
+      "step": 1,
+      "intent": "find what nation contains this department",
+      "relation_candidates": ["department to country", "administrative division country", "state province country"]
+    },
+    {
+      "step": 2,
+      "intent": "verify the nation is in Central America",
+      "relation_candidates": ["country continent", "country location", "country region"]
+    }
+  ],
+  "target_entity": "Central America"
+}
+
+Example 2:
+Question: What language is spoken in the location that appointed Michelle Bachelet to a governmental position?
+
+{
+  "anchor": "Michelle Bachelet",
+  "intent_chain": [
+    {
+      "step": 1,
+      "intent": "find where she was appointed to government position",
+      "relation_candidates": ["position jurisdiction", "office location", "government appointment country"]
+    },
+    {
+      "step": 2,
+      "intent": "find what language is spoken there",
+      "relation_candidates": ["country languages", "country official language", "spoken languages"]
+    }
+  ],
+  "target_entity": null
+}
+
+Example 3:
+Question: Lou Seal is the mascot for the team that last won the World Series when?
+
+{
+  "anchor": "Lou Seal",
+  "intent_chain": [
+    {
+      "step": 1,
+      "intent": "find which team has this mascot",
+      "relation_candidates": ["mascot of team", "team mascot", "mascot belongs to"]
+    },
+    {
+      "step": 2,
+      "intent": "find championships they won",
+      "relation_candidates": ["team championships", "world series wins", "league championships"]
+    },
+    {
+      "step": 3,
+      "intent": "find the most recent championship year",
+      "relation_candidates": ["championship year", "latest season", "most recent win"]
+    }
+  ],
+  "target_entity": null
+}
+
+Example 4:
+Question: Which man is the leader of the country that uses Libya, Libya, Libya as its national anthem?
+
+{
+  "anchor": "Libya, Libya, Libya",
+  "intent_chain": [
+    {
+      "step": 1,
+      "intent": "find which country uses this anthem",
+      "relation_candidates": ["anthem of country", "national anthem country", "country anthem"]
+    },
+    {
+      "step": 2,
+      "intent": "find who leads that country",
+      "relation_candidates": ["country leader", "head of government", "office holder"]
+    }
+  ],
+  "target_entity": null
+}
+
+Example 5:
+Question: In which countries do the people speak Portuguese, where the child labor percentage was once 1.8?
+
+{
+  "anchor": "Portuguese",
+  "intent_chain": [
+    {
+      "step": 1,
+      "intent": "find which countries speak this language",
+      "relation_candidates": ["language spoken in countries", "countries using language", "official language countries"]
+    },
+    {
+      "step": 2,
+      "intent": "filter by child labor percentage",
+      "relation_candidates": ["child labor percentage", "labor rate statistics", "youth employment rate"]
+    }
+  ],
+  "target_entity": null
+}
+
+Now decompose: {question}

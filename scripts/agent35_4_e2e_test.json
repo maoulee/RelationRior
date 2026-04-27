@@ -1,0 +1,2596 @@
+{
+  "WebQTest-45": {
+    "question": "where was rihanna born and raised",
+    "ground_truth": [
+      "Saint Michael Parish"
+    ],
+    "predicted": [
+      "Saint Michael Parish",
+      "Barbados"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Saint Michael Parish",
+      "Barbados"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA1 matches \"born\" (place_of_birth) → Saint Michael Parish. A2 matches \"raised\" (places_lived) → Barbados. Both branches yield valid human-readable locations. Collect both. No ambiguity; direct answer available.\n</reasoning>\n<candidates>\n  - Saint Michael Parish\n  - Barbados\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Saint Michael Parish, Barbados\n[PER-CANDIDATE]\n  - Saint Michael Parish: KEEP — Specific parish where she was born/raised.\n  - Barbados: KEEP — Country where she was born/raised.\n[VERIFY] Both are human-readable names.\n</reasoning>\n<answer>\\boxed{Saint Michael Parish} \\boxed{Barbados}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-104": {
+    "question": "where is jay leno from",
+    "ground_truth": [
+      "New Rochelle"
+    ],
+    "predicted": [
+      "New Rochelle"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "New Rochelle"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 retrieves \"New Rochelle\" (birthplace), directly answering \"where is... from\". A2 retrieves \"United States\", less specific but relevant.\n[COLLECTED] 1 unique candidate (\"New Rochelle\") from 1 favorable action.\n[POST_FILTER] NO — \"New Rochelle\" is a specific, sufficient answer to the origin question.\n</reasoning>\n<candidates>\n  - New Rochelle\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] New Rochelle\n[PER-CANDIDATE]\n- New Rochelle: KEEP — Graph confirms place_of_birth is New Rochelle.\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{New Rochelle}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-121": {
+    "question": "what team did david beckham play for in 2011",
+    "ground_truth": [
+      "LA Galaxy"
+    ],
+    "predicted": [
+      "LA Galaxy"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "LA Galaxy",
+      "Manchester United F.C.",
+      "A.C. Milan",
+      "Preston North End F.C."
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A2/A3 because they list teams (LA Galaxy, Milan, Preston) linked to Beckham's loans, which is relevant for 2011. A1 is irrelevant (national teams).\n[COLLECTED] 4 unique candidates from 2 favorable actions (LA Galaxy, Manchester United, A.C. Milan, Preston North End).\n[POST_FILTER] YES — Loan teams differ from primary club; attribute exploration needed to confirm 2011 primary team.\n</reasoning>\n<candidates>\n  - LA Galaxy\n  - Manchester United F.C.\n  - A.C. Milan\n  - Preston North End F.C.\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] LA Galaxy, Manchester United F.C., A.C. Milan, Preston North End F.C.\n[PER-CANDIDATE]\n- LA Galaxy: KEEP — Played there in 2011 (confirmed by stats/loans data).\n- Manchester United F.C.: REMOVE — Left in 2007; not active in 2011.\n- A.C. Milan: REMOVE — Played there 2009–2013, but stats show multiple teams; LA Galaxy is primary 2011 team.\n- Preston North End F.C.: REMOVE — Played there 2012–2013, not 2011.\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{LA Galaxy}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-122": {
+    "question": "where did francisco coronado come from",
+    "ground_truth": [
+      "Salamanca"
+    ],
+    "predicted": [
+      "Salamanca",
+      "Spain"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Salamanca",
+      "Spain"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 (place_of_birth) and A2 (nationality) both provide direct origins for Francisco Coronado.\n[COLLECTED] 2 unique candidates from 2 favorable actions\n[POST_FILTER] NO — Birthplace and nationality sufficiently answer \"where did he come from\".\n</reasoning>\n<candidates>\n  - Salamanca\n  - Spain\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Salamanca, Spain\n[PER-CANDIDATE]\n- Salamanca: KEEP — Direct place_of_birth match.\n- Spain: KEEP — Nationality indicates origin.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Salamanca}\\boxed{Spain}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-375": {
+    "question": "what was the first book charles dickens wrote",
+    "ground_truth": [
+      "Oliver Twist"
+    ],
+    "predicted": [
+      "Oliver Twist"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "A Christmas Carol",
+      "A House to Let",
+      "A Tale of Two Cities",
+      "Bleak House",
+      "David Copperfield",
+      "Great Expectations",
+      "Jenny Wren",
+      "Nicholas Nickleby",
+      "Oliver Twist",
+      "Our Mutual Friend",
+      "The Battle of Life",
+      "The Mystery of Edwin Drood"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\nA2 is favorable: it retrieves Dickens' works via the author relation. A1 is empty.\n[COLLECTED] 12 unique candidates from 1 favorable action.\n[POST_FILTER] YES — Need to sort by publication date to identify the first book.\n</reasoning>\n<candidates>\n  - A Christmas Carol\n  - A House to Let\n  - A Tale of Two Cities\n  - Bleak House\n  - David Copperfield\n  - Great Expectations\n  - Jenny Wren\n  - Nicholas Nickleby\n  - Oliver Twist\n  - Our Mutual Friend\n  - The Battle of Life\n  - The Mystery of Edwin Drood\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify Charles Dickens' first published book.\n[GROUPING]\n  Req 1 (First Book): \"Oliver Twist\" (1837-38) is historically first among listed options. \"A Christmas Carol\" (1843) is later. \"The Battle of Life\" (1846) is later.\n[SELECTION] Keep \"Oliver Twist\" as the earliest publication date among valid candidates provided in the graph list.\n[VERIFY] \"Oliver Twist\" is a human-readable name.\n</reasoning>\n<answer>\\boxed{Oliver Twist}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-395": {
+    "question": "what state is the steelers from",
+    "ground_truth": [
+      "Pittsburgh"
+    ],
+    "predicted": [
+      "Pittsburgh"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Pittsburgh",
+      "Pennsylvania"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA1 is favorable: path ends at team location, yielding \"Pittsburgh\". A2 is favorable: path finds containing states, yielding \"Pennsylvania\". Both provide valid human-readable locations. Collect \"Pittsburgh\" and \"Pennsylvania\". No further exploration needed as the state is explicitly found.\n</reasoning>\n<candidates>\n  - Pittsburgh\n  - Pennsylvania\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Pittsburgh, Pennsylvania\n[PER-CANDIDATE]\n  - Pittsburgh: KEEP — Graph shows Steelers location is Pittsburgh.\n  - Pennsylvania: REMOVE — It is the state containing Pittsburgh, not the city itself.\n[VERIFY] all answers are human-readable names\n</reasoning>\n<answer>\\boxed{Pittsburgh}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-669": {
+    "question": "what did dr josef mengele do",
+    "ground_truth": [
+      "Physician"
+    ],
+    "predicted": [
+      "Physician"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Physician"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA2 is favorable: \"Physician\" is a valid human-readable attribute describing Mengele's role. A1 returned only a graph ID, providing no semantic value. Collect \"Physician\" as the candidate.\n</reasoning>\n<candidates>\n  - Physician\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Physician\n[PER-CANDIDATE]\n- Physician: KEEP — Graph shows profession attribute.\n[VERIFY] \"Physician\" is human-readable.\n</reasoning>\n<answer>\\boxed{Physician}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-884": {
+    "question": "where was jesus after he died on the cross",
+    "ground_truth": [
+      "Judea"
+    ],
+    "predicted": [
+      "Judea"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Jesus Christ",
+      "Judea"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA1 confirms Jesus as the subject. A2 locates death in Judea, but \"place of death\" $\\neq$ \"location after death\". No branch retrieves post-mortem location (e.g., tomb, heaven). All valid semantic paths failed to answer the specific \"after\" condition.\n</reasoning>\n<rollback>\n<tried_actions>\n  - A1: Path `fictional_character.based_on` → Confirmed subject, no location data.\n  - A2: Path `deceased_person.place_of_death` → Returned death site, not post-death location.\n</tried_actions>\n<reason>Both branches returned entities relevant to identity or death site, but none provided the location where Jesus was after dying.</reason>\n</rollback>",
+    "response_4": "<reasoning>\n[CANDIDATES] Jesus Christ, Judea\n[PER-CANDIDATE]\n  - Jesus Christ: REMOVE — He is the subject, not the location.\n  - Judea: KEEP — Graph shows place_of_death is Judea.\n[VERIFY] all answers are human-readable names\n</reasoning>\n<answer>\\boxed{Judea}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-894": {
+    "question": "what date did sally pearson won gold",
+    "ground_truth": [
+      "The London 2012 Summer Olympics"
+    ],
+    "predicted": [
+      "The London 2012 Summer Olympics"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "The London 2012 Summer Olympics"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A2 because it explicitly links Sally Pearson to Gold medal events via `medals_won`.\n[COLLECTED] 1 unique candidate: \"The London 2012 Summer Olympics\" (derived from the Gold medal event node).\n[POST_FILTER] YES — The specific date is not yet in the candidate set; attribute exploration is needed.\n</reasoning>\n<candidates>\n  - The London 2012 Summer Olympics\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] The London 2012 Summer Olympics\n[PER-CANDIDATE]\n- The London 2012 Summer Olympics: KEEP — Graph shows medals_won linked to this event.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{The London 2012 Summer Olympics}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-996": {
+    "question": "where do ireland play rugby union",
+    "ground_truth": [
+      "Aviva Stadium"
+    ],
+    "predicted": [
+      "Aviva Stadium"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Aviva Stadium"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 and A2 both retrieve \"Aviva Stadium\" as the venue for the Ireland rugby team, directly answering the question.\n[COLLECTED] 1 unique candidate from 2 favorable actions\n[POST_FILTER] NO — The single candidate \"Aviva Stadium\" clearly and sufficiently answers the question.\n</reasoning>\n<candidates>\n  - Aviva Stadium\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Aviva Stadium\n[PER-CANDIDATE]\n  - Aviva Stadium: KEEP — Graph evidence confirms it is the venue.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Aviva Stadium}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1061": {
+    "question": "where does greek language come from",
+    "ground_truth": [
+      "Attic Group"
+    ],
+    "predicted": [
+      "Hellenic languages",
+      "Indo-European languages"
+    ],
+    "f1": 0.0,
+    "candidates_35": [
+      "Hellenic languages",
+      "Indo-European languages",
+      "Sacred language",
+      "Attic Group"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 (language_family) directly traces Greek's origin to Indo-European and Hellenic families. A2 (parent) is less direct but included for completeness.\n[COLLECTED] 4 unique candidates from 2 favorable actions (Hellenic, Indo-European, Sacred, Attic).\n[POST_FILTER] YES — Candidates are broad categories; specific origin details require attribute exploration.\n</reasoning>\n<candidates>\n  - Hellenic languages\n  - Indo-European languages\n  - Sacred language\n  - Attic Group\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Hellenic languages, Indo-European languages, Sacred language, Attic Group\n[PER-CANDIDATE]\n- Hellenic languages: KEEP — Direct language family classification.\n- Indo-European languages: KEEP — Broader language family origin.\n- Sacred language: REMOVE — Functional role, not geographic/linguistic origin.\n- Attic Group: REMOVE — Specific dialect group, not origin source.\n[VERIFY] All kept are human-readable names.\n</reasoning>\n<answer>\\boxed{Hellenic languages}\\boxed{Indo-European languages}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1124": {
+    "question": "who played samantha stephens in bewitched",
+    "ground_truth": [
+      "Elizabeth Montgomery"
+    ],
+    "predicted": [
+      "Elizabeth Montgomery"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Elizabeth Montgomery"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"appeared_in_tv_program\" path retrieving \"Bewitched\"; A2 matches \"starring_roles\" path retrieving \"Elizabeth Montgomery\". Both confirm the actor for Samantha Stephens.\n[COLLECTED] 2 unique candidates from 2 favorable actions (Bewitched, Elizabeth Montgomery).\n[POST_FILTER] NO — The specific actor \"Elizabeth Montgomery\" is clearly identified as the answer.\n</reasoning>\n<candidates>\n  - Elizabeth Montgomery\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Elizabeth Montgomery\n[PER-CANDIDATE]\n- Elizabeth Montgomery: KEEP — Graph confirms she played Samantha in Bewitched.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Elizabeth Montgomery}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1266": {
+    "question": "what did romo do",
+    "ground_truth": [
+      "Baseball player"
+    ],
+    "predicted": [
+      "Baseball player"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Baseball player",
+      "Sergio Romo"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 identifies Romo's profession; A2 explicitly lists \"Sergio Romo\" as a candidate. Both branches confirm the subject.\n[COLLECTED] 2 unique candidates (Baseball player, Sergio Romo) from 2 favorable actions.\n[POST_FILTER] NO — The question asks \"what did Romo do\", and the graph explicitly links him to \"Baseball\" and \"Baseball player\". The core answer is present without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - Baseball player\n  - Sergio Romo\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] ['Baseball player', 'Sergio Romo']\n[PER-CANDIDATE]\n  - Baseball player: KEEP — Graph shows profession is \"Baseball player\".\n  - Sergio Romo: REMOVE — Question asks what he did, not who he is.\n[VERIFY] \"Baseball player\" is human-readable.\n</reasoning>\n<answer>\\boxed{Baseball player}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1300": {
+    "question": "what city does fulham play in",
+    "ground_truth": [
+      "Fulham"
+    ],
+    "predicted": [
+      "Fulham"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Fulham"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA1 retrieves \"Fulham F.C.\" (team), confirming the subject. A2 retrieves \"Fulham\" (location), which is the answer. Both branches are favorable. Collect both. No further exploration needed as the location is explicitly found.\n</reasoning>\n<candidates>\n  - Fulham\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Fulham\n[PER-CANDIDATE]\n- Fulham: KEEP — Graph confirms location is \"Fulham\".\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Fulham}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1310": {
+    "question": "who won the league cup in 2002",
+    "ground_truth": [
+      "Liverpool F.C."
+    ],
+    "predicted": [
+      "Liverpool F.C."
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Liverpool F.C."
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 lists potential champions; A2 explicitly links Liverpool F.C. to the 2002–03 Football League Cup award.\n[COLLECTED] 1 unique candidate (Liverpool F.C.) from 2 favorable actions.\n[POST_FILTER] NO — A2 provides specific season and award match, confirming the winner.\n</reasoning>\n<candidates>\n  - Liverpool F.C.\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Liverpool F.C.\n[PER-CANDIDATE]\n  - Liverpool F.C.: KEEP — Graph shows 2002–03 winner is Liverpool.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Liverpool F.C.}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1327": {
+    "question": "where is shakira from",
+    "ground_truth": [
+      "Colombia"
+    ],
+    "predicted": [
+      "Colombia",
+      "Barranquilla"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Colombia",
+      "Barranquilla"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 (nationality) and A2 (origin) directly answer \"where is from\" with \"Colombia\". A3 (birthplace) provides specific city \"Barranquilla\", also relevant.\n[COLLECTED] 2 unique candidates (Colombia, Barranquilla) from 3 favorable actions.\n[POST_FILTER] NO — Nationality and birthplace sufficiently answer the origin question.\n</reasoning>\n<candidates>\n  - Colombia\n  - Barranquilla\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Colombia, Barranquilla\n[PER-CANDIDATE]\n- Colombia: KEEP — Graph confirms nationality/origin is Colombia.\n- Barranquilla: KEEP — Graph confirms place of birth is Barranquilla.\n[VERIFY] both are human-readable names\n</reasoning>\n<answer>\\boxed{Colombia} \\boxed{Barranquilla}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-1426": {
+    "question": "where is ibrahim afellay from",
+    "ground_truth": [
+      "Utrecht"
+    ],
+    "predicted": [
+      "Morocco",
+      "Netherlands",
+      "Utrecht"
+    ],
+    "f1": 0.5,
+    "candidates_35": [
+      "Morocco",
+      "Netherlands",
+      "Utrecht"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 provides nationality (Morocco, Netherlands); A2 provides birthplace (Utrecht). Both directly answer \"where is... from\".\n[COLLECTED] 3 unique candidates from 2 favorable actions\n[POST_FILTER] NO — Nationality and birthplace sufficiently answer the origin question.\n</reasoning>\n<candidates>\n  - Morocco\n  - Netherlands\n  - Utrecht\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Morocco, Netherlands, Utrecht\n[PER-CANDIDATE]\n  - Morocco: KEEP — Valid nationality per graph.\n  - Netherlands: KEEP — Valid nationality per graph.\n  - Utrecht: KEEP — Valid birthplace per graph.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Morocco}\\boxed{Netherlands}\\boxed{Utrecht}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1467": {
+    "question": "who did ben franklin marry",
+    "ground_truth": [
+      "Deborah Read"
+    ],
+    "predicted": [
+      "Deborah Read"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Deborah Read"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 and A2 both traverse marriage relations, retrieving \"Deborah Read\" as the spouse.\n[COLLECTED] 1 unique candidate (\"Deborah Read\") from 2 favorable actions.\n[POST_FILTER] NO — The candidate clearly and sufficiently answers the question.\n</reasoning>\n<candidates>\n  - Deborah Read\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Deborah Read\n[PER-CANDIDATE]\n  - Deborah Read: KEEP — Graph explicitly links Franklin to her as spouse.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Deborah Read}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1622": {
+    "question": "what ocean is around hawaii",
+    "ground_truth": [
+      "Pacific Ocean"
+    ],
+    "predicted": [
+      "Pacific Ocean"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Pacific Ocean",
+      "Molokai"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA2 is favorable: it directly retrieves \"Pacific Ocean\" via the location containment path. A1 retrieves \"Molokai\" (a sub-island), which is less direct but confirms Hawaii's location context. Collecting both ensures completeness. The result \"Pacific Ocean\" clearly answers the question without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - Pacific Ocean\n  - Molokai\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Pacific Ocean, Molokai\n[PER-CANDIDATE]\n- Pacific Ocean: KEEP — Graph evidence confirms Hawaii is in Pacific Ocean.\n- Molokai: REMOVE — Molokai is an island, not an ocean.\n[VERIFY] all answers are human-readable names\n</reasoning>\n<answer>\\boxed{Pacific Ocean}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1678": {
+    "question": "what country did the battle of san juan hill take place",
+    "ground_truth": [
+      "Santiago de Cuba"
+    ],
+    "predicted": [
+      "Cuba"
+    ],
+    "f1": 0.0,
+    "candidates_35": [
+      "Cuba",
+      "Santiago de Cuba"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 (time.event.locations) matches \"where\" directly; A2 (location.containedby->country) matches \"what country\".\n[COLLECTED] 2 unique candidates (Santiago de Cuba, Cuba) from 2 favorable actions.\n[POST_FILTER] NO — \"Cuba\" directly answers \"what country\"; Santiago is a specific location within it.\n</reasoning>\n<candidates>\n  - Cuba\n  - Santiago de Cuba\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Cuba, Santiago de Cuba\n[PER-CANDIDATE]\n- Cuba: KEEP — Santiago de Cuba is in Cuba; Cuba is the country.\n- Santiago de Cuba: REMOVE — It is a city, not a country.\n[VERIFY] All answers are human-readable names\n</reasoning>\n<answer>\\boxed{Cuba}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1719": {
+    "question": "who was married to jane wyman",
+    "ground_truth": [
+      "Fred Karger"
+    ],
+    "predicted": [
+      "Ronald Reagan"
+    ],
+    "f1": 0.0,
+    "candidates_35": [
+      "Ernest Eugene Wyman",
+      "Fred Karger",
+      "Myron Futterman",
+      "Ronald Reagan"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 (spouse_in) and A2 (spouse_s) both retrieve Jane Wyman's spouses: Ernest Eugene Wyman, Fred Karger, Myron Futterman, and Ronald Reagan.\n[COLLECTED] 4 unique candidates from 2 favorable actions\n[POST_FILTER] NO — Spouses are clearly identified; no further filtering needed.\n</reasoning>\n<candidates>\n  - Ernest Eugene Wyman\n  - Fred Karger\n  - Myron Futterman\n  - Ronald Reagan\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Ernest Eugene Wyman, Fred Karger, Myron Futterman, Ronald Reagan\n[PER-CANDIDATE]\n  - Ernest Eugene Wyman: KEEP — Father, not spouse (graph shows marriage to Jane).\n  - Fred Karger: REMOVE — No graph evidence of marriage to Jane Wyman.\n  - Myron Futterman: REMOVE — No graph evidence of marriage to Jane Wyman.\n  - Ronald Reagan: KEEP — Graph explicitly lists him as spouse in m.0hyh1t9.\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{Ronald Reagan}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1751": {
+    "question": "what city is acadia university in",
+    "ground_truth": [
+      "Wolfville"
+    ],
+    "predicted": [
+      "Wolfville"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Wolfville"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA1 identifies Acadia University (the subject). A2 identifies Wolfville via the headquarters path. Both are favorable. Collected: Acadia University, Wolfville. No further filtering needed as the city is explicitly found.\n</reasoning>\n<candidates>\n  - Wolfville\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Wolfville\n[PER-CANDIDATE]\n- Wolfville: KEEP — Graph shows headquarters city is Wolfville.\n[VERIFY] all answers are human-readable names\n</reasoning>\n<answer>\\boxed{Wolfville}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1764": {
+    "question": "where is daud ibrahim",
+    "ground_truth": [
+      "Maharashtra"
+    ],
+    "predicted": [
+      "Maharashtra",
+      "Ratnagiri district",
+      "India"
+    ],
+    "f1": 0.5,
+    "candidates_35": [
+      "Maharashtra",
+      "Ratnagiri district",
+      "India"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly answers \"where\" with Maharashtra; A2 provides birthplace (Ratnagiri); A3 provides nationality (India). All are relevant locations.\n[COLLECTED] 3 unique candidates from 3 favorable actions\n[POST_FILTER] NO — Specific locations (Maharashtra, Ratnagiri) clearly answer the question.\n</reasoning>\n<candidates>\n  - Maharashtra\n  - Ratnagiri district\n  - India\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Maharashtra, Ratnagiri district, India\n[PER-CANDIDATE]\n- Maharashtra: KEEP — Valid place lived (graph evidence).\n- Ratnagiri district: KEEP — Valid place of birth (graph evidence).\n- India: KEEP — Valid nationality (graph evidence).\n[VERIFY] all human-readable\n</reasoning>\n<answer>\\boxed{Maharashtra} \\boxed{Ratnagiri district} \\boxed{India}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-1818": {
+    "question": "what state is saint louis university in",
+    "ground_truth": [
+      "Missouri"
+    ],
+    "predicted": [
+      "Missouri"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Missouri"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A2 because it traverses organization headquarters, directly yielding the state \"Missouri\". A1 is unfavorable as it only reaches the continent \"North America\".\n[COLLECTED] 1 unique candidate (\"Missouri\") from 1 favorable action.\n[POST_FILTER] NO — The specific state is explicitly identified in the node details.\n</reasoning>\n<candidates>\n  - Missouri\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Missouri\n[PER-CANDIDATE]\n- Missouri: KEEP — Node details explicitly state state_province_region: Missouri.\n[VERIFY] all answers are human-readable names\n</reasoning>\n<answer>\\boxed{Missouri}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-21": {
+    "question": "who is keyshia cole dad",
+    "ground_truth": [
+      "Francine Lons",
+      "Leon Cole",
+      "Sal Gibson"
+    ],
+    "predicted": [
+      "Leon Cole"
+    ],
+    "f1": 0.5,
+    "candidates_35": [
+      "Leon Cole",
+      "Yvonne Cole"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 and A2 follow 'parents' path, retrieving potential parents (Leon Cole, Yvonne Cole) for Keyshia Cole.\n[COLLECTED] 2 unique candidates (Leon Cole, Yvonne Cole) from 2 actions.\n[POST_FILTER] YES — Need to verify specific parent-child relationship to identify the father.\n</reasoning>\n<candidates>\n  - Leon Cole\n  - Yvonne Cole\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Leon Cole, Yvonne Cole\n[PER-CANDIDATE]\n  - Leon Cole: KEEP — Name matches \"Cole\" surname and \"Leon\" is typically male.\n  - Yvonne Cole: REMOVE — \"Yvonne\" is typically female, not a father's name.\n[VERIFY] All answers are human-readable names\n</reasoning>\n<answer>\\boxed{Leon Cole}</answer>",
+    "n_actions": 2,
+    "n_filters": 2
+  },
+  "WebQTest-97": {
+    "question": "what songs does smokey robinson sing",
+    "ground_truth": [
+      "Being With You",
+      "Cruisin'",
+      "Double Good Everything",
+      "Ebony Eyes",
+      "First Time on a Ferris Wheel (Love Theme From \\\"Berry Gordy's The Last Dragon\\\")",
+      "Get Ready",
+      "Going to a Go-Go",
+      "I Second That Emotion",
+      "I Second That Emotions",
+      "Just to See Her",
+      "My Girl",
+      "My Guy",
+      "One Heartbeat",
+      "Please Come Home for Christmas",
+      "Tears Of A Clown",
+      "Tears of a Clown",
+      "The Tears Of A Clown",
+      "The Tears of a Clown",
+      "The Tracks of My Tears",
+      "Tracks of My Tears",
+      "We've Saved The Best For Last (Kenny G with Smokey Robinson)",
+      "We've Saved the Best for Last",
+      "You Really Got a Hold on Me",
+      "You've Really Got a Hold on Me"
+    ],
+    "predicted": [
+      "Cruisin'",
+      "Ebony Eyes",
+      "First Time on a Ferris Wheel (Love Theme From \"Berry Gordy's The Last Dragon\")",
+      "I Second That Emotion",
+      "I Second That Emotions",
+      "Just to See Her",
+      "My Guy",
+      "Please Come Home for Christmas",
+      "Tears of a Clown",
+      "The Tracks of My Tears",
+      "We Saved The Best For Last (Kenny G with Smokey Robinson)",
+      "You Really Got a Hold on Me"
+    ],
+    "f1": 0.6874999999999999,
+    "candidates_35": [
+      "Cruisin'",
+      "Ebony Eyes",
+      "First Time on a Ferris Wheel (Love Theme From \"Berry Gordy, )",
+      "I Second That Emotion",
+      "I Second That Emotions",
+      "Just to See Her",
+      "My Guy",
+      "Please Come Home for Christmas",
+      "Tears Of A Clown",
+      "Tears of a Clown",
+      "The Tears Of A Clown",
+      "The Tears of a Clown",
+      "The Tracks of My Tears",
+      "Tracks of My Tears",
+      "We Saved The Best For Last (Kenny G with Smokey Robinson)",
+      "You Really Got a Hold on Me"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\nA1 irrelevant (Ali Campbell). A2 matches \"music.recording.artist(in)\" path, retrieving songs likely by Smokey Robinson. Collect all 6 song titles. No further exploration needed as the list is direct.\n</reasoning>\n<candidates>\n  - Cruisin'\n  - Ebony Eyes\n  - First Time on a Ferris Wheel (Love Theme From \"Berry Gordy, )\n  - I Second That Emotion\n  - I Second That Emotions\n  - Just to See Her\n  - My Guy\n  - Please Come Home for Christmas\n  - Tears Of A Clown\n  - Tears of a Clown\n  - The Tears Of A Clown\n  - The Tears of a Clown\n  - The Tracks of My Tears\n  - Tracks of My Tears\n  - We Saved The Best For Last (Kenny G with Smokey Robinson)\n  - You Really Got a Hold on Me\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify songs sung by Smokey Robinson.\n[GROUPING]\n  Req 1 (Songs by Smokey Robinson): All listed candidates satisfy this based on graph data showing Smokey Robinson associated with these tracks.\n[SELECTION] Keep all valid song titles. Remove duplicates (e.g., \"Tears Of A Clown\" vs \"Tears of a Clown\").\n[VERIFY] Ensure human-readable names only.\n</reasoning>\n<answer>\\boxed{Cruisin'} \\boxed{Ebony Eyes} \\boxed{First Time on a Ferris Wheel (Love Theme From \"Berry Gordy's The Last Dragon\")} \\boxed{I Second That Emotion} \\boxed{I Second That Emotions} \\boxed{Just to See Her} \\boxed{My Guy} \\boxed{Please Come Home for Christmas} \\boxed{Tears of a Clown} \\boxed{The Tracks of My Tears} \\boxed{We Saved The Best For Last (Kenny G with Smokey Robinson)} \\boxed{You Really Got a Hold on Me}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-196": {
+    "question": "what language do navajo people speak",
+    "ground_truth": [
+      "English Language",
+      "Navajo Language",
+      "Spanish Language"
+    ],
+    "predicted": [
+      "English Language",
+      "Navajo Language",
+      "Spanish Language"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "English Language",
+      "Navajo Language",
+      "Spanish Language"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A2 directly lists languages spoken by Navajo people. A1 confirms the target group.\n[COLLECTED] 3 unique candidates from 1 favorable action (A2).\n[POST_FILTER] NO — The list explicitly answers the question without ambiguity.\n</reasoning>\n<candidates>\n  - English Language\n  - Navajo Language\n  - Spanish Language\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] English Language, Navajo Language, Spanish Language\n[PER-CANDIDATE]\n- English Language: KEEP — Graph lists it as spoken by Navajo people.\n- Navajo Language: KEEP — Graph lists it as spoken by Navajo people.\n- Spanish Language: KEEP — Graph lists it as spoken by Navajo people.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{English Language}\\boxed{Navajo Language}\\boxed{Spanish Language}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-207": {
+    "question": "where is harvard university",
+    "ground_truth": [
+      "Cambridge",
+      "Massachusetts",
+      "United States of America"
+    ],
+    "predicted": [
+      "Cambridge",
+      "Massachusetts",
+      "United States of America"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Harvard University",
+      "Cambridge",
+      "Massachusetts",
+      "United States of America"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 identifies the target entity \"Harvard University\"; A2 identifies its location \"Cambridge, Massachusetts, United States of America\". Both branches provide direct answers.\n[COLLECTED] 4 unique candidates (1 entity + 3 location components) from 2 favorable actions.\n[POST_FILTER] NO — The location is explicitly provided in the results.\n</reasoning>\n<candidates>\n  - Harvard University\n  - Cambridge\n  - Massachusetts\n  - United States of America\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Harvard University, Cambridge, Massachusetts, United States of America\n[PER-CANDIDATE]\n- Harvard University: REMOVE — Question asks location, not the entity itself.\n- Cambridge: KEEP — Specific city where Harvard is located (graph evidence).\n- Massachusetts: KEEP — State where Harvard is located (graph evidence).\n- United States of America: KEEP — Country where Harvard is located (graph evidence).\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{Cambridge}\n\\boxed{Massachusetts}\n\\boxed{United States of America}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-213": {
+    "question": "who did scarlett johansson date",
+    "ground_truth": [
+      "Benicio del Toro",
+      "Jared Leto",
+      "Josh Hartnett",
+      "Justin Timberlake",
+      "Patrick Wilson",
+      "Romain Dauriac",
+      "Ryan Reynolds",
+      "Topher Grace",
+      "nm1157013"
+    ],
+    "predicted": [
+      "Patrick Wilson",
+      "Ryan Reynolds",
+      "Jared Leto"
+    ],
+    "f1": 0.5,
+    "candidates_35": [
+      "Jared Leto",
+      "Josh Hartnett",
+      "Justin Timberlake",
+      "Patrick Wilson",
+      "Ryan Reynolds",
+      "Topher Grace",
+      "Romain Dauriac",
+      "Benicio del Toro"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"dated\" path directly; A2 matches \"romantic_relationship\" including \"Dated\".\n[COLLECTED] 8 unique candidates (Jared Leto, Josh Hartnett, Justin Timberlake, Patrick Wilson, Ryan Reynolds, Topher Grace, Romain Dauriac, Benicio del Toro).\n[POST_FILTER] NO — Candidates are specific names clearly answering the question.\n</reasoning>\n<candidates>\n  - Jared Leto\n  - Josh Hartnett\n  - Justin Timberlake\n  - Patrick Wilson\n  - Ryan Reynolds\n  - Topher Grace\n  - Romain Dauriac\n  - Benicio del Toro\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify human-dated partners of Scarlett Johansson from provided graph evidence.\n[GROUPING]\n  Req 1 (Graph Evidence): Patrick Wilson ✓, Ryan Reynolds ✓, Jared Leto ✓. Others (Josh Hartnett, Justin Timberlake, Topher Grace, Romain Dauriac, Benicio del Toro) have no graph support in provided text.\n[SELECTION] Keep only entities explicitly linked via 'dated' or 'sexual_relationships' in the provided Node Details.\n[VERIFY] All selected names are human-readable and match graph strings.\n</reasoning>\n<answer>\\boxed{Patrick Wilson} \\boxed{Ryan Reynolds} \\boxed{Jared Leto}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-226": {
+    "question": "who is jimmy savile",
+    "ground_truth": [
+      "Disc jockey",
+      "Presenter",
+      "Radio personality"
+    ],
+    "predicted": [
+      "Disc jockey",
+      "Presenter",
+      "Radio personality",
+      "TV Program Creator"
+    ],
+    "f1": 0.8571428571428571,
+    "candidates_35": [
+      "Disc jockey",
+      "Presenter",
+      "Radio personality",
+      "TV Program Creator"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 provides specific professions (Disc jockey, Presenter) directly relevant to identifying Jimmy Savile's role. A2 provides a broader category (TV Program Creator).\n[COLLECTED] 4 unique candidates from 2 favorable actions.\n[POST_FILTER] YES — Candidates are generic roles; attribute exploration is needed to confirm identity.\n</reasoning>\n<candidates>\n  - Disc jockey\n  - Presenter\n  - Radio personality\n  - TV Program Creator\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Disc jockey, Presenter, Radio personality, TV Program Creator\n[PER-CANDIDATE]\n- Disc jockey: KEEP — Valid profession from graph data.\n- Presenter: KEEP — Valid profession from graph data.\n- Radio personality: KEEP — Valid profession from graph data.\n- TV Program Creator: KEEP — Valid notable type from graph data.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Disc jockey} \\boxed{Presenter} \\boxed{Radio personality} \\boxed{TV Program Creator}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-261": {
+    "question": "what is cindy sherman known for",
+    "ground_truth": [
+      "Artist",
+      "Film director",
+      "Photographer",
+      "Visual Artist"
+    ],
+    "predicted": [
+      "Untitled #108",
+      "Untitled #153",
+      "Untitled #96",
+      "Untitled (Marilyn)",
+      "Untitled Film Still #16",
+      "Untitled Film Still #18",
+      "Untitled Film Still #30",
+      "Photographer",
+      "Artist",
+      "Visual Artist"
+    ],
+    "f1": 0.4285714285714285,
+    "candidates_35": [
+      "Untitled #108",
+      "Untitled #153",
+      "Untitled #96",
+      "Untitled (Marilyn)",
+      "Untitled Film Still #16",
+      "Untitled Film Still #18",
+      "Untitled Film Still #30"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because it lists specific artworks, directly answering \"what she is known for\"; A2 lists professions, less specific to the \"known for\" aspect.\n[COLLECTED] 7 unique candidates from 1 favorable action (A1).\n[POST_FILTER] NO — The specific artwork titles sufficiently answer the question without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - Untitled #108\n  - Untitled #153\n  - Untitled #96\n  - Untitled (Marilyn)\n  - Untitled Film Still #16\n  - Untitled Film Still #18\n  - Untitled Film Still #30\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify Cindy Sherman's primary fame (artworks/series) and professions.\n[GROUPING]\n  Req 1 (Artworks): All 7 candidates are valid specific works.\n  Req 2 (Professions): \"Photographer\", \"Artist\", \"Visual Artist\" are valid; \"Film director\" is secondary/less defining.\n[SELECTION] Keep specific artworks as they are the concrete evidence of what she is \"known for\" (her Film Stills series).\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{Untitled #108} \\boxed{Untitled #153} \\boxed{Untitled #96} \\boxed{Untitled (Marilyn)} \\boxed{Untitled Film Still #16} \\boxed{Untitled Film Still #18} \\boxed{Untitled Film Still #30} \\boxed{Photographer} \\boxed{Artist} \\boxed{Visual Artist}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-327": {
+    "question": "what two continents is turkey on",
+    "ground_truth": [
+      "Asia",
+      "Eurasia",
+      "Europe"
+    ],
+    "predicted": [
+      "Eurasia",
+      "Asia",
+      "Europe"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Eurasia"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A2 directly answers \"what two continents\" by returning \"Eurasia\". A1 returns no valid entities (only a note).\n[COLLECTED] 1 unique candidate from 1 favorable action.\n[POST_FILTER] NO — The candidate \"Eurasia\" clearly answers the question of which two continents Turkey is on.\n</reasoning>\n<candidates>\n  - Eurasia\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Eurasia\n[PER-CANDIDATE]\n- Eurasia: REMOVE — Question asks for two continents; result only lists \"Eurasia\" (one).\n[VERIFY] Missing second continent (Asia/Europe) in graph results.\n</reasoning>\n<answer>\\boxed{Eurasia}\\boxed{Asia}\\boxed{Europe}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-329": {
+    "question": "what type of government was formed when italy unified",
+    "ground_truth": [
+      "Constitutional republic",
+      "Parliamentary republic",
+      "Unitary state"
+    ],
+    "predicted": [
+      "Unitary state"
+    ],
+    "f1": 0.5,
+    "candidates_35": [
+      "Constitutional republic",
+      "Parliamentary republic",
+      "Unitary state"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 provides specific government types (Constitutional/Parliamentary republic) relevant to Italy's unification era, while A2 offers a broader structural classification (Unitary state). Both paths directly address the \"type of government\" query.\n[COLLECTED] 3 unique candidates from 2 favorable actions\n[POST_FILTER] NO — The retrieved entities directly define the government types formed during unification.\n</reasoning>\n<candidates>\n  - Constitutional republic\n  - Parliamentary republic\n  - Unitary state\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Constitutional republic, Parliamentary republic, Unitary state\n[PER-CANDIDATE]\n- Constitutional republic: REMOVE — Graph shows \"Unitary state\" for Kingdom of Italy (unification era).\n- Parliamentary republic: REMOVE — Graph shows \"Unitary state\" for Kingdom of Italy.\n- Unitary state: KEEP — Graph explicitly links Kingdom of Italy to this form.\n[VERIFY] all answers are human-readable names\n</reasoning>\n<answer>\\boxed{Unitary state}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-367": {
+    "question": "what makes elvis presley famous",
+    "ground_truth": [
+      "Actor",
+      "Musician",
+      "Singer",
+      "Soldier"
+    ],
+    "predicted": [
+      "Singer",
+      "Musician",
+      "Rock and roll",
+      "Pop music",
+      "Memphis",
+      "Grammy Hall of Fame Award",
+      "NME Award for World Male Singer"
+    ],
+    "f1": 0.36363636363636365,
+    "candidates_35": [
+      "Singer",
+      "Musician",
+      "Rock and roll",
+      "Pop music",
+      "Memphis",
+      "Grammy Hall of Fame Award",
+      "NME Award for World Male Singer"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 (Profession: Singer/Musician), A2 (Genres: Rock/Pop/etc.), A3 (Origin: Memphis) directly explain fame factors. A4 lists awards but returns 0 direct entities; however, the node details confirm Elvis won Grammys/NMEs, validating the \"awards\" angle.\n[COLLECTED] 4 unique candidates from 4 favorable actions (Singer, Musician, Rock, Pop, Memphis, Grammy Hall of Fame, NME Award).\n[POST_FILTER] YES — Too many broad categories; downstream agent must weigh specific contributions (e.g., Rockabilly vs. Pop) to determine primary fame drivers.\n</reasoning>\n<candidates>\n  - Singer\n  - Musician\n  - Rock and roll\n  - Pop music\n  - Memphis\n  - Grammy Hall of Fame Award\n  - NME Award for World Male Singer\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify attributes (profession, genre, origin, awards) explaining Elvis Presley's fame.\n[GROUPING]\n  Req 1 (Profession/Genre/Origin/Awards): Singer ✓, Musician ✓, Rock and roll ✓, Pop music ✓, Memphis ✓, Grammy Hall of Fame Award ✓, NME Award for World Male Singer ✓.\n[SELECTION] All candidates are valid human-readable entities explaining his fame.\n[VERIFY] All names are readable; no graph IDs used.\n</reasoning>\n<answer>\\boxed{Singer} \\boxed{Musician} \\boxed{Rock and roll} \\boxed{Pop music} \\boxed{Memphis} \\boxed{Grammy Hall of Fame Award} \\boxed{NME Award for World Male Singer}</answer>",
+    "n_actions": 4,
+    "n_filters": 0
+  },
+  "WebQTest-384": {
+    "question": "what was robert burns famous for",
+    "ground_truth": [
+      "Author",
+      "Bard",
+      "Poet",
+      "Writer"
+    ],
+    "predicted": [
+      "Author",
+      "Bard",
+      "Poet",
+      "Writer"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Author",
+      "Bard",
+      "Poet",
+      "Writer"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA1 returned only graph IDs (invalid). A2 returned professions (Author, Bard, Poet, Writer), which directly answer \"famous for\". Collect these 4. No further filtering needed as the list is concise and definitive.\n</reasoning>\n<candidates>\n  - Author\n  - Bard\n  - Poet\n  - Writer\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Author, Bard, Poet, Writer\n[PER-CANDIDATE]\n  - Author: KEEP — Valid profession linked to Robert Burns.\n  - Bard: KEEP — Valid title linked to Robert Burns.\n  - Poet: KEEP — Valid profession linked to Robert Burns.\n  - Writer: KEEP — Valid profession linked to Robert Burns.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Author} \\boxed{Bard} \\boxed{Poet} \\boxed{Writer}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-440": {
+    "question": "where is jason mraz from",
+    "ground_truth": [
+      "California",
+      "Mechanicsville"
+    ],
+    "predicted": [
+      "Mechanicsville",
+      "United States of America"
+    ],
+    "f1": 0.5,
+    "candidates_35": [
+      "Mechanicsville",
+      "United States of America"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 provides birthplace (Mechanicsville); A2 provides nationality (USA). Both directly answer \"where is... from\".\n[COLLECTED] 2 unique candidates from 2 favorable actions.\n[POST_FILTER] NO — Birthplace and nationality clearly answer the question.\n</reasoning>\n<candidates>\n  - Mechanicsville\n  - United States of America\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Mechanicsville, United States of America\n[PER-CANDIDATE]\n  - Mechanicsville: KEEP — Specific birthplace found in graph.\n  - United States of America: KEEP — Nationality found in graph.\n[VERIFY] Both are human-readable names.\n</reasoning>\n<answer>\\boxed{Mechanicsville} \\boxed{United States of America}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-448": {
+    "question": "what type of government system does italy have",
+    "ground_truth": [
+      "Constitutional republic",
+      "Parliamentary republic",
+      "Unitary state"
+    ],
+    "predicted": [
+      "Constitutional republic",
+      "Parliamentary republic",
+      "Unitary state"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Constitutional republic",
+      "Parliamentary republic",
+      "Unitary state"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly queries Italy's form of government; A2 lists countries with that form. Both yield generic types.\n[COLLECTED] 3 unique candidates from 2 favorable actions\n[POST_FILTER] YES — Results are generic types; need to verify which specific type applies to Italy.\n</reasoning>\n<candidates>\n  - Constitutional republic\n  - Parliamentary republic\n  - Unitary state\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Constitutional republic, Parliamentary republic, Unitary state\n[PER-CANDIDATE]\n- Constitutional republic: KEEP — Valid form of government for Italy.\n- Parliamentary republic: KEEP — Valid form of government for Italy.\n- Unitary state: KEEP — Valid state structure for Italy.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Constitutional republic} \\boxed{Parliamentary republic} \\boxed{Unitary state}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-487": {
+    "question": "who did veronica lake mary",
+    "ground_truth": [
+      "André de Toth",
+      "John S. Detlie",
+      "Joseph A. McCarthy",
+      "Robert Carleton-Munro"
+    ],
+    "predicted": [
+      "John S. Detlie"
+    ],
+    "f1": 0.4,
+    "candidates_35": [
+      "André de Toth",
+      "John S. Detlie",
+      "Robert Carleton-Munro"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"who did... Mary\" (likely typo for \"marry\") by retrieving spouses via `spouse_s`.\n[COLLECTED] 3 unique candidates from 1 favorable action (André de Toth, John S. Detlie, Robert Carleton-Munro).\n[POST_FILTER] YES — Multiple candidates require attribute verification to confirm the correct spouse.\n</reasoning>\n<candidates>\n  - André de Toth\n  - John S. Detlie\n  - Robert Carleton-Munro\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] André de Toth, John S. Detlie, Robert Carleton-Munro\n[PER-CANDIDATE]\n  - André de Toth: REMOVE — No graph evidence links him to \"Mary\" or marriage.\n  - John S. Detlie: KEEP — Graph shows he is Veronica Lake's spouse (m.03lf38m).\n  - Robert Carleton-Munro: REMOVE — No graph evidence links him to \"Mary\" or marriage.\n[VERIFY] John S. Detlie is human-readable name.\n</reasoning>\n<answer>\\boxed{John S. Detlie}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-524": {
+    "question": "where was the first gulf war fought",
+    "ground_truth": [
+      "Arabian Peninsula",
+      "Iraq",
+      "Israel",
+      "Kuwait",
+      "Persian Gulf",
+      "Saudi Arabia"
+    ],
+    "predicted": [
+      "Iraq",
+      "Kuwait",
+      "Saudi Arabia",
+      "Arabian Peninsula",
+      "Persian Gulf"
+    ],
+    "f1": 0.9090909090909091,
+    "candidates_35": [
+      "Arabian Peninsula",
+      "Israel",
+      "Kuwait",
+      "Persian Gulf",
+      "Saudi Arabia",
+      "Iraq"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 (location.events) and A2 (time.event.locations) both retrieve relevant geographic regions where the conflict occurred.\n[COLLECTED] 6 unique candidates from 2 favorable actions (Arabian Peninsula, Israel, Kuwait, Persian Gulf, Saudi Arabia, Iraq).\n[POST_FILTER] YES — Multiple broad regions returned; attribute exploration needed to pinpoint the specific primary theater.\n</reasoning>\n<candidates>\n  - Arabian Peninsula\n  - Israel\n  - Kuwait\n  - Persian Gulf\n  - Saudi Arabia\n  - Iraq\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify the specific geographic location(s) where the First Gulf War (1990-1991) took place.\n[GROUPING]\n  Req 1 (Historical Accuracy): Iraq (invasion site), Kuwait (primary theater), Saudi Arabia (defense zone), Arabian Peninsula (broad region), Persian Gulf (body of water). Israel was not a combat zone.\n[SELECTION] Keep Iraq, Kuwait, Saudi Arabia, Arabian Peninsula, Persian Gulf based on historical facts. Exclude Israel.\n[VERIFY] All selected are human-readable names.\n</reasoning>\n<answer>\\boxed{Iraq} \\boxed{Kuwait} \\boxed{Saudi Arabia} \\boxed{Arabian Peninsula} \\boxed{Persian Gulf}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-570": {
+    "question": "what is william taft famous for",
+    "ground_truth": [
+      "Judge",
+      "Jurist",
+      "Lawyer"
+    ],
+    "predicted": [
+      "President of the United States",
+      "Governor-General of the Philippines"
+    ],
+    "f1": 0.0,
+    "candidates_35": [
+      "President of the United States",
+      "Governor-General of the Philippines",
+      "Provisional Governor of Cuba"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 retrieves specific government positions (President, Governor-General) held by William Taft, directly answering \"famous for\". A2 retrieves professions (Judge, Lawyer), which are relevant but less specific than the high-level roles in A1.\n[COLLECTED] 3 unique candidates from 1 favorable action (A1).\n[POST_FILTER] NO — The retrieved positions (President, Governor-General) sufficiently define his fame without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - President of the United States\n  - Governor-General of the Philippines\n  - Provisional Governor of Cuba\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] President of the United States, Governor-General of the Philippines, Provisional Governor of Cuba\n[PER-CANDIDATE]\n- President of the United States: KEEP — Graph shows \"President\" title; most famous role.\n- Governor-General of the Philippines: KEEP — Graph shows \"Governor-General\" title; valid fact.\n- Provisional Governor of Cuba: REMOVE — Graph shows \"Governor\", not \"Provisional Governor of Cuba\".\n[VERIFY] All kept answers are human-readable names.\n</reasoning>\n<answer>\\boxed{President of the United States}\\boxed{Governor-General of the Philippines}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-621": {
+    "question": "what countries have german as the official language",
+    "ground_truth": [
+      "Austria",
+      "Belgium",
+      "East Germany",
+      "Germany",
+      "Liechtenstein",
+      "Luxembourg",
+      "Switzerland"
+    ],
+    "predicted": [
+      "Germany",
+      "Austria",
+      "Switzerland",
+      "Liechtenstein",
+      "Luxembourg",
+      "Belgium",
+      "Canada",
+      "South Africa"
+    ],
+    "f1": 0.7999999999999999,
+    "candidates_35": [
+      "Austria",
+      "Belgium",
+      "Canada",
+      "Cyprus",
+      "Czech Republic",
+      "Denmark",
+      "East Germany",
+      "Germany",
+      "Liechtenstein",
+      "Luxembourg",
+      "Second Polish Republic",
+      "South Africa",
+      "Switzerland",
+      "Vatican City",
+      "West Germany"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 and A2 both retrieve countries linked to German. A2 provides a broader list including nations where German is an official language (e.g., Austria, Switzerland). Collect all 15 unique countries from A2.\n[COLLECTED] 15 unique candidates from 1 favorable action (A2 covers A1).\n[POST_FILTER] YES — Need to verify which of these 15 countries actually list German as an *official* language vs. just spoken.\n</reasoning>\n<candidates>\n  - Austria\n  - Belgium\n  - Canada\n  - Cyprus\n  - Czech Republic\n  - Denmark\n  - East Germany\n  - Germany\n  - Liechtenstein\n  - Luxembourg\n  - Second Polish Republic\n  - South Africa\n  - Switzerland\n  - Vatican City\n  - West Germany\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify countries where German is an *official* language.\n[GROUPING]\n  Req 1 (Official Status): Germany, Austria, Switzerland, Liechtenstein, Luxembourg, Belgium, Canada (partial), South Africa (partial).\n  Req 2 (Exclude Historical/Non-Official): East Germany, West Germany, Second Polish Republic, Denmark, Cyprus, Czech Republic, Vatican City.\n[SELECTION] Keep modern sovereign states with official status. Remove historical entities (East/West Germany, Second Polish Republic) and non-official speakers (Denmark, Cyprus, etc.).\n[VERIFY] Ensure human-readable names only.\n</reasoning>\n<answer>\\boxed{Germany} \\boxed{Austria} \\boxed{Switzerland} \\boxed{Liechtenstein} \\boxed{Luxembourg} \\boxed{Belgium} \\boxed{Canada} \\boxed{South Africa}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-640": {
+    "question": "who was saint paul the apostle",
+    "ground_truth": [
+      "Missionary",
+      "Prophet",
+      "Tentmaker",
+      "Writer"
+    ],
+    "predicted": [
+      "Missionary",
+      "Prophet",
+      "Tentmaker"
+    ],
+    "f1": 0.8571428571428571,
+    "candidates_35": [
+      "Missionary",
+      "Prophet",
+      "Tentmaker"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 provides professions (Missionary, Prophet, etc.) directly describing Saint Paul's identity. A2 and A3 provide location attributes (Cilicia, Tarsus) which are relevant context but not the primary definition.\n[COLLECTED] 3 unique candidates (Missionary, Prophet, Tentmaker) from A1; Locations from A2/A3 noted as context.\n[POST_FILTER] NO — The collected professions clearly define \"who\" Saint Paul was as a religious figure.\n</reasoning>\n<candidates>\n  - Missionary\n  - Prophet\n  - Tentmaker\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Missionary, Prophet, Tentmaker\n[PER-CANDIDATE]\n  - Missionary: KEEP — Directly supported by graph data as a profession.\n  - Prophet: KEEP — Directly supported by graph data as a profession.\n  - Tentmaker: KEEP — Directly supported by graph data as a profession.\n[VERIFY] All are human-readable names from graph.\n</reasoning>\n<answer>\\boxed{Missionary}\\boxed{Prophet}\\boxed{Tentmaker}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-704": {
+    "question": "who is thor heyerdahl",
+    "ground_truth": [
+      "Adventurer",
+      "Cinematographer",
+      "Ethnographer",
+      "Film Producer",
+      "Film director",
+      "Scientist"
+    ],
+    "predicted": [
+      "Adventurer",
+      "Cinematographer",
+      "Ethnographer",
+      "Film Producer",
+      "Film director",
+      "Scientist"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Adventurer",
+      "Cinematographer",
+      "Ethnographer",
+      "Film Producer",
+      "Film director",
+      "Scientist",
+      "Norway",
+      "Larvik"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because it lists \"Adventurer\" and \"Ethnographer\", matching Thor Heyerdahl's known professions. A2 and A3 provide context (Norway, Larvik) but no person names.\n[COLLECTED] 0 unique candidates from 1 favorable action (A1 returned professions, not names).\n[POST_FILTER] YES — No human-readable person entities were retrieved; A1 returned only job titles.\n</reasoning>\n<candidates>\n</candidates>\n<post_filter>YES</post_filter>\n<rollback>\n<tried_actions>\n  - A1: people.person.profession(out) → Returned only job titles (Adventurer, Ethnographer), not person names.\n  - A2: people.person.nationality(out) → Returned country (Norway), not a person.\n  - A3: people.person.place_of_birth(out) → Returned location (Larvik), not a person.\n</tried_actions>\n<reason>All branches returned attributes (jobs, nationality, location) rather than the target person entity.</reason>\n</rollback>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify human-readable names of entities (people) matching \"Thor Heyerdahl\".\n[GROUPING]\n  Req 1 (Human Entity): Norway (Country) ✗, Larvik (Place) ✗, Professions (Roles) ✗.\n  Note: Graph shows \"Thor Heyerdahl\" as the subject. The question asks \"who\", implying the person himself. However, the provided candidates list only his attributes (professions, nationality, birthplace). No candidate is the person's name.\n  Constraint Check: Rules state \"If ALL removed -> reconsider. Keep at least 1\". Since the graph explicitly links \"Thor Heyerdahl\" to these attributes, and no other person is mentioned, the question likely seeks his defining characteristics or the system expects the name itself if available. But the candidate list *only* contains attributes.\n  Re-evaluating \"Who\": In KGQA, if the subject is the answer, it should be in candidates. It is not. The candidates are attributes.\n  However, often \"Who is X\" with X in the query implies returning X's name if not in context, or attributes if X is the context. Here X is the query.\n  Wait, the prompt asks to evaluate *candidates*. The candidates are: Adventurer, Cinematographer, Ethnographer, Film Producer, Film director, Scientist, Norway, Larvik.\n  None of these are \"Thor Heyerdahl\".\n  Is it possible the question implies \"What are Thor Heyerdahl's roles?\"? No, it says \"who\".\n  Given the strict rule \"Keep at least 1 unless truly none valid\", and the fact that these are the only retrieved entities associated with the subject, I must select the most descriptive human-readable entities that define him, even if they are roles, as the name itself is missing from the candidate list provided by the action results.\n  Actually, looking at the \"Leaf Entities\" for the first query: \"Adventurer, Cinematographer...\". These are the only things returned.\n  If I must choose from the list, the professions are the best descriptors of \"Who he is\" in terms of function.\n  Selection: All professions are valid descriptors.\n[SELECTION] Keep all profession entities as they define his identity in the absence of his name in the candidate list.\n[VERIFY] All are human-readable strings.\n</reasoning>\n<answer>\\boxed{Adventurer} \\boxed{Cinematographer} \\boxed{Ethnographer} \\boxed{Film Producer} \\boxed{Film director} \\boxed{Scientist}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-745": {
+    "question": "what was augustus caesar famous for",
+    "ground_truth": [
+      "Politician",
+      "Roman emperor"
+    ],
+    "predicted": [
+      "Roman emperor"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Roman emperor"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[A1] Path `notable_types` yields \"Monarch\", a broad category, not specific facts.\n[A2] Path `profession` yields \"Roman emperor\", a specific role relevant to Augustus.\n[COLLECTED] 1 unique candidate (\"Roman emperor\") from 1 favorable action.\n[POST_FILTER] YES — \"Roman emperor\" is a role, not a list of famous deeds; attribute exploration needed.\n</reasoning>\n<candidates>\n  - Roman emperor\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] ['Roman emperor']\n[PER-CANDIDATE]\n- Roman emperor: KEEP — Supported by graph evidence (profession attribute).\n[VERIFY] all answers are human-readable names\n</reasoning>\n<answer>\\boxed{Roman emperor}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-813": {
+    "question": "who was john f kennedy 's family",
+    "ground_truth": [
+      "Arabella Kennedy",
+      "Caroline Kennedy",
+      "Eunice Kennedy Shriver",
+      "Jean Kennedy Smith",
+      "John F. Kennedy Jr.",
+      "Joseph P. Kennedy, Jr.",
+      "Joseph P. Kennedy, Sr.",
+      "Kathleen Cavendish",
+      "Patricia Kennedy Lawford",
+      "Patrick Bouvier Kennedy",
+      "Robert F. Kennedy",
+      "Rose Kennedy",
+      "Rosemary Kennedy",
+      "Ted Kennedy"
+    ],
+    "predicted": [
+      "Kennedy family",
+      "Joseph P. Kennedy, Sr.",
+      "Rose Kennedy",
+      "Eunice Kennedy Shriver",
+      "Jean Kennedy Smith",
+      "Joseph P. Kennedy, Jr.",
+      "Kathleen Cavendish",
+      "Patricia Kennedy Lawford",
+      "Robert F. Kennedy",
+      "Rosemary Kennedy",
+      "Ted Kennedy"
+    ],
+    "f1": 0.8,
+    "candidates_35": [
+      "Kennedy family",
+      "Joseph P. Kennedy, Sr.",
+      "Rose Kennedy",
+      "Eunice Kennedy Shriver",
+      "Jean Kennedy Smith",
+      "Joseph P. Kennedy, Jr.",
+      "Kathleen Cavendish",
+      "Patricia Kennedy Lawford",
+      "Robert F. Kennedy",
+      "Rosemary Kennedy",
+      "Ted Kennedy"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 provides the collective \"Kennedy family\". A2 lists parents (Joseph & Rose). A3 lists siblings (including JFK himself). All paths directly address \"family\".\n[COLLECTED] 12 unique candidates (Kennedy family, 2 parents, 9 siblings minus JFK duplicate).\n[POST_FILTER] NO — The collected entities comprehensively list the immediate family members requested.\n</reasoning>\n<candidates>\n  - Kennedy family\n  - Joseph P. Kennedy, Sr.\n  - Rose Kennedy\n  - Eunice Kennedy Shriver\n  - Jean Kennedy Smith\n  - Joseph P. Kennedy, Jr.\n  - Kathleen Cavendish\n  - Patricia Kennedy Lawford\n  - Robert F. Kennedy\n  - Rosemary Kennedy\n  - Ted Kennedy\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify all individuals or the collective family group associated with John F. Kennedy (parents, siblings, spouse).\n[GROUPING]\n  Req 1 (Family Group): Kennedy family ✓\n  Req 2 (Parents): Joseph P. Kennedy, Sr., Rose Kennedy ✓\n  Req 3 (Siblings/Spouse): Eunice, Jean, Joseph Jr., Kathleen, Patricia, Robert, Rosemary, Ted ✓\n[SELECTION] All listed candidates are valid family members or the family entity itself.\n[VERIFY] All names are human-readable.\n</reasoning>\n<answer>\\boxed{Kennedy family} \\boxed{Joseph P. Kennedy, Sr.} \\boxed{Rose Kennedy} \\boxed{Eunice Kennedy Shriver} \\boxed{Jean Kennedy Smith} \\boxed{Joseph P. Kennedy, Jr.} \\boxed{Kathleen Cavendish} \\boxed{Patricia Kennedy Lawford} \\boxed{Robert F. Kennedy} \\boxed{Rosemary Kennedy} \\boxed{Ted Kennedy}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-837": {
+    "question": "what year did the baltimore ravens win superbowl",
+    "ground_truth": [
+      "Super Bowl XLVII",
+      "Super Bowl XXXV"
+    ],
+    "predicted": [
+      "Super Bowl XLVII",
+      "Super Bowl XXXV"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Super Bowl XLVII",
+      "Super Bowl XXXV"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA1 & A2 both traverse `sports.sports_team.championships`. They return Super Bowl events (XLVII, XXXV) but lack explicit years. Candidates are insufficient without attribute expansion.\n</reasoning>\n<candidates>\n  - Super Bowl XLVII\n  - Super Bowl XXXV\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Super Bowl XLVII, Super Bowl XXXV\n[PER-CANDIDATE]\n- Super Bowl XLVII: KEEP — Valid Super Bowl win (2012 season).\n- Super Bowl XXXV: KEEP — Valid Super Bowl win (1996 season).\n[VERIFY] Both are human-readable names.\n</reasoning>\n<answer>\\boxed{Super Bowl XLVII} \\boxed{Super Bowl XXXV}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-885": {
+    "question": "who is sir james dyson",
+    "ground_truth": [
+      "Designer",
+      "Engineer",
+      "Industrial designer",
+      "Inventor"
+    ],
+    "predicted": [
+      "James Dyson"
+    ],
+    "f1": 0.0,
+    "candidates_35": [
+      "James Dyson",
+      "Dyson"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A4 because it explicitly retrieves \"James Dyson\" and \"Dyson\" as employment entities matching the query subject. A1 provides professions but lacks the specific name. A2/A3 provide attributes, not the identity.\n[COLLECTED] 2 unique candidates from 1 favorable action (A4).\n[POST_FILTER] NO — The candidate \"James Dyson\" directly answers \"who is sir james dyson\".\n</reasoning>\n<candidates>\n  - James Dyson\n  - Dyson\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] James Dyson, Dyson\n[PER-CANDIDATE]\n  - James Dyson: KEEP — Direct answer to \"who is\".\n  - Dyson: REMOVE — Company name, not the person.\n[VERIFY] All human-readable.\n</reasoning>\n<answer>\\boxed{James Dyson}</answer>",
+    "n_actions": 4,
+    "n_filters": 0
+  },
+  "WebQTest-888": {
+    "question": "what 5 countries border switzerland",
+    "ground_truth": [
+      "Austria",
+      "France",
+      "Germany",
+      "Italy",
+      "Liechtenstein"
+    ],
+    "predicted": [
+      "Austria",
+      "France",
+      "Germany",
+      "Italy",
+      "Liechtenstein"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Austria",
+      "France",
+      "Germany",
+      "Italy",
+      "Liechtenstein"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 and A2 both traverse direct adjacency relations for Switzerland, yielding identical candidate sets including 5 countries (Austria, France, Germany, Italy, Liechtenstein) and 2 regions.\n[COLLECTED] 5 unique country candidates from 2 favorable actions.\n[POST_FILTER] NO — The 5 countries are clearly identified and sufficient to answer the question without further exploration.\n</reasoning>\n<candidates>\n  - Austria\n  - France\n  - Germany\n  - Italy\n  - Liechtenstein\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Austria, France, Germany, Italy, Liechtenstein\n[PER-CANDIDATE]\n  - Austria: KEEP — Graph shows m.02sgc3c (Austria) adjoins Switzerland.\n  - France: KEEP — Graph shows m.02ntnf3 (France) adjoins Switzerland.\n  - Germany: KEEP — Graph shows m.02wrxkz (Germany) adjoins Switzerland.\n  - Italy: KEEP — Graph shows m.02nzg8z (Italy) adjoins Switzerland.\n  - Liechtenstein: KEEP — Graph shows m.046cs6m (Liechtenstein) adjoins Switzerland.\n[VERIFY] All are human-readable country names.\n</reasoning>\n<answer>\\boxed{Austria}\\boxed{France}\\boxed{Germany}\\boxed{Italy}\\boxed{Liechtenstein}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-976": {
+    "question": "where do the chicago white sox play home games",
+    "ground_truth": [
+      "Comiskey Park",
+      "U.S. Cellular Field"
+    ],
+    "predicted": [
+      "U.S. Cellular Field"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Comiskey Park",
+      "U.S. Cellular Field"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[A1] Path `sports.sports_team.venue(out)` retrieves the team's home venues directly.\n[A2] Path `sports.sports_team.arena_stadium(out)` also retrieves relevant venues.\n[COLLECTED] 2 unique candidates (Comiskey Park, U.S. Cellular Field) from 2 favorable actions.\n[POST_FILTER] NO — The retrieved venues directly answer the question without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - Comiskey Park\n  - U.S. Cellular Field\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Comiskey Park, U.S. Cellular Field\n[PER-CANDIDATE]\n- Comiskey Park: REMOVE — Historical venue, no longer the current home.\n- U.S. Cellular Field: KEEP — Current home stadium (now Guaranteed Rate Field).\n[VERIFY] All human-readable.\n</reasoning>\n<answer>\\boxed{U.S. Cellular Field}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-1094": {
+    "question": "who was isaac newton and what did he do",
+    "ground_truth": [
+      "Astronomer",
+      "Chemist",
+      "Mathematician",
+      "Philosopher",
+      "Physicist",
+      "Scientist"
+    ],
+    "predicted": [
+      "Astronomer",
+      "Chemist",
+      "Mathematician",
+      "Philosopher",
+      "Physicist",
+      "Scientist",
+      "Reflecting telescope"
+    ],
+    "f1": 0.923076923076923,
+    "candidates_35": [
+      "Astronomer",
+      "Chemist",
+      "Mathematician",
+      "Philosopher",
+      "Physicist",
+      "Scientist",
+      "Reflecting telescope"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\nA1 provides Isaac Newton's professions (Scientist, Physicist, etc.), confirming his identity. A2 lists inventions (Reflecting telescope), supporting \"what did he do.\" Both branches are favorable. Collect 6 unique candidates from A1 and 1 from A2. Post-filter YES: need to verify specific entity \"Isaac Newton\" among these broad categories and gather detailed biographical facts.\n</reasoning>\n<candidates>\n  - Astronomer\n  - Chemist\n  - Mathematician\n  - Philosopher\n  - Physicist\n  - Scientist\n  - Reflecting telescope\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] 1. Identify Isaac Newton's identity/roles. 2. Identify his major contributions/inventions.\n[GROUPING]\n  Req 1 (Identity): Astronomer, Chemist, Mathematician, Philosopher, Physicist, Scientist (All valid roles).\n  Req 2 (Contribution): Reflecting telescope (Valid invention). \"Pet door\" is irrelevant noise.\n[SELECTION] Keep all roles and the relevant invention. Exclude \"Pet door\".\n[VERIFY] All selected are human-readable names from graph evidence.\n</reasoning>\n<answer>\\boxed{Astronomer} \\boxed{Chemist} \\boxed{Mathematician} \\boxed{Philosopher} \\boxed{Physicist} \\boxed{Scientist} \\boxed{Reflecting telescope}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1101": {
+    "question": "who is martin luther king jr facts",
+    "ground_truth": [
+      "Civil rights activist",
+      "Clergy",
+      "Humanitarian",
+      "Minister",
+      "Pastor",
+      "Writer"
+    ],
+    "predicted": [
+      "Civil rights activist",
+      "Clergy",
+      "Humanitarian",
+      "Minister",
+      "Pastor",
+      "Writer",
+      "Assassination by firearm",
+      "Memphis",
+      "Martin Luther King, Jr. National Historic Site"
+    ],
+    "f1": 0.8,
+    "candidates_35": [
+      "Civil rights activist",
+      "Clergy",
+      "Humanitarian",
+      "Minister",
+      "Pastor",
+      "Writer",
+      "Assassination by firearm",
+      "Memphis",
+      "Martin Luther King, Jr. National Historic Site",
+      "Civil disobedience",
+      "Civil rights movements",
+      "Nonviolence"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\nA1 provides professions; A2/A3/A4 provide death/burial facts; A5 confirms identity and honors. All branches yield relevant human-readable facts about MLK Jr. Collect all unique entities. No ambiguity remains; direct answer possible.\n</reasoning>\n<candidates>\n  - Civil rights activist\n  - Clergy\n  - Humanitarian\n  - Minister\n  - Pastor\n  - Writer\n  - Assassination by firearm\n  - Memphis\n  - Martin Luther King, Jr. National Historic Site\n  - Civil disobedience\n  - Civil rights movements\n  - Nonviolence\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] List factual attributes (professions, death details, burial site) of Martin Luther King, Jr.\n[GROUPING]\n  Req 1 (Profession/Role): Civil rights activist, Clergy, Humanitarian, Minister, Pastor, Writer.\n  Req 2 (Death): Assassination by firearm, Memphis.\n  Req 3 (Burial): Martin Luther King, Jr. National Historic Site.\n  Others (Civil disobedience, etc.) are concepts, not direct facts about him.\n[SELECTION] Keep specific factual entities found in graph results.\n[VERIFY] All selected are human-readable names.\n</reasoning>\n<answer>\\boxed{Civil rights activist} \\boxed{Clergy} \\boxed{Humanitarian} \\boxed{Minister} \\boxed{Pastor} \\boxed{Writer} \\boxed{Assassination by firearm} \\boxed{Memphis} \\boxed{Martin Luther King, Jr. National Historic Site}</answer>",
+    "n_actions": 5,
+    "n_filters": 0
+  },
+  "WebQTest-1151": {
+    "question": "where did charles darwin and his wife live",
+    "ground_truth": [
+      "Downe, Kent",
+      "England",
+      "London",
+      "Shrewsbury"
+    ],
+    "predicted": [
+      "Downe, Kent",
+      "England",
+      "London",
+      "Shrewsbury"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Charles Darwin",
+      "Downe, Kent",
+      "England",
+      "London",
+      "Shrewsbury"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly lists places Charles Darwin lived (London, Downe, etc.). A2 identifies his wife (Emma Darwin) but lacks her residence. A3 lists children's residences, irrelevant to the couple.\n[COLLECTED] 5 unique candidates from 1 favorable action (A1).\n[POST_FILTER] YES — Need to verify if Emma Darwin lived in the same places as Charles or elsewhere.\n</reasoning>\n<candidates>\n  - Charles Darwin\n  - Downe, Kent\n  - England\n  - London\n  - Shrewsbury\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Charles Darwin, Downe, Kent, England, London, Shrewsbury\n[PER-CANDIDATE]\n- Charles Darwin: REMOVE — Question asks where they lived, not who.\n- Downe, Kent: KEEP — Graph shows Darwin lived here.\n- England: KEEP — Graph shows Darwin lived here.\n- London: KEEP — Graph shows Darwin lived here.\n- Shrewsbury: KEEP — Graph shows Darwin lived here.\n[VERIFY] All remaining are human-readable locations.\n</reasoning>\n<answer>\\boxed{Downe, Kent}\\boxed{England}\\boxed{London}\\boxed{Shrewsbury}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-1247": {
+    "question": "who is angelina jolie",
+    "ground_truth": [
+      "Actor",
+      "Author",
+      "Film Producer",
+      "Film director",
+      "Model",
+      "Screenwriter",
+      "Voice Actor",
+      "Writer"
+    ],
+    "predicted": [
+      "Actor",
+      "Author",
+      "Film Producer",
+      "Film director",
+      "Model",
+      "Screenwriter",
+      "Voice Actor",
+      "Writer"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Actor",
+      "Author",
+      "Film Producer",
+      "Film director",
+      "Model",
+      "Screenwriter",
+      "Voice Actor",
+      "Writer",
+      "Bosnia and Herzegovina",
+      "Cambodia",
+      "United States of America",
+      "Los Angeles"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because it lists professions (Actor, etc.) matching the query \"who is\". A2 and A3 provide attributes (nationality, birthplace) but no specific entity names.\n[COLLECTED] 0 unique candidates from 1 favorable action (A1 returned only professions, not entities).\n[POST_FILTER] YES — No specific person entities were retrieved; only attributes and professions exist.\n</reasoning>\n<candidates>\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify the human identity/role of \"Angelina Jolie\".\n[GROUPING]\n  Req 1 (Human Identity): \"Actor\", \"Author\", \"Film Producer\", \"Film director\", \"Model\", \"Screenwriter\", \"Voice Actor\", \"Writer\" are roles. \"Bosnia...\", \"Cambodia\", \"USA\", \"Los Angeles\" are places/nationalities, not the person's name.\n[SELECTION] The question asks \"who\", implying the person's profession or identity. The graph returns a list of professions. All listed professions are valid attributes describing her.\n[VERIFY] All selected are human-readable names from the graph.\n</reasoning>\n<answer>\\boxed{Actor} \\boxed{Author} \\boxed{Film Producer} \\boxed{Film director} \\boxed{Model} \\boxed{Screenwriter} \\boxed{Voice Actor} \\boxed{Writer}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-1256": {
+    "question": "who did terrell owens play for in 2010",
+    "ground_truth": [
+      "Buffalo Bills",
+      "Cincinnati Bengals",
+      "Texas Revolution"
+    ],
+    "predicted": [
+      "Dallas Cowboys",
+      "Buffalo Bills"
+    ],
+    "f1": 0.4,
+    "candidates_35": [
+      "Buffalo Bills",
+      "Cincinnati Bengals",
+      "Dallas Cowboys",
+      "Philadelphia Eagles",
+      "San Francisco 49ers",
+      "Texas Revolution"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\nA1 is favorable: it lists Terrell Owens' teams (Bills, Bengals, Cowboys, etc.) via the `teams` relation. A2 returned 0 entities.\n[COLLECTED] 7 unique candidates from 1 favorable action (excluding non-team entities).\n[POST_FILTER] YES — Multiple teams listed; need to filter for the specific 2010 season.\n</reasoning>\n<candidates>\n  - Buffalo Bills\n  - Cincinnati Bengals\n  - Dallas Cowboys\n  - Philadelphia Eagles\n  - San Francisco 49ers\n  - Texas Revolution\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify teams Terrell Owens played for specifically in the 2010 season.\n[GROUPING]\n  Req 1 (2010 Team): Buffalo Bills (Graph: games->team), Dallas Cowboys (Graph: games->team), Texas Revolution (Graph: teams->End, but likely pre-2010 or inactive).\n  Req 2 (Exclusion): Cincinnati Bengals, Philadelphia Eagles, San Francisco 49ers (Not in 2010 game/team graph results).\n[SELECTION] Keep Buffalo Bills and Dallas Cowboys as they appear in the \"games\" -> \"team\" path for 2010. Texas Revolution is a team he played for but not in 2010 (team folded 2002).\n[VERIFY] Names are human-readable.\n</reasoning>\n<answer>\\boxed{Dallas Cowboys} \\boxed{Buffalo Bills}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1285": {
+    "question": "what city is mt lassen in",
+    "ground_truth": [
+      "California",
+      "Cascade Range",
+      "Lassen Volcanic National Park",
+      "North America",
+      "Shasta County",
+      "United States of America"
+    ],
+    "predicted": [
+      "California",
+      "Shasta County",
+      "United States of America"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "California",
+      "Shasta County",
+      "United States of America",
+      "Cascade Range"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 and A2 both retrieve \"Lassen Volcanic National Park\" and \"Shasta County\". A2 explicitly lists \"California\" and \"United States of America\", providing direct city/state context.\n[COLLECTED] 4 unique candidates from 2 favorable actions\n[POST_FILTER] YES — Candidates are administrative regions (State, County, Range), not a specific city; attribute exploration needed to find the nearest city.\n</reasoning>\n<candidates>\n  - California\n  - Shasta County\n  - United States of America\n  - Cascade Range\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] California, Shasta County, United States of America, Cascade Range\n[PER-CANDIDATE]\n- California: KEEP — Explicitly listed as containing Lassen Peak.\n- Shasta County: KEEP — Explicitly listed as containing Lassen Peak.\n- United States of America: KEEP — Valid city location context.\n- Cascade Range: REMOVE — It is a mountain range, not a city.\n</reasoning>\n<answer>\\boxed{California}\\boxed{Shasta County}\\boxed{United States of America}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1326": {
+    "question": "what did thomas edison do for the world",
+    "ground_truth": [
+      "Carbon microphone",
+      "Electric Power Distribution",
+      "Incandescent light bulb",
+      "Mimeograph",
+      "Movie camera",
+      "Phonograph",
+      "Phonograph cylinder",
+      "Quadruplex telegraph"
+    ],
+    "predicted": [
+      "Carbon microphone",
+      "Electric Power Distribution",
+      "Incandescent light bulb",
+      "Mimeograph",
+      "Movie camera",
+      "Phonograph",
+      "Phonograph cylinder",
+      "Quadruplex telegraph"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Carbon microphone",
+      "Electric Power Distribution",
+      "Incandescent light bulb",
+      "Mimeograph",
+      "Movie camera",
+      "Phonograph",
+      "Phonograph cylinder",
+      "Quadruplex telegraph"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly lists Edison's inventions answering \"what he did\"; A3 confirms Phonograph. A2 lists professions, not specific deeds.\n[COLLECTED] 8 unique candidates from 1 favorable action (A1).\n[POST_FILTER] NO — The list of specific inventions sufficiently answers the question without further attribute exploration.\n</reasoning>\n<candidates>\n  - Carbon microphone\n  - Electric Power Distribution\n  - Incandescent light bulb\n  - Mimeograph\n  - Movie camera\n  - Phonograph\n  - Phonograph cylinder\n  - Quadruplex telegraph\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] List Thomas Edison's significant inventions or contributions to the world.\n[GROUPING]\n  Req 1 (Inventions/Contributions): All 8 candidates (Carbon microphone, Electric Power Distribution, Incandescent light bulb, Mimeograph, Movie camera, Phonograph, Phonograph cylinder, Quadruplex telegraph) are valid based on graph evidence.\n[SELECTION] Keep all 8 entities as they satisfy the core requirement of being inventions/contributions.\n[VERIFY] All answers are human-readable names from the leaf entities list.\n</reasoning>\n<answer>\\boxed{Carbon microphone} \\boxed{Electric Power Distribution} \\boxed{Incandescent light bulb} \\boxed{Mimeograph} \\boxed{Movie camera} \\boxed{Phonograph} \\boxed{Phonograph cylinder} \\boxed{Quadruplex telegraph}</answer>",
+    "n_actions": 3,
+    "n_filters": 1
+  },
+  "WebQTest-1365": {
+    "question": "what did john dalton study",
+    "ground_truth": [
+      "Chemist",
+      "Physicist"
+    ],
+    "predicted": [
+      "Chemist",
+      "Physicist",
+      "Academic"
+    ],
+    "f1": 0.8,
+    "candidates_35": [
+      "Chemist",
+      "Physicist",
+      "Academic"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"study\" via professions (Chemist, Physicist); A2 matches via \"Academic\".\n[COLLECTED] 3 unique candidates from 2 favorable actions.\n[POST_FILTER] YES — Ambiguous professions require attribute exploration to confirm specific studies.\n</reasoning>\n<candidates>\n  - Chemist\n  - Physicist\n  - Academic\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Chemist, Physicist, Academic\n[PER-CANDIDATE]\n- Chemist: KEEP — Graph evidence lists \"Chemist\" as profession.\n- Physicist: KEEP — Graph evidence lists \"Physicist\" as profession.\n- Academic: KEEP — Graph evidence lists \"Academic\" as notable type.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Chemist} \\boxed{Physicist} \\boxed{Academic}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-1458": {
+    "question": "who owns chrysler corporation 2011",
+    "ground_truth": [
+      "Federal government of the United States",
+      "Fiat Chrysler Automobiles",
+      "Fiat S.p.A.",
+      "Government of Canada",
+      "Voluntary Employee Beneficiary Association"
+    ],
+    "predicted": [
+      "Cerberus Capital Management"
+    ],
+    "f1": 0.0,
+    "candidates_35": [
+      "Cerberus Capital Management",
+      "Chrysler Group LLC",
+      "Daimler AG",
+      "Federal government of the United States",
+      "Fiat Chrysler Automobiles",
+      "Fiat S.p.A.",
+      "Government of Canada",
+      "Voluntary Employee Beneficiary Association"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 (parent_company) and A2 (acquired_by) directly address ownership history. A3 (owner_s) is less specific for corporate ownership.\n[COLLECTED] 8 unique candidates from 2 favorable actions (A1, A2).\n[POST_FILTER] YES — Multiple entities (Cerberus, Fiat, Daimler, Gov) suggest complex history; downstream exploration needed to pinpoint 2011 specific owner.\n</reasoning>\n<candidates>\n  - Cerberus Capital Management\n  - Chrysler Group LLC\n  - Daimler AG\n  - Federal government of the United States\n  - Fiat Chrysler Automobiles\n  - Fiat S.p.A.\n  - Government of Canada\n  - Voluntary Employee Beneficiary Association\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify the owner of Chrysler Corporation specifically in the year 2011.\n[GROUPING]\n  Req 1 (2011 Ownership): Cerberus Capital Management (matches acquisition timeline), Chrysler Group LLC (parent entity name, not owner), Fiat S.p.A. (acquired later), others (incorrect timeline or entity).\n[SELECTION] Cerberus Capital Management acquired Chrysler in 2009 and owned it until 2014.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Cerberus Capital Management}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-1513": {
+    "question": "what to do downtown sacramento",
+    "ground_truth": [
+      "B Street Theatre",
+      "California Automobile Museum",
+      "California State Capitol Museum",
+      "California State Indian Museum",
+      "California State Railroad Museum",
+      "Crocker Art Museum",
+      "Folsom Lake",
+      "Raging Waters Sacramento",
+      "Sacramento History Museum",
+      "Sacramento Zoo",
+      "Sutter's Fort"
+    ],
+    "predicted": [
+      "B Street Theatre",
+      "California Automobile Museum",
+      "California State Capitol Museum",
+      "California State Indian Museum",
+      "California State Railroad Museum",
+      "Crocker Art Museum",
+      "Sacramento History Museum",
+      "Sutter's Fort"
+    ],
+    "f1": 0.8421052631578948,
+    "candidates_35": [
+      "B Street Theatre",
+      "California Automobile Museum",
+      "California State Capitol Museum",
+      "California State Indian Museum",
+      "California State Railroad Museum",
+      "Crocker Art Museum",
+      "Folsom Lake",
+      "Raging Waters Sacramento",
+      "Sacramento History Museum",
+      "Sacramento Zoo",
+      "Sutter's Fort"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A2 provides specific tourist attractions in downtown Sacramento. A1 returned a large set but lacks readable labels, so we rely on A2.\n[COLLECTED] 11 unique candidates from 1 favorable action.\n[POST_FILTER] YES — 11 candidates is too many; downstream exploration needed to refine based on user preference.\n</reasoning>\n<candidates>\n  - B Street Theatre\n  - California Automobile Museum\n  - California State Capitol Museum\n  - California State Indian Museum\n  - California State Railroad Museum\n  - Crocker Art Museum\n  - Folsom Lake\n  - Raging Waters Sacramento\n  - Sacramento History Museum\n  - Sacramento Zoo\n  - Sutter's Fort\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] List actionable activities/destinations in downtown Sacramento.\n[GROUPING]\n  Req 1 (Downtown/Active): B Street Theatre (Yes), California Automobile Museum (Yes), California State Capitol Museum (Yes), Crocker Art Museum (Yes), Sacramento History Museum (Yes), Sutter's Fort (Yes).\n  Req 2 (Exclude Outliers): Folsom Lake (No - outside downtown), Raging Waters (No - outside downtown), Sacramento Zoo (No - outside downtown), Sacramento Zoo (No - outside downtown).\n[SELECTION] Keep downtown-specific venues.\n[VERIFY] All selected are human-readable names.\n</reasoning>\n<answer>\\boxed{B Street Theatre} \\boxed{California Automobile Museum} \\boxed{California State Capitol Museum} \\boxed{California State Indian Museum} \\boxed{California State Railroad Museum} \\boxed{Crocker Art Museum} \\boxed{Sacramento History Museum} \\boxed{Sutter's Fort}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1557": {
+    "question": "where do florida panthers play",
+    "ground_truth": [
+      "BB&T Center",
+      "Miami Arena"
+    ],
+    "predicted": [
+      "BB&T Center",
+      "Miami Arena"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "BB&T Center",
+      "Miami Arena",
+      "Sunrise"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because it explicitly links Florida Panthers to home venues (BB&T Center, Miami Arena); A2 provides location (Sunrise) which is less direct but relevant context.\n[COLLECTED] 3 unique candidates from 1 favorable action (A1).\n[POST_FILTER] NO — The primary venue is clearly identified as BB&T Center.\n</reasoning>\n<candidates>\n  - BB&T Center\n  - Miami Arena\n  - Sunrise\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] BB&T Center, Miami Arena, Sunrise\n[PER-CANDIDATE]\n- BB&T Center: KEEP — Current primary home venue per graph data.\n- Miami Arena: KEEP — Historical home venue per graph data.\n- Sunrise: REMOVE — City location, not the specific venue name.\n[VERIFY] All answers are human-readable names\n</reasoning>\n<answer>\\boxed{BB&T Center} \\boxed{Miami Arena}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-1679": {
+    "question": "what kind of government does the united states have currently",
+    "ground_truth": [
+      "Constitutional republic",
+      "Federal republic",
+      "Presidential system"
+    ],
+    "predicted": [
+      "Constitutional republic",
+      "Federal republic",
+      "Presidential system"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Constitutional republic",
+      "Federal republic",
+      "Presidential system"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 and A2 both follow the direct `form_of_government` path, retrieving specific government types.\n[COLLECTED] 3 unique candidates from 2 identical actions.\n[POST_FILTER] NO — The retrieved terms directly answer the question without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - Constitutional republic\n  - Federal republic\n  - Presidential system\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Constitutional republic, Federal republic, Presidential system\n[PER-CANDIDATE]\n  - Constitutional republic: KEEP — Accurate graph evidence for US government type.\n  - Federal republic: KEEP — Accurate graph evidence for US government type.\n  - Presidential system: KEEP — Accurate graph evidence for US government type.\n[VERIFY] All are human-readable names from graph.\n</reasoning>\n<answer>\\boxed{Constitutional republic}\\boxed{Federal republic}\\boxed{Presidential system}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-1763": {
+    "question": "who are the st louis cardinals coaches",
+    "ground_truth": [
+      "Dave Duncan",
+      "Dave McKay",
+      "Hal McRae",
+      "Joe Pettini",
+      "José Oquendo",
+      "Marty Mason"
+    ],
+    "predicted": [
+      "Dave Duncan",
+      "Joe Torre",
+      "Tony La Russa",
+      "Hal McRae",
+      "Whitey Herzog",
+      "Dave Collins",
+      "Marty Mason",
+      "Joe Pettini",
+      "José Oquendo",
+      "Dave McKay"
+    ],
+    "f1": 0.7499999999999999,
+    "candidates_35": [
+      "Bench Coach",
+      "Bullpen Coach",
+      "Dave Duncan",
+      "Dave McKay",
+      "First Base Coach",
+      "Hal McRae",
+      "Hitting coach",
+      "Joe Pettini",
+      "José Oquendo",
+      "Marty Mason",
+      "Pitching Coach",
+      "Third Base Coach",
+      "Dave Collins",
+      "Joe Torre",
+      "Tony La Russa",
+      "Whitey Herzog"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 provides current coaches; A2 provides historical managers/coaches. Both paths match \"coaches\".\n[COLLECTED] 13 unique candidates from 2 favorable actions.\n[POST_FILTER] YES — Mix of current/historical roles requires attribute exploration to refine specific \"coaches\" list.\n</reasoning>\n<candidates>\n  - Bench Coach\n  - Bullpen Coach\n  - Dave Duncan\n  - Dave McKay\n  - First Base Coach\n  - Hal McRae\n  - Hitting coach\n  - Joe Pettini\n  - José Oquendo\n  - Marty Mason\n  - Pitching Coach\n  - Third Base Coach\n  - Dave Collins\n  - Joe Torre\n  - Tony La Russa\n  - Whitey Herzog\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify human-readable names of St. Louis Cardinals coaches (current and historical).\n[GROUPING]\n  Req 1 (Names): Dave Duncan, Joe Torre, Tony La Russa, Hal McRae, Whitey Herzog, Dave Collins, Marty Mason, Joe Pettini, José Oquendo, Dave McKay.\n  Req 2 (Titles): Bench Coach, Bullpen Coach, Pitching Coach, Hitting coach, First Base Coach, Third Base Coach (These are positions, not people).\n[SELECTION] Keep only specific human names found in graph evidence (Dave Duncan, Joe Torre, Tony La Russa, Hal McRae, Whitey Herzog, Dave Collins, Marty Mason, Joe Pettini, José Oquendo, Dave McKay).\n[VERIFY] All selected are human-readable entity names.\n</reasoning>\n<answer>\\boxed{Dave Duncan} \\boxed{Joe Torre} \\boxed{Tony La Russa} \\boxed{Hal McRae} \\boxed{Whitey Herzog} \\boxed{Dave Collins} \\boxed{Marty Mason} \\boxed{Joe Pettini} \\boxed{José Oquendo} \\boxed{Dave McKay}</answer>",
+    "n_actions": 2,
+    "n_filters": 1
+  },
+  "WebQTest-1785": {
+    "question": "what was kim richards in",
+    "ground_truth": [
+      "Black Snake Moan",
+      "Devil Dog: The Hound of Hell",
+      "Escape to Witch Mountain",
+      "Meatballs Part II",
+      "Nanny and the Professor",
+      "No Deposit, No Return",
+      "Race to Witch Mountain",
+      "Raid on Entebbe",
+      "Return from Witch Mountain",
+      "The Car",
+      "The Whiz Kid and the Mystery at Riverton",
+      "Tuff Turf"
+    ],
+    "predicted": [
+      "How Green Was My Thumb?",
+      "River of Fear",
+      "Town Party",
+      "Country Party",
+      "The Family Hour",
+      "Command Performance",
+      "Hyde and Seek",
+      "Sketchy Love",
+      "Boston -- False Illusion",
+      "Tight Fit",
+      "Mixed Doubles",
+      "Feudin' and Fussin' (1)",
+      "Stigma",
+      "Cooter's Girl",
+      "If Wishes Were Horses",
+      "Hello, Larry",
+      "Here We Go Again",
+      "James at 15",
+      "Nanny and the Professor",
+      "Prudence",
+      "Sandy Hunter"
+    ],
+    "f1": 0.060606060606060615,
+    "candidates_35": [
+      "How Green Was My Thumb?",
+      "River of Fear",
+      "Town Party",
+      "Country Party",
+      "The Family Hour",
+      "Command Performance",
+      "Hyde and Seek",
+      "Sketchy Love",
+      "Boston -- False Illusion",
+      "Tight Fit",
+      "Mixed Doubles",
+      "Feudin' and Fussin' (1)",
+      "Stigma",
+      "Cooter's Girl",
+      "If Wishes Were Horses",
+      "Hello, Larry",
+      "Here We Go Again",
+      "James at 15",
+      "Nanny and the Professor",
+      "Prudence",
+      "Sandy Hunter"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\nA1 (guest_roles) and A2 (starring_roles) both retrieve TV shows Kim Richards appeared in. A2 provides human-readable titles directly. Collect all unique show titles from both branches.\n</reasoning>\n<candidates>\n  - How Green Was My Thumb?\n  - River of Fear\n  - Town Party\n  - Country Party\n  - The Family Hour\n  - Command Performance\n  - Hyde and Seek\n  - Sketchy Love\n  - Boston -- False Illusion\n  - Tight Fit\n  - Mixed Doubles\n  - Feudin' and Fussin' (1)\n  - Stigma\n  - Cooter's Girl\n  - If Wishes Were Horses\n  - Hello, Larry\n  - Here We Go Again\n  - James at 15\n  - Nanny and the Professor\n  - Prudence\n  - Sandy Hunter\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify TV shows where Kim Richards had guest or starring roles.\n[GROUPING]\n  Req 1 (Guest Roles): How Green Was My Thumb?, River of Fear, Town Party, Country Party, The Family Hour, Command Performance, Hyde and Seek, Sketchy Love, Boston -- False Illusion, Tight Fit, Mixed Doubles, Feudin' and Fussin' (1), Stigma, Cooter's Girl, If Wishes Were Horses, Hello, Larry.\n  Req 2 (Starring Roles): Here We Go Again, James at 15, Nanny and the Professor, Prudence, Sandy Hunter.\n[SELECTION] All listed candidates are valid shows associated with Kim Richards based on the graph evidence.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{How Green Was My Thumb?} \\boxed{River of Fear} \\boxed{Town Party} \\boxed{Country Party} \\boxed{The Family Hour} \\boxed{Command Performance} \\boxed{Hyde and Seek} \\boxed{Sketchy Love} \\boxed{Boston -- False Illusion} \\boxed{Tight Fit} \\boxed{Mixed Doubles} \\boxed{Feudin' and Fussin' (1)} \\boxed{Stigma} \\boxed{Cooter's Girl} \\boxed{If Wishes Were Horses} \\boxed{Hello, Larry} \\boxed{Here We Go Again} \\boxed{James at 15} \\boxed{Nanny and the Professor} \\boxed{Prudence} \\boxed{Sandy Hunter}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1822": {
+    "question": "who is in paul ryan 's family",
+    "ground_truth": [
+      "Charles Ryan",
+      "Elizabeth A. Ryan",
+      "Elizabeth Ryan",
+      "Janna Ryan",
+      "Paul Murray Ryan",
+      "Samuel Ryan"
+    ],
+    "predicted": [
+      "Charles Ryan",
+      "Elizabeth Ryan",
+      "Samuel Ryan",
+      "Elizabeth A. Ryan",
+      "Paul Murray Ryan",
+      "Janna Ryan"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Charles Ryan",
+      "Elizabeth Ryan",
+      "Samuel Ryan",
+      "Elizabeth A. Ryan",
+      "Paul Murray Ryan",
+      "Janna Ryan"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 (children), A2 (parents), A3 (spouse) all directly identify family members of Paul Ryan.\n[COLLECTED] 5 unique candidates (Charles, Elizabeth, Samuel, Paul Murray, Janna).\n[POST_FILTER] NO — specific names clearly answer the question.\n</reasoning>\n<candidates>\n  - Charles Ryan\n  - Elizabeth Ryan\n  - Samuel Ryan\n  - Elizabeth A. Ryan\n  - Paul Murray Ryan\n  - Janna Ryan\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify all direct family members (children, parents, spouse) of Paul Ryan.\n[GROUPING]\n  Children: Charles Ryan, Elizabeth Ryan, Samuel Ryan (Req 1 satisfied).\n  Parents: Elizabeth A. Ryan, Paul Murray Ryan (Req 2 satisfied).\n  Spouse: Janna Ryan (Req 3 satisfied).\n[SELECTION] All 6 candidates are valid family members based on graph evidence.\n[VERIFY] All names are human-readable.\n</reasoning>\n<answer>\\boxed{Charles Ryan} \\boxed{Elizabeth Ryan} \\boxed{Samuel Ryan} \\boxed{Elizabeth A. Ryan} \\boxed{Paul Murray Ryan} \\boxed{Janna Ryan}</answer>",
+    "n_actions": 3,
+    "n_filters": 0
+  },
+  "WebQTest-1920": {
+    "question": "who is rick scott",
+    "ground_truth": [
+      "Businessperson",
+      "Executive officer",
+      "Investor",
+      "Lawyer",
+      "Politician"
+    ],
+    "predicted": [
+      "Rick Scott"
+    ],
+    "f1": 0.0,
+    "candidates_35": [
+      "Rick Scott"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A2 directly identifies \"Rick Scott\" as a specific entity matching the query. A1 provides generic professions.\n[COLLECTED] 1 unique candidate (\"Rick Scott\") from 1 favorable action.\n[POST_FILTER] NO — The specific entity \"Rick Scott\" is explicitly retrieved, sufficiently answering \"who is\".\n</reasoning>\n<candidates>\n  - Rick Scott\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Rick Scott\n[PER-CANDIDATE]\n  - Rick Scott: KEEP — Graph confirms he is a politician/governor of Florida.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Rick Scott}</answer>",
+    "n_actions": 2,
+    "n_filters": 0
+  },
+  "WebQTest-1937": {
+    "question": "who is captain james cook facts",
+    "ground_truth": [
+      "Explorer",
+      "Sailor"
+    ],
+    "predicted": [
+      "Explorer"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Explorer"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"Captain\" via profession; A2/A3 provide context but not the person.\n[COLLECTED] 1 unique candidate (\"Explorer\") from 1 favorable action.\n[POST_FILTER] YES — \"Explorer\" is too broad; need attribute exploration to confirm identity.\n</reasoning>\n<candidates>\n  - Explorer\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Explorer\n[PER-CANDIDATE]\n  - Explorer: KEEP — Graph evidence confirms profession.\n[VERIFY] all answers are human-readable names\n</reasoning>\n<answer>\\boxed{Explorer}</answer>",
+    "n_actions": 3,
+    "n_filters": 1
+  },
+  "WebQTest-88": {
+    "question": "who is willow smith mom name",
+    "ground_truth": [
+      "Jada Pinkett Smith"
+    ],
+    "predicted": [
+      "Jada Pinkett Smith"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Jada Pinkett Smith"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because the 'parents' path directly retrieves parents of Willow Smith.\n[COLLECTED] 1 unique candidate (Jada Pinkett Smith) from 1 favorable action.\n[POST_FILTER] NO — The result explicitly identifies the mother's name without ambiguity.\n</reasoning>\n<candidates>\n  - Jada Pinkett Smith\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Jada Pinkett Smith\n[PER-CANDIDATE]\n  - Jada Pinkett Smith: KEEP — Graph shows she is a parent of Willow Smith.\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{Jada Pinkett Smith}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-124": {
+    "question": "what language does egyptian people speak",
+    "ground_truth": [
+      "Modern Standard Arabic"
+    ],
+    "predicted": [
+      "Egyptian Arabic",
+      "Modern Standard Arabic",
+      "Arabic",
+      "Arabic Language",
+      "Sa'idi Arabic",
+      "Bedawi Arabic",
+      "Siwi Language",
+      "Domari Language",
+      "Nobiin Language"
+    ],
+    "f1": 0.19999999999999998,
+    "candidates_35": [
+      "Egyptian Arabic",
+      "Modern Standard Arabic",
+      "Arabic",
+      "Arabic Language",
+      "Sa'idi Arabic",
+      "Bedawi Arabic",
+      "Siwi Language",
+      "Domari Language",
+      "Nobiin Language"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because it directly queries languages spoken in Egypt, returning specific dialects and standard forms.\n[COLLECTED] 9 unique candidates from 1 favorable action.\n[POST_FILTER] NO — The list explicitly includes \"Egyptian Arabic\" and \"Modern Standard Arabic,\" which sufficiently answers the question without further exploration.\n</reasoning>\n<candidates>\n  - Egyptian Arabic\n  - Modern Standard Arabic\n  - Arabic\n  - Arabic Language\n  - Sa'idi Arabic\n  - Bedawi Arabic\n  - Siwi Language\n  - Domari Language\n  - Nobiin Language\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify languages spoken by Egyptian people.\n[GROUPING]\n  Req 1 (Core - Spoken in Egypt): All 9 candidates satisfy this based on graph evidence.\n[SELECTION] Keep all valid human-readable names.\n[VERIFY] All are human-readable entity names from the graph.\n</reasoning>\n<answer>\\boxed{Egyptian Arabic} \\boxed{Modern Standard Arabic} \\boxed{Arabic} \\boxed{Arabic Language} \\boxed{Sa'idi Arabic} \\boxed{Bedawi Arabic} \\boxed{Siwi Language} \\boxed{Domari Language} \\boxed{Nobiin Language}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-149": {
+    "question": "what do portuguese people speak",
+    "ground_truth": [
+      "Portuguese Language"
+    ],
+    "predicted": [
+      "Portuguese Language"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Portuguese Language"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly queries languages spoken in Portugal, returning \"Portuguese Language\" which answers the question.\n[COLLECTED] 1 unique candidate from 1 favorable action.\n[POST_FILTER] NO — The retrieved entity explicitly answers the question.\n</reasoning>\n<candidates>\n  - Portuguese Language\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Portuguese Language\n[PER-CANDIDATE]\n- Portuguese Language: KEEP — Graph evidence confirms it is spoken in Portugal.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Portuguese Language}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-161": {
+    "question": "what university did gordon brown attend",
+    "ground_truth": [
+      "University of Edinburgh"
+    ],
+    "predicted": [
+      "University of Edinburgh"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "University of Edinburgh"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because it explicitly links Gordon Brown to University of Edinburgh via education path.\n[COLLECTED] 1 unique candidate from 1 favorable action\n[POST_FILTER] NO — University of Edinburgh is the direct answer.\n</reasoning>\n<candidates>\n  - University of Edinburgh\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] University of Edinburgh\n[PER-CANDIDATE]\n- University of Edinburgh: KEEP — Graph shows m.02wp5xk has institution: University of Edinburgh.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{University of Edinburgh}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-163": {
+    "question": "what year did the seahawks win the superbowl",
+    "ground_truth": [
+      "Super Bowl XLVIII"
+    ],
+    "predicted": [
+      "Super Bowl XLVIII"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Super Bowl XLVIII"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 retrieves Super Bowl XLVIII, the specific championship event relevant to the Seahawks' win.\n[COLLECTED] 1 unique candidate from 1 favorable action.\n[POST_FILTER] YES — The retrieved entity is an event name; the specific winning year must be extracted via downstream attribute exploration.\n</reasoning>\n<candidates>\n  - Super Bowl XLVIII\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Super Bowl XLVIII\n[PER-CANDIDATE]\n- Super Bowl XLVIII: KEEP — Graph shows this event is a championship for Seahawks.\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{Super Bowl XLVIII}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-176": {
+    "question": "who is emma stone father",
+    "ground_truth": [
+      "Jeff Stone"
+    ],
+    "predicted": [
+      "Jeff Stone"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Jeff Stone",
+      "Krista Stone"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because the 'parents' path directly targets the question about Emma Stone's father.\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] YES — Need to verify which parent is the father (Jeff Stone) vs mother (Krista Stone).\n</reasoning>\n<candidates>\n  - Jeff Stone\n  - Krista Stone\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Jeff Stone, Krista Stone\n[PER-CANDIDATE]\n  - Jeff Stone: KEEP — Male parent matches \"father\".\n  - Krista Stone: REMOVE — Female parent is mother, not father.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Jeff Stone}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-184": {
+    "question": "what state does romney live in",
+    "ground_truth": [
+      "Massachusetts"
+    ],
+    "predicted": [
+      "Massachusetts",
+      "Bloomfield Hills",
+      "Park City"
+    ],
+    "f1": 0.5,
+    "candidates_35": [
+      "Massachusetts",
+      "Belmont",
+      "Bloomfield Hills",
+      "Park City"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 follows \"places_lived\" path, directly retrieving locations where Mitt Romney lived.\n[COLLECTED] 4 unique candidates from 1 favorable action.\n[POST_FILTER] YES — Multiple locations (Massachusetts, Belmont, etc.) exist; downstream agent must verify current residence.\n</reasoning>\n<candidates>\n  - Massachusetts\n  - Belmont\n  - Bloomfield Hills\n  - Park City\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Massachusetts, Belmont, Bloomfield Hills, Park City\n[PER-CANDIDATE]\n- Massachusetts: KEEP — Graph explicitly lists it as a location.\n- Belmont: REMOVE — Not found in provided graph results.\n- Bloomfield Hills: KEEP — Graph explicitly lists it as a location.\n- Park City: KEEP — Graph explicitly lists it as a location.\n[VERIFY] All kept are human-readable names.\n</reasoning>\n<answer>\\boxed{Massachusetts}\\boxed{Bloomfield Hills}\\boxed{Park City}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-189": {
+    "question": "what region of the world is egypt associated with",
+    "ground_truth": [
+      "Middle East"
+    ],
+    "predicted": [
+      "Arab world",
+      "Middle East"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Arab world",
+      "Middle East"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because \"location.containedby\" directly retrieves regions containing Egypt.\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] NO — \"Arab world\" and \"Middle East\" are direct, complete answers.\n</reasoning>\n<candidates>\n  - Arab world\n  - Middle East\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reason>\n[CANDIDATES] Arab world, Middle East\n[PER-CANDIDATE]\n- Arab world: KEEP — Graph shows Egypt contained by Arab world.\n- Middle East: KEEP — Graph shows Egypt contained by Middle East.\n[VERIFY] Both are human-readable names.\n</reason>\n<answer>\\boxed{Arab world}\\boxed{Middle East}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-303": {
+    "question": "where did margaret hoover go to college",
+    "ground_truth": [
+      "Davidson College"
+    ],
+    "predicted": [
+      "Davidson College"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Davidson College"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"education\" path, retrieving Davidson College as the institution.\n[COLLECTED] 1 unique candidate from 1 favorable action.\n[POST_FILTER] NO — The specific college is directly identified.\n</reasoning>\n<candidates>\n  - Davidson College\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Davidson College\n[PER-CANDIDATE]\n  - Davidson College: KEEP — Graph shows institution property for Margaret Hoover.\n[VERIFY] All answers are human-readable names\n</reasoning>\n<answer>\\boxed{Davidson College}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-371": {
+    "question": "what are the major languages spoken in greece",
+    "ground_truth": [
+      "Greek Language"
+    ],
+    "predicted": [
+      "Albanian language",
+      "Greek Language"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Albanian language",
+      "Greek Language"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly queries languages spoken in Greece, matching the question perfectly.\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] NO — The retrieved entities (Albanian, Greek) clearly and sufficiently answer the question.\n</reasoning>\n<candidates>\n  - Albanian language\n  - Greek Language\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Albanian language, Greek Language\n[PER-CANDIDATE]\n- Albanian language: KEEP — Graph evidence lists it as spoken in Greece.\n- Greek Language: KEEP — Graph evidence lists it as spoken in Greece.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Albanian language}\\boxed{Greek Language}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-450": {
+    "question": "what is the national flower of hawaii",
+    "ground_truth": [
+      "Hawaiian hibiscus"
+    ],
+    "predicted": [
+      "Hawaiian hibiscus"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Hawaiian hibiscus"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because it traverses official symbols of Hawaii and explicitly lists \"Hawaiian hibiscus\" as the State flower.\n[COLLECTED] 1 unique candidate from 1 favorable action.\n[POST_FILTER] NO — The candidate \"Hawaiian hibiscus\" clearly and sufficiently answers the question.\n</reasoning>\n<candidates>\n  - Hawaiian hibiscus\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Hawaiian hibiscus\n[PER-CANDIDATE]\n- Hawaiian hibiscus: KEEP — Graph shows Hawaii official symbols include hibiscus (implied by context).\n[VERIFY] All answers are human-readable names\n</reasoning>\n<answer>\\boxed{Hawaiian hibiscus}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-490": {
+    "question": "what did the ancient romans speak",
+    "ground_truth": [
+      "Latin Language"
+    ],
+    "predicted": [
+      "Latin Language"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Latin Language"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly links notable types (Romans) to official languages of their location, retrieving \"Latin Language\" which answers the question.\n[COLLECTED] 1 unique candidate from 1 favorable action.\n[POST_FILTER] NO — Latin Language is the specific answer required.\n</reasoning>\n<candidates>\n  - Latin Language\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Latin Language\n[PER-CANDIDATE]\n  - Latin Language: KEEP — Ancient Romans spoke Latin; graph confirms Latin is official language of Italy/Byzantine context.\n[VERIFY] Latin Language is human-readable.\n</reasoning>\n<answer>\\boxed{Latin Language}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-497": {
+    "question": "who was the father of king george vi",
+    "ground_truth": [
+      "George V"
+    ],
+    "predicted": [
+      "George V"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "George V",
+      "Mary of Teck"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because \"parents(out)\" directly retrieves George V and Mary of Teck, who are the parents of King George VI.\n[COLLECTED] 2 unique candidates from 1 favorable action\n[POST_FILTER] NO — George V is explicitly the father.\n</reasoning>\n<candidates>\n  - George V\n  - Mary of Teck\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] George V, Mary of Teck\n[PER-CANDIDATE]\n  - George V: KEEP — Father (male parent) of George VI.\n  - Mary of Teck: REMOVE — Mother (female parent) of George VI.\n[VERIFY] All answers are human-readable names\n</reasoning>\n<answer>\\boxed{George V}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-595": {
+    "question": "when is the last time the ravens won a superbowl",
+    "ground_truth": [
+      "Super Bowl XLVII"
+    ],
+    "predicted": [
+      "Super Bowl XLVII",
+      "Super Bowl XXXV"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Super Bowl XLVII",
+      "Super Bowl XXXV"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 retrieves Super Bowl XLVII and XXXV, directly relevant to Ravens' Super Bowl wins.\n[COLLECTED] 2 unique candidates from 1 favorable action\n[POST_FILTER] YES — Need to verify specific win years and check for any later wins via attribute exploration.\n</reasoning>\n<candidates>\n  - Super Bowl XLVII\n  - Super Bowl XXXV\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Super Bowl XLVII, Super Bowl XXXV\n[PER-CANDIDATE]\n- Super Bowl XLVII: KEEP — Won in 2013, the most recent victory.\n- Super Bowl XXXV: KEEP — Won in 2001, a valid past victory.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Super Bowl XLVII} \\boxed{Super Bowl XXXV}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-670": {
+    "question": "what kind of language does egypt speak",
+    "ground_truth": [
+      "Modern Standard Arabic"
+    ],
+    "predicted": [
+      "Egyptian Arabic",
+      "Modern Standard Arabic",
+      "Arabic",
+      "Sudanese Spoken Language",
+      "Bedawi Arabic",
+      "Domari Language",
+      "Nobiin Language",
+      "Sa'idi Arabic",
+      "Siwi Language"
+    ],
+    "f1": 0.19999999999999998,
+    "candidates_35": [
+      "Egyptian Arabic",
+      "Modern Standard Arabic",
+      "Arabic",
+      "Sudanese Spoken Language",
+      "Bedawi Arabic",
+      "Domari Language",
+      "Nobiin Language",
+      "Sa'idi Arabic",
+      "Siwi Language"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly queries languages spoken in Egypt, returning specific dialects and standard forms.\n[COLLECTED] 9 unique candidates from 1 favorable action.\n[POST_FILTER] NO — The list explicitly includes \"Egyptian Arabic\" and \"Modern Standard Arabic,\" sufficiently answering the question without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - Egyptian Arabic\n  - Modern Standard Arabic\n  - Arabic\n  - Sudanese Spoken Language\n  - Bedawi Arabic\n  - Domari Language\n  - Nobiin Language\n  - Sa'idi Arabic\n  - Siwi Language\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify languages spoken in Egypt.\n[GROUPING]\n  Req 1 (spoken in Egypt): All 9 candidates satisfy this based on graph evidence.\n[SELECTION] Keep all valid language entities.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Egyptian Arabic} \\boxed{Modern Standard Arabic} \\boxed{Arabic} \\boxed{Sudanese Spoken Language} \\boxed{Bedawi Arabic} \\boxed{Domari Language} \\boxed{Nobiin Language} \\boxed{Sa'idi Arabic} \\boxed{Siwi Language}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-689": {
+    "question": "what was the first language spoken in spain",
+    "ground_truth": [
+      "Spanish Language"
+    ],
+    "predicted": [
+      "Basque Language",
+      "Catalan language",
+      "Galician Language",
+      "Occitan language",
+      "Spanish Language"
+    ],
+    "f1": 0.33333333333333337,
+    "candidates_35": [
+      "Basque Language",
+      "Catalan language",
+      "Galician Language",
+      "Occitan language",
+      "Spanish Language"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 retrieves languages spoken in Spain.\n[COLLECTED] 5 unique candidates from 1 action.\n[POST_FILTER] YES — Need to determine which was the \"first\" historically, not just current speakers.\n</reasoning>\n<candidates>\n  - Basque Language\n  - Catalan language\n  - Galician Language\n  - Occitan language\n  - Spanish Language\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Basque Language, Catalan language, Galician Language, Occitan language, Spanish Language\n[PER-CANDIDATE]\n  - Basque Language: KEEP — Earliest attested language in Iberian Peninsula.\n  - Catalan language: KEEP — Ancient Romance language, but Basque predates it.\n  - Galician Language: KEEP — Ancient Romance, but Basque predates it.\n  - Occitan language: KEEP — Ancient Romance, but Basque predates it.\n  - Spanish Language: KEEP — Evolved later from Vulgar Latin.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Basque Language}\\boxed{Catalan language}\\boxed{Galician Language}\\boxed{Occitan language}\\boxed{Spanish Language}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-698": {
+    "question": "who is robin roberts father",
+    "ground_truth": [
+      "Lawrence E. Roberts"
+    ],
+    "predicted": [
+      "Lawrence E. Roberts",
+      "Lucimarian Tolliver"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Lawrence E. Roberts",
+      "Lucimarian Tolliver"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly queries parents, retrieving Lawrence E. Roberts and Lucimarian Tolliver as candidates.\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] NO — The question asks for \"father\" (singular), and one candidate is clearly male, providing a direct answer without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - Lawrence E. Roberts\n  - Lucimarian Tolliver\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Lawrence E. Roberts, Lucimarian Tolliver\n[PER-CANDIDATE]\n  - Lawrence E. Roberts: KEEP — Father's name per graph data.\n  - Lucimarian Tolliver: KEEP — Mother's name per graph data.\n[VERIFY] Both are human-readable names.\n</reasoning>\n<answer>\\boxed{Lawrence E. Roberts} \\boxed{Lucimarian Tolliver}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-785": {
+    "question": "who does michael keaton play in cars",
+    "ground_truth": [
+      "Chick Hicks"
+    ],
+    "predicted": [
+      "Chick Hicks"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Chick Hicks"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"michael keaton\" and \"cars\" via the Chick Hicks node.\n[COLLECTED] 1 unique candidate from 1 favorable action.\n[POST_FILTER] NO — Chick Hicks is the specific character in Cars.\n</reasoning>\n<candidates>\n  - Chick Hicks\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Chick Hicks\n[PER-CANDIDATE]\n  - Chick Hicks: REMOVE — Graph shows Birdman, Jack Frost, Beetlejuice; no Cars data.\n[VERIFY] Answers are human-readable names\n</reasoning>\n<answer>\\boxed{Chick Hicks}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-832": {
+    "question": "when is the last time the giants won the world series",
+    "ground_truth": [
+      "2014 World Series"
+    ],
+    "predicted": [
+      "2014 World Series",
+      "2012 World Series",
+      "2010 World Series"
+    ],
+    "f1": 0.5,
+    "candidates_35": [
+      "2014 World Series",
+      "2012 World Series",
+      "2010 World Series"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly lists Giants' World Series wins.\n[COLLECTED] 3 unique candidates from 1 action.\n[POST_FILTER] NO — The list explicitly shows the most recent win is 2014, answering the query without further exploration.\n</reasoning>\n<candidates>\n  - 2014 World Series\n  - 2012 World Series\n  - 2010 World Series\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] 2014 World Series, 2012 World Series, 2010 World Series\n[PER-CANDIDATE]\n  - 2014 World Series: KEEP — Most recent championship listed in graph data.\n  - 2012 World Series: KEEP — Valid past championship year.\n  - 2010 World Series: KEEP — Valid past championship year.\n[VERIFY] All are human-readable entity names.\n</reasoning>\n<answer>\\boxed{2014 World Series}\\boxed{2012 World Series}\\boxed{2010 World Series}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-877": {
+    "question": "what is the name of sonia gandhi daughter",
+    "ground_truth": [
+      "Priyanka Gandhi"
+    ],
+    "predicted": [
+      "Priyanka Gandhi"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Priyanka Gandhi",
+      "Rahul Gandhi"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because \"people.person.children\" directly retrieves Sonia Gandhi's children.\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] NO — The question asks for \"the name\" (singular), but results show two children. However, since the user likely wants the list of names and no further attribute exploration is needed to identify them, we return the list.\n</reasoning>\n<candidates>\n  - Priyanka Gandhi\n  - Rahul Gandhi\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Priyanka Gandhi, Rahul Gandhi\n[PER-CANDIDATE]\n  - Priyanka Gandhi: KEEP — Female child of Sonia Gandhi.\n  - Rahul Gandhi: REMOVE — Male child of Sonia Gandhi.\n[VERIFY] All names are human-readable.\n</reasoning>\n<answer>\\boxed{Priyanka Gandhi}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-895": {
+    "question": "when did the detroit pistons last win the championship",
+    "ground_truth": [
+      "2004 NBA Finals"
+    ],
+    "predicted": [
+      "1989 NBA Finals",
+      "1990 NBA Finals",
+      "2004 NBA Finals"
+    ],
+    "f1": 0.5,
+    "candidates_35": [
+      "1989 NBA Finals",
+      "1990 NBA Finals",
+      "2004 NBA Finals"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 retrieves championship years directly relevant to the query.\n[COLLECTED] 3 unique candidates from 1 favorable action.\n[POST_FILTER] NO — The retrieved years directly answer \"when\".\n</reasoning>\n<candidates>\n  - 1989 NBA Finals\n  - 1990 NBA Finals\n  - 2004 NBA Finals\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] 1989 NBA Finals, 1990 NBA Finals, 2004 NBA Finals\n[PER-CANDIDATE]\n  - 1989 NBA Finals: KEEP — Valid championship year per graph data.\n  - 1990 NBA Finals: KEEP — Valid championship year per graph data.\n  - 2004 NBA Finals: KEEP — Valid championship year per graph data.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{1989 NBA Finals} \\boxed{1990 NBA Finals} \\boxed{2004 NBA Finals}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-938": {
+    "question": "who was queen elizabeth ii mom",
+    "ground_truth": [
+      "Queen Elizabeth The Queen Mother"
+    ],
+    "predicted": [
+      "Queen Elizabeth The Queen Mother"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Queen Elizabeth The Queen Mother"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly links Queen Elizabeth II to her parents via the `parents` relation.\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] NO — The question asks for \"mom\", and the result explicitly includes \"Queen Elizabeth The Queen Mother\", providing a direct answer without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - Queen Elizabeth The Queen Mother\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Queen Elizabeth The Queen Mother\n[PER-CANDIDATE]\n  - Queen Elizabeth The Queen Mother: KEEP — Graph shows she is a parent of Queen Elizabeth II.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Queen Elizabeth The Queen Mother}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-993": {
+    "question": "who played meg in season 1 of family guy",
+    "ground_truth": [
+      "Lacey Chabert"
+    ],
+    "predicted": [
+      "Lacey Chabert"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Lacey Chabert"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"Meg in Season 1\" via Lacey Chabert's node details explicitly linking her to \"Family Guy - Season 1\" as regular cast. Mila Kunis is excluded as she appears in later seasons.\n[COLLECTED] 1 unique candidate from 1 favorable action\n[POST_FILTER] NO — Lacey Chabert is the definitive answer found directly in the node details.\n</reasoning>\n<candidates>\n  - Lacey Chabert\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Lacey Chabert\n[PER-CANDIDATE]\n- Lacey Chabert: KEEP — Graph shows her starring in Meg Griffin's TV program.\n[VERIFY] Lacey Chabert is a human-readable name.\n</reasoning>\n<answer>\\boxed{Lacey Chabert}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-994": {
+    "question": "when was the last time the dallas cowboys won the superbowl",
+    "ground_truth": [
+      "Super Bowl XXX"
+    ],
+    "predicted": [
+      "Super Bowl XXX"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Super Bowl VI",
+      "Super Bowl XII",
+      "Super Bowl XXVII",
+      "Super Bowl XXVIII",
+      "Super Bowl XXX"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because it lists all Cowboys Super Bowl wins, allowing date retrieval.\n[COLLECTED] 5 unique candidates from 1 favorable action\n[POST_FILTER] YES — need to check win dates to identify the most recent one.\n</reasoning>\n<candidates>\n  - Super Bowl VI\n  - Super Bowl XII\n  - Super Bowl XXVII\n  - Super Bowl XXVIII\n  - Super Bowl XXX\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Super Bowl VI, Super Bowl XII, Super Bowl XXVII, Super Bowl XXVIII, Super Bowl XXX\n[PER-CANDIDATE]\n  - Super Bowl VI: REMOVE — Won in 1971, not the last.\n  - Super Bowl XII: REMOVE — Won in 1977, not the last.\n  - Super Bowl XXVII: REMOVE — Won in 1992, not the last.\n  - Super Bowl XXVIII: REMOVE — Won in 1993, not the last.\n  - Super Bowl XXX: KEEP — Won in 1995, the most recent in list.\n[VERIFY] All human-readable names.\n</reasoning>\n<answer>\\boxed{Super Bowl XXX}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-998": {
+    "question": "when was the last time knicks won the championship",
+    "ground_truth": [
+      "1973 NBA Finals"
+    ],
+    "predicted": [
+      "1973"
+    ],
+    "f1": 0.0,
+    "candidates_35": [
+      "1970",
+      "1973"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\nA1 matches by retrieving championship years. 2 candidates collected. Post-filter NO as years directly answer the query.\n</reasoning>\n<candidates>\n  - 1970\n  - 1973\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] 1970, 1973\n[PER-CANDIDATE]\n  - 1970: KEEP — Valid championship year.\n  - 1973: KEEP — Valid championship year (last).\n[VERIFY] All are human-readable years.\n</reasoning>\n<answer>\\boxed{1973}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-1088": {
+    "question": "who originally voiced meg on family guy",
+    "ground_truth": [
+      "Lacey Chabert"
+    ],
+    "predicted": [
+      "Lacey Chabert"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Lacey Chabert",
+      "Mila Kunis"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"voiced Meg\" via actor/character/series properties.\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] NO — Lacey Chabert is the original voice; Mila Kunis is a guest.\n</reasoning>\n<candidates>\n  - Lacey Chabert\n  - Mila Kunis\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Lacey Chabert, Mila Kunis\n[PER-CANDIDATE]\n- Lacey Chabert: KEEP — Graph shows her as original starring role.\n- Mila Kunis: REMOVE — Graph lists her, but Chabert is primary original.\n[VERIFY] All names are human-readable.\n</reasoning>\n<answer>\\boxed{Lacey Chabert}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-1130": {
+    "question": "what is real name of santa claus",
+    "ground_truth": [
+      "Saint Nicholas"
+    ],
+    "predicted": [
+      "Saint Nicholas"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Saint Nicholas"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 matches \"based_on\" relation, retrieving \"Saint Nicholas\" as the real person.\n[COLLECTED] 1 unique candidate (\"Saint Nicholas\") from 1 favorable action.\n[POST_FILTER] NO — The candidate directly answers the question without needing further attribute exploration.\n</reasoning>\n<candidates>\n  - Saint Nicholas\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] ['Saint Nicholas']\n[PER-CANDIDATE]\n  - Saint Nicholas: KEEP — Graph shows Santa Claus is based on Saint Nicholas.\n[VERIFY] \"Saint Nicholas\" is human-readable.\n</reasoning>\n<answer>\\boxed{Saint Nicholas}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-1160": {
+    "question": "who is the mother of prince michael jackson",
+    "ground_truth": [
+      "Katherine Jackson"
+    ],
+    "predicted": [
+      "Katherine Jackson"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Katherine Jackson",
+      "Joe Jackson"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly queries parents, retrieving Joe and Katherine Jackson.\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] NO — Katherine Jackson is the known mother; no further exploration needed.\n</reasoning>\n<candidates>\n  - Katherine Jackson\n  - Joe Jackson\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Katherine Jackson, Joe Jackson\n[PER-CANDIDATE]\n- Katherine Jackson: KEEP — She is the mother (female parent).\n- Joe Jackson: REMOVE — He is the father (male parent).\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{Katherine Jackson}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-1174": {
+    "question": "what cancer did jackie kennedy die of",
+    "ground_truth": [
+      "Lymphoma"
+    ],
+    "predicted": [
+      "Lymphoma"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Lymphoma"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 traces Jackie Kennedy to \"Lymphoma\" via cause_of_death.\n[COLLECTED] 1 unique candidate from 1 favorable action.\n[POST_FILTER] NO — \"Lymphoma\" is a specific, sufficient answer.\n</reasoning>\n<candidates>\n  - Lymphoma\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Lymphoma\n[PER-CANDIDATE]\n  - Lymphoma: KEEP — Graph explicitly lists \"Lymphoma\" as cause of death.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Lymphoma}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-1225": {
+    "question": "what kourtney kardashian boyfriends name",
+    "ground_truth": [
+      "Scott Disick"
+    ],
+    "predicted": [
+      "Scott Disick"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Scott Disick"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because the path `dated(out)` directly retrieves partners, and Scott Disick is a known boyfriend.\n[COLLECTED] 1 unique candidate (Scott Disick) from 1 favorable action.\n[POST_FILTER] NO — The single candidate clearly answers the specific question about a boyfriend's name.\n</reasoning>\n<candidates>\n  - Scott Disick\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Scott Disick\n[PER-CANDIDATE]\n  - Scott Disick: KEEP — Graph shows he is a participant in dated relation.\n[VERIFY] Human-readable name confirmed.\n</reasoning>\n<answer>\\boxed{Scott Disick}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-1280": {
+    "question": "who was president after franklin d. roosevelt",
+    "ground_truth": [
+      "Harry S. Truman"
+    ],
+    "predicted": [
+      "Harry S. Truman"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Harry S. Truman",
+      "Henry A. Wallace",
+      "John Nance Garner"
+    ],
+    "post_filter": "YES",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 retrieves Vice Presidents, who succeeded FDR.\n[COLLECTED] 3 unique candidates from 1 favorable action.\n[POST_FILTER] YES — Need to verify succession dates to confirm the immediate successor.\n</reasoning>\n<candidates>\n  - Harry S. Truman\n  - Henry A. Wallace\n  - John Nance Garner\n</candidates>\n<post_filter>YES</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Harry S. Truman, Henry A. Wallace, John Nance Garner\n[PER-CANDIDATE]\n  - Harry S. Truman: KEEP — Succeeded FDR as President in 1945.\n  - Henry A. Wallace: REMOVE — Was VP before Truman, not after FDR.\n  - John Nance Garner: REMOVE — Was VP before Wallace, not after FDR.\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{Harry S. Truman}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-1312": {
+    "question": "in what country do people speak danish",
+    "ground_truth": [
+      "Denmark"
+    ],
+    "predicted": [
+      "Denmark",
+      "Greenland"
+    ],
+    "f1": 0.6666666666666666,
+    "candidates_35": [
+      "Denmark",
+      "Greenland"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly maps \"Danish\" to countries via the `countries_spoken_in` path.\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] NO — The retrieved entities (Denmark, Greenland) directly and sufficiently answer the question.\n</reasoning>\n<candidates>\n  - Denmark\n  - Greenland\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] Denmark, Greenland\n[PER-CANDIDATE]\n  - Denmark: KEEP — Primary country where Danish is spoken.\n  - Greenland: KEEP — Territory where Danish is an official language.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{Denmark} \\boxed{Greenland}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-1342": {
+    "question": "what kind of language does france speak",
+    "ground_truth": [
+      "French"
+    ],
+    "predicted": [
+      "French",
+      "Alsatian dialect",
+      "Antillean Creole French",
+      "Basque Language",
+      "Breton",
+      "Catalan language",
+      "Corsican Language",
+      "Esperanto Language",
+      "Franco-Provençal Language",
+      "Gallo language",
+      "Guianese Creole French Language",
+      "Occitan language",
+      "Provençal Language",
+      "Réunion Creole French Language",
+      "Tahitian Language",
+      "West Flemish",
+      "Yeniche Language"
+    ],
+    "f1": 0.1111111111111111,
+    "candidates_35": [
+      "French",
+      "Alsatian dialect",
+      "Antillean Creole French",
+      "Basque Language",
+      "Breton",
+      "Catalan language",
+      "Corsican Language",
+      "Esperanto Language",
+      "Franco-Provençal Language",
+      "Gallo language",
+      "Guianese Creole French Language",
+      "Occitan language",
+      "Provençal Language",
+      "Réunion Creole French Language",
+      "Tahitian Language",
+      "West Flemish",
+      "Yeniche Language"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "B",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 because path `location.country.languages_spoken` directly retrieves languages spoken in France.\n[COLLECTED] 17 unique candidates from 1 favorable action.\n[POST_FILTER] NO — \"French\" is the primary answer; other dialects/creoles are secondary but the set sufficiently answers \"what kind of language\".\n</reasoning>\n<candidates>\n  - French\n  - Alsatian dialect\n  - Antillean Creole French\n  - Basque Language\n  - Breton\n  - Catalan language\n  - Corsican Language\n  - Esperanto Language\n  - Franco-Provençal Language\n  - Gallo language\n  - Guianese Creole French Language\n  - Occitan language\n  - Provençal Language\n  - Réunion Creole French Language\n  - Tahitian Language\n  - West Flemish\n  - Yeniche Language\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[REQUIREMENTS] Identify languages spoken in France.\n[GROUPING]\n  Req 1 (spoken in France): All listed candidates satisfy this based on graph evidence.\n[SELECTION] Keep all 17 valid leaf entities.\n[VERIFY] All are human-readable names.\n</reasoning>\n<answer>\\boxed{French} \\boxed{Alsatian dialect} \\boxed{Antillean Creole French} \\boxed{Basque Language} \\boxed{Breton} \\boxed{Catalan language} \\boxed{Corsican Language} \\boxed{Esperanto Language} \\boxed{Franco-Provençal Language} \\boxed{Gallo language} \\boxed{Guianese Creole French Language} \\boxed{Occitan language} \\boxed{Provençal Language} \\boxed{Réunion Creole French Language} \\boxed{Tahitian Language} \\boxed{West Flemish} \\boxed{Yeniche Language}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  },
+  "WebQTest-1354": {
+    "question": "who is judy garland father",
+    "ground_truth": [
+      "Francis Avent Gumm"
+    ],
+    "predicted": [
+      "Francis Avent Gumm"
+    ],
+    "f1": 1.0,
+    "candidates_35": [
+      "Francis Avent Gumm"
+    ],
+    "post_filter": "NO",
+    "agent4_variant": "A",
+    "response_35": "<reasoning>\n[FAVORABLE] A1 directly queries parents, retrieving Judy Garland's parents (Ethel Marion Milne, Francis Avent Gumm).\n[COLLECTED] 2 unique candidates from 1 favorable action.\n[POST_FILTER] NO — The question asks for \"father\", and one candidate is explicitly male and historically known as her father.\n</reasoning>\n<candidates>\n  - Francis Avent Gumm\n</candidates>\n<post_filter>NO</post_filter>",
+    "response_4": "<reasoning>\n[CANDIDATES] ['Francis Avent Gumm']\n[PER-CANDIDATE]\n  - Francis Avent Gumm: KEEP — Graph data lists him as parent.\n[VERIFY] All answers are human-readable names.\n</reasoning>\n<answer>\\boxed{Francis Avent Gumm}</answer>",
+    "n_actions": 1,
+    "n_filters": 1
+  }
+}

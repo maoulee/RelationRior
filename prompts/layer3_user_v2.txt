@@ -1,0 +1,91 @@
+Question: {question}
+Anchor: {anchor}
+Target Entity: {target_entity}
+
+Constrained Subgraph (depth-based path retention applied):
+{subgraph_triples}
+
+Answer the question using the provided subgraph.
+
+FEW-SHOT EXAMPLES:
+
+Example 1:
+Question: Which nation has the Alta Verapaz Department and is in Central America?
+Anchor: Alta Verapaz Department
+Target Entity: Central America
+
+Subgraph:
+1. (Alta Verapaz Department) --[location.administrative_division.country]--> (Guatemala)
+2. (Guatemala) --[location.country.continent]--> (Central America)
+3. (Guatemala) --[location.country.location]--> (Central America)
+
+Path depth: 2
+
+Answer: Guatemala
+
+---
+
+Example 2:
+Question: What language is spoken in the location that appointed Michelle Bachelet to a governmental position?
+Anchor: Michelle Bachelet
+Target Entity: null
+
+Subgraph:
+1. (Michelle Bachelet) --[government.position_held.office_holder]--> (President of Chile)
+2. (President of Chile) --[government.office_position.jurisdiction]--> (Chile)
+3. (Chile) --[people.country.languages_spoken]--> (Spanish)
+4. (Chile) --[people.country.official_language]--> (Spanish)
+
+Path depth: 3
+
+Answer: Spanish
+
+---
+
+Example 3:
+Question: Lou Seal is the mascot for the team that last won the World Series when?
+Anchor: Lou Seal
+Target Entity: null
+
+Subgraph:
+1. (Lou Seal) --[sports.team.mascot]--> (San Francisco Giants)
+2. (San Francisco Giants) --[sports.sports_team.championships]--> (2014 World Series)
+3. (San Francisco Giants) --[sports.sports_team.championships]--> (2012 World Series)
+4. (San Francisco Giants) --[sports.sports_team.championships]--> (2010 World Series)
+5. (2014 World Series) --[sports.championship.year]--> (2014)
+6. (2012 World Series) --[sports.championship.year]--> (2012)
+7. (2010 World Series) --[sports.championship.year]--> (2010)
+
+Path depth: 3
+Note: 2014 is the most recent (largest year among championship years)
+
+Answer: 2014
+
+---
+
+Example 4:
+Question: Which man is the leader of the country that uses Libya, Libya, Libya as its national anthem?
+Anchor: Libya, Libya, Libya
+Target Entity: null
+
+Subgraph:
+1. (Libya, Libya, Libya) --[common.topic.article]--> (Libya)
+2. (Libya) --[government.governmental_jurisdiction.governing_officials]--> (Muammar Gaddafi)
+3. (Libya) --[location.country.national_anthem]--> (Libya, Libya, Libya)
+
+Path depth: 2
+
+Answer: Muammar Gaddafi
+
+---
+
+Now answer the following:
+
+Question: {question}
+Anchor: {anchor}
+Target Entity: {target_entity}
+
+Subgraph:
+{subgraph_triples}
+
+Answer:

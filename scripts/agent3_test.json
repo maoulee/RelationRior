@@ -1,0 +1,74 @@
+{
+  "WebQTest-1785": {
+    "question": "what was kim richards in",
+    "ground_truth": [
+      "Black Snake Moan",
+      "Devil Dog: The Hound of Hell",
+      "Escape to Witch Mountain",
+      "Meatballs Part II",
+      "Nanny and the Professor",
+      "No Deposit, No Return",
+      "Race to Witch Mountain",
+      "Raid on Entebbe",
+      "Return from Witch Mountain",
+      "The Car",
+      "The Whiz Kid and the Mystery at Riverton",
+      "Tuff Turf"
+    ],
+    "selected": [
+      "A1",
+      "A2"
+    ],
+    "best_action": "A2",
+    "hit_best": true,
+    "reward": 0.003787878787878787,
+    "response": "<reasoning>\n<check id=\"A1\">\npath: Kim Richards ->[guest_roles]-> TV Show\nsemantics: Retrieves Kim Richards's guest appearances on TV shows.\nverdict: RELEVANT\n</check>\n<check id=\"A2\">\npath: Kim Richards ->[starring_roles]-> TV Show\nsemantics: Retrieves Kim Richards's starring roles on TV shows.\nverdict: RELEVANT\n</check>\n<select>A1, A2</select>\n<why>Covers TV guest and starring roles.</why>\n</reasoning>\n<act>\n  <query>select_action(action_id=\"A1\")</query>\n</act>\n<act>\n  <query>select_action(action_id=\"A2\")</query>\n</act>"
+  },
+  "WebQTest-576": {
+    "question": "what are the 7 countries that are part of central america",
+    "ground_truth": [
+      "Belize",
+      "Costa Rica",
+      "El Salvador",
+      "Gran Colombia",
+      "Guatemala",
+      "Honduras",
+      "Panama"
+    ],
+    "selected": [
+      "A1"
+    ],
+    "best_action": "A1",
+    "hit_best": true,
+    "reward": 0.8750000000000001,
+    "response": "<reasoning>\n<check id=\"A1\">\npath: Central America ->[contains]-> {Country}\nsemantics: Directly retrieves countries contained within Central America.\nverdict: RELEVANT\n</check>\n<select>A1</select>\n<why>Covers direct containment of Central American countries.</why>\n</reasoning>\n<act>\n  <query>select_action(action_id=\"A1\")</query>\n</act>"
+  },
+  "WebQTest-743": {
+    "question": "what was the name of jfk 's brothers",
+    "ground_truth": [
+      "Joseph P. Kennedy, Jr.",
+      "Robert F. Kennedy",
+      "Ted Kennedy"
+    ],
+    "selected": [
+      "A1"
+    ],
+    "best_action": "A1",
+    "hit_best": true,
+    "reward": 0.5,
+    "response": "<reasoning>\n<check id=\"A1\">\npath: JFK ->[film.film.subjects]-> (CVT) ->[people.person.sibling_s]-> {brothers}\nsemantics: Finds films JFK acted in, then siblings of those films. Irrelevant.\nverdict: NOT_RELEVANT\n</check>\n<check id=\"A2\">\npath: JFK ->[film.film.subjects]-> (CVT) ->[people.family.members]-> {brothers}\nsemantics: Finds films JFK acted in, then members of those films' casts. Irrelevant.\nverdict: NOT_RELEVANT\n</check>\n<select>A1</select>\n<why>\nBoth paths use \"film.film.subjects\" which is irrelevant to finding brothers.\n</why>\n</reasoning>\n<act>\n  <query>select_action(action_id=\"A1\")</query>\n</act>"
+  },
+  "WebQTest-832": {
+    "question": "when is the last time the giants won the world series",
+    "ground_truth": [
+      "2014 World Series"
+    ],
+    "selected": [
+      "A1"
+    ],
+    "best_action": "A1",
+    "hit_best": true,
+    "reward": 0.5,
+    "response": "<reasoning>\n<check id=\"A1\">\npath: San Francisco Giants ->[championships]-> {World Series wins}\nsemantics: Retrieves all championship wins for the team.\nverdict: RELEVANT\n</check>\n<select>A1</select>\n<why>Covers all championship wins for the team.</why>\n</reasoning>\n<act>\n  <query>select_action(action_id=\"A1\")</query>\n</act>"
+  }
+}

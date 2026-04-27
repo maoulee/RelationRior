@@ -1,0 +1,62 @@
+{
+  "WebQTest-832": {
+    "question": "Lou Seal is the mascot for the team that last won the World Series when?",
+    "stage1": "[MAIN] Which team is Lou Seal the mascot for? | [FOLLOW-UP] when did that team last win the World Series?",
+    "stage2": "[MAIN] Lou Seal | sports | find mascot team\n[FOLLOW-UP] team | sports | find last World Series win date",
+    "status": "ok"
+  },
+  "WebQTest-361": {
+    "question": "What museum established before 1971 is there to see in Vienna, Austria?",
+    "stage1": "[MAIN] What museums are in Vienna, Austria? | [FOLLOW-UP] which one was established before 1971?",
+    "stage2": "[MAIN] Vienna | location | find museums\n[FOLLOW-UP] museum | time | check establishment date",
+    "status": "ok"
+  },
+  "WebQTrn-557": {
+    "question": "In the film with teh character named Winged Monkey #7, who played Dorothy?",
+    "stage1": "[MAIN] Which film features the character named Winged Monkey #7? | [FOLLOW-UP] who played Dorothy in that film?",
+    "stage2": "[MAIN] Winged Monkey #7 | type | find film featuring character\n[FOLLOW-UP] film | base | find actor who played Dorothy",
+    "status": "ok"
+  },
+  "WebQTest-743": {
+    "question": "Which of JFK's brother held the latest governmental position?",
+    "stage1": "[MAIN] Which brothers of JFK held governmental positions? | [FOLLOW-UP] which one held the latest position?",
+    "stage2": "[MAIN] JFK | organization | find brothers with governmental roles\n[FOLLOW-UP] brother | time | find latest held position",
+    "status": "ok"
+  },
+  "WebQTrn-1841": {
+    "question": "Which popular sports team in Spain, that won the 2014 Eurocup Finals championship?",
+    "stage1": "[MAIN] Which sports team in Spain won the 2014 Eurocup Finals championship? | [FOLLOW-UP] is it considered popular?",
+    "stage2": "[MAIN] 2014 Eurocup Finals | sports | find winning team\n[FOLLOW-UP] team | common | check popularity",
+    "status": "ok"
+  },
+  "WebQTest-1785": {
+    "question": "What TV series that had 3 episodes was Kim Richards in?",
+    "stage1": "[MAIN] Which TV series did Kim Richards appear in? | [FOLLOW-UP] how many episodes did that series have? | [FOLLOW-UP] was it exactly 3 episodes?",
+    "stage2": "[MAIN] Kim Richards | type | find TV series appearances\n[FOLLOW-UP] TV series | time | count episode number\n[FOLLOW-UP] TV series | time | verify episode count equals 3",
+    "status": "ok"
+  },
+  "WebQTrn-493": {
+    "question": "What region is the country whose national anthem is Brabançonne located in?",
+    "stage1": "[MAIN] Which country has the national anthem Brabançonne? | [FOLLOW-UP] what region is that country located in?",
+    "stage2": "[MAIN] Brabançonne | award | find country associated with anthem\n[FOLLOW-UP] country | location | find region",
+    "status": "ok"
+  },
+  "WebQTest-576": {
+    "question": "What country in Central America appointed Otto Pérez Molina to a governmental position?",
+    "stage1": "[MAIN] Which country appointed Otto Pérez Molina to a governmental position? | [FOLLOW-UP] is that country in Central America?",
+    "stage2": "[MAIN] Otto Pérez Molina | organization | find appointing country\n[FOLLOW-UP] country | location | check region",
+    "status": "ok"
+  },
+  "WebQTrn-3376": {
+    "question": "What educational institution with men's basketball sports team named Temple Owls did Kevin Hart go to school?",
+    "stage1": "[MAIN] Which educational institution has a men's basketball team named the Temple Owls? | [FOLLOW-UP] did Kevin Hart go to school there?",
+    "stage2": "[MAIN] Temple Owls | sports | find associated university\n[FOLLOW-UP] Kevin Hart | base | check educational background",
+    "status": "ok"
+  },
+  "WebQTest-1528": {
+    "question": "In which movies, does Logan Lerman act in, that was production designed by Andrew Menzies?",
+    "stage1": "[MAIN] Which movies were production designed by Andrew Menzies? | [FOLLOW-UP] which of those movies did Logan Lerman act in?",
+    "stage2": "[MAIN] Andrew Menzies | award | find movies production designed\n[FOLLOW-UP] movies | common | check actors",
+    "status": "ok"
+  }
+}

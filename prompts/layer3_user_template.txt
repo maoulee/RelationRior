@@ -1,0 +1,70 @@
+Question: {question}
+Anchor: {anchor}
+Target Entity: {target_entity}
+
+Subgraph:
+{subgraph_triples}
+
+Answer this question using the subgraph above.
+
+Examples:
+
+Example 1:
+Question: Which nation has the Alta Verapaz Department and is in Central America?
+Anchor: Alta Verapaz Department
+Target Entity: Central America
+
+Subgraph:
+1. (Alta Verapaz Department) --[location.administrative_division.country]--> (Guatemala)
+2. (Guatemala) --[location.country.continent]--> (Central America)
+3. (Guatemala) --[location.country.location]--> (Central America)
+
+Path depth: 2
+
+Answer: Guatemala
+
+---
+
+Example 2:
+Question: What language is spoken in the location that appointed Michelle Bachelet to a governmental position?
+Anchor: Michelle Bachelet
+Target Entity: null
+
+Subgraph:
+1. (Michelle Bachelet) --[government.position_held.office_holder]--> (President of Chile)
+2. (President of Chile) --[government.office_position.jurisdiction]--> (Chile)
+3. (Chile) --[people.country.languages_spoken]--> (Spanish)
+4. (Chile) --[people.country.official_language]--> (Spanish)
+
+Path depth: 3
+
+Answer: Spanish
+
+---
+
+Example 3:
+Question: Lou Seal is the mascot for the team that last won the World Series when?
+Anchor: Lou Seal
+Target Entity: null
+
+Subgraph:
+1. (Lou Seal) --[sports.team.mascot]--> (San Francisco Giants)
+2. (San Francisco Giants) --[sports.sports_team.championships]--> (2014 World Series)
+3. (San Francisco Giants) --[sports.sports_team.championships]--> (2012 World Series)
+4. (San Francisco Giants) --[sports.sports_team.championships]--> (2010 World Series)
+5. (2014 World Series) --[sports.championship.year]--> (2014)
+
+Path depth: 3
+Note: 2014 is the most recent championship year
+
+Answer: 2014
+
+---
+
+Now answer:
+Question: {question}
+Anchor: {anchor}
+Target Entity: {target_entity}
+
+Subgraph:
+{subgraph_triples}
