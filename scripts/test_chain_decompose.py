@@ -332,9 +332,9 @@ class _BatchCoalescer:
                 _, messages, _, _, fut = items[0]
                 try:
                     result = await self._call_single(session, messages, max_tokens, retries)
-                    fut.set_result(result)
-                except Exception as e:
-                    fut.set_result(None) if not fut.done() else None
+                    if not fut.done():
+                        fut.set_result(result)
+                except Exception:
                     try:
                         result = await self._call_single(session, messages, max_tokens, retries)
                         if not fut.done():
@@ -631,6 +631,8 @@ def score_causal_tier(hit_set, bridge_length=0):
 
 def extract_xml_tag(text, tag):
     """Extract content between <tag>...</tag>, returns None if not found."""
+    if not text:
+        return None
     match = re.search(rf'<{tag}>(.*?)</{tag}>', text, re.DOTALL)
     return match.group(1).strip() if match else None
 
@@ -6408,6 +6410,7 @@ RULES:
 - Answer MUST be an exact entity string from GRAPH EVIDENCE or CANDIDATE ENTITIES. Never output a bare number, year, or timestamp — use the full entity name.
 - If unsure whether an entity satisfies a constraint → KEEP it.
 - Over-output is better than discarding valid answers.
+- For "group/organization that fought in/participated in" questions, political entities (countries, confederacies, alliances) are valid answer types — not only military units.
 
 ━━━ EXAMPLES (illustrate METHOD only) ━━━
 
@@ -6632,6 +6635,7 @@ RULES:
 - Answer MUST be an exact entity string from GRAPH EVIDENCE or CANDIDATE ENTITIES. Never output a bare number, year, or timestamp — use the full entity name.
 - If unsure whether an entity satisfies a constraint → KEEP it.
 - Over-output is better than discarding valid answers.
+- For "group/organization that fought in/participated in" questions, political entities (countries, confederacies, alliances) are valid answer types — not only military units.
 
 ━━━ EXAMPLES (illustrate METHOD only) ━━━
 
