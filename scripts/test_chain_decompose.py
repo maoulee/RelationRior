@@ -6123,16 +6123,15 @@ async def stage_6_diagnosis_retry(session, cases: List[CaseState]):
         paths_new = prefer_breakpoint_hit_paths(
             paths_new, cs.breakpoints, cs.h_ids, cs.r_ids, cs.t_ids, cs.ents)
 
-        all_nodes_new = {cs.anchor_idx}
+        last2_new = set()
         for p in paths_new:
-            all_nodes_new.update(p.get("nodes", []))
-        hr_triples_new, hr_nodes_new = _collect_hr_frontier(
-            cs.anchor_idx, new_step_relations, cs.h_ids, cs.r_ids, cs.t_ids,
-            paths=paths_new)
-        all_nodes_new |= hr_nodes_new
+            nodes = p.get("nodes", [])
+            for n in nodes[-2:]:
+                if n != cs.anchor_idx:
+                    last2_new.add(n)
 
         new_candidates = []
-        for node_idx in sorted(all_nodes_new):
+        for node_idx in sorted(last2_new):
             if node_idx == cs.anchor_idx:
                 continue
             name = cs.ents[node_idx] if 0 <= node_idx < len(cs.ents) else ""
@@ -6156,7 +6155,9 @@ async def stage_6_diagnosis_retry(session, cases: List[CaseState]):
             cs.paths = paths_new
             cs.step_relations = new_step_relations
             cs.answer_candidates = unique_n
-            cs.all_subgraph_nodes = all_nodes_new
+            cs.all_subgraph_nodes = {cs.anchor_idx}
+            for p in paths_new:
+                cs.all_subgraph_nodes.update(p.get("nodes", []))
             if paths_new:
                 cs.max_depth = max(p.get("depth", 0) for p in paths_new)
                 cs.max_cov = max(len(p.get("covered_steps", frozenset())) for p in paths_new)
@@ -6544,7 +6545,7 @@ RULES:
 - No dates -> do NOT filter by time.
 - "When" -> event NAME (e.g. "2014 World Series"), NOT raw timestamp or year.
 - NEVER output "None". If all removed, pick most specific kept.
-- Answer MUST be an exact string from CANDIDATE ENTITIES above.
+- Answer MUST be an exact entity string from GRAPH EVIDENCE or CANDIDATE ENTITIES. Never output a bare number, year, or timestamp — use the full entity name.
 
 <answer>\\boxed{{exact entity from CANDIDATE ENTITIES}}</answer>
 Multiple: <answer>\\boxed{{e1}} \\boxed{{e2}}</answer>
@@ -6667,7 +6668,7 @@ NO text after </answer> tag."""
             ])
         else:
             prompts.append([
-                {"role": "system", "content": "You are a precise graph QA system. List evidence first, then eliminate candidates step by step. ALWAYS answer. Apply elimination rules: type mismatch → remove; explicit constraint fail → remove; implicit heuristics: unique role → most recent, events/achievements → all, attributes → all, group membership → all. When in doubt, keep candidates. Exact graph strings only."},
+                {"role": "system", "content": "You are a precise graph QA system using per-candidate constraint verification. First identify answer type and constraints, then check EACH candidate against type + explicit + implicit constraints, then output ALL passing candidates. Any entity in GRAPH EVIDENCE is valid, not just CANDIDATE ENTITIES. NEVER decide answer count before checking all candidates. Over-output is better than discarding."},
                 {"role": "user", "content": reason_prompt},
             ])
 
