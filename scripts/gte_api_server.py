@@ -34,6 +34,11 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 TASK_DESC = "Given a knowledge graph question, retrieve relevant graph relations that answer the question"
 
+# ── Config ──────────────────────────────────────────────────────────
+MAX_CAND_LEN = 128
+MAX_QUERY_LEN = 256
+DEFAULT_BATCH_SIZE = 8
+
 # ── Embedding Cache (LRU) ──────────────────────────────────────────
 MAX_CACHE_SIZE = 50000
 
@@ -91,7 +96,7 @@ def last_token_pool(last_hidden_states, attention_mask):
 
 class EmbedRequest(BaseModel):
     texts: List[str]
-    batch_size: int = 32
+    batch_size: int = DEFAULT_BATCH_SIZE
 
 
 class EmbedResponse(BaseModel):
@@ -127,36 +132,49 @@ class CacheStatsResponse(BaseModel):
 async def load_model():
     global tokenizer, model
     model_path = "/zhaoshu/llm/Qwen3-Embedding-0.6B"
-    print(f"Loading Qwen3-Embedding-0.6B from {model_path} with device_map=auto...")
+    print(f"Loading Qwen3-Embedding-0.6B from {model_path}...")
     tokenizer = AutoTokenizer.from_pretrained(model_path, padding_side='left', trust_remote_code=True)
     model = AutoModel.from_pretrained(
         model_path, trust_remote_code=True,
         torch_dtype=torch.float16,
-        device_map="auto",
+        low_cpu_mem_usage=True,
+        device_map=None,
     )
+    model.to(DEVICE)
     model.eval()
-    print(f"Model loaded. Device map: {model.hf_device_map}")
-    print(f"Hidden dim: {model.config.hidden_size}")
+    model.config.use_cache = False
+    print(f"Model loaded on {DEVICE}. Hidden dim: {model.config.hidden_size}")
 
 
-def _encode(texts: List[str], batch_size: int = 32) -> np.ndarray:
+def _encode(
+    texts: List[str],
+    batch_size: int = DEFAULT_BATCH_SIZE,
+    max_length: int = MAX_CAND_LEN,
+) -> np.ndarray:
     all_embs = []
-    # Get the device of the first model layer for token placement
-    first_device = next(model.parameters()).device
     for i in range(0, len(texts), batch_size):
         batch = texts[i:i + batch_size]
-        tokens = tokenizer(batch, padding=True, truncation=True, max_length=512, return_tensors='pt').to(first_device)
-        with torch.no_grad():
-            outputs = model(**tokens)
-        embs = last_token_pool(outputs.last_hidden_state, tokens['attention_mask'].to(outputs.last_hidden_state.device))
-        if embs.dtype == torch.float16:
-            embs = embs.float()
-        embs = F.normalize(embs, p=2, dim=1)
+        tokens = tokenizer(
+            batch, padding=True, truncation=True,
+            max_length=max_length, return_tensors='pt',
+        ).to(DEVICE)
+        with torch.inference_mode():
+            outputs = model(**tokens, use_cache=False)
+        embs = last_token_pool(
+            outputs.last_hidden_state,
+            tokens['attention_mask'].to(outputs.last_hidden_state.device),
+        )
+        embs = F.normalize(embs.float(), p=2, dim=1)
         all_embs.append(embs.cpu().numpy())
+        del tokens, outputs, embs
     return np.concatenate(all_embs, axis=0)
 
 
-def _encode_cached(texts: List[str], batch_size: int = 32) -> np.ndarray:
+def _encode_cached(
+    texts: List[str],
+    batch_size: int = DEFAULT_BATCH_SIZE,
+    max_length: int = MAX_CAND_LEN,
+) -> np.ndarray:
     """Encode texts, using cache for already-seen texts."""
     cached = emb_cache.get_many(texts)
     miss_indices = [i for i, c in enumerate(cached) if c is None]
@@ -164,7 +182,7 @@ def _encode_cached(texts: List[str], batch_size: int = 32) -> np.ndarray:
 
     if miss_indices:
         miss_texts = [texts[i] for i in miss_indices]
-        miss_embs = _encode(miss_texts, batch_size)
+        miss_embs = _encode(miss_texts, batch_size=batch_size, max_length=max_length)
         emb_cache.put_many(miss_texts, miss_embs)
         for j, idx in enumerate(miss_indices):
             result[idx] = miss_embs[j]
@@ -196,13 +214,13 @@ async def retrieve(req: RetrieveRequest):
     cand_texts = req.candidate_texts if req.candidate_texts else req.candidates
     assert len(cand_texts) == len(req.candidates), "candidate_texts must match candidates length"
 
-    # Query with Instruct prefix
+    # Query with Instruct prefix — use longer max_length for instruct+query
     task = req.instruct if req.instruct else TASK_DESC
     q_text = f'Instruct: {task}\nQuery: {req.query}'
-    q_emb = _encode([q_text])  # (1, dim)
+    q_emb = _encode([q_text], batch_size=1, max_length=MAX_QUERY_LEN)
 
-    # Candidates without prefix
-    c_embs = _encode_cached(cand_texts)  # (N, dim)
+    # Candidates without prefix — short max_length
+    c_embs = _encode_cached(cand_texts, batch_size=DEFAULT_BATCH_SIZE, max_length=MAX_CAND_LEN)
 
     scores = (q_emb @ c_embs.T)[0]
     top_k = min(req.top_k, len(req.candidates))

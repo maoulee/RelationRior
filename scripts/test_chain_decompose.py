@@ -21,8 +21,10 @@ LLM_API_URL = "http://localhost:8000/v1/chat/completions"
 LLM_MODEL = "qwen35-9b-local"
 GTE_API_URL = "http://localhost:8003"
 GTE_TASK_DESC = "Given a knowledge graph question, retrieve relevant graph relations that answer the question"
+REASON_STYLE = "default"  # "default" or "check"
 DEFAULT_PILOT = ROOT / "reports/stage_pipeline_test/find_check_plan_pilot_10cases/results.json"
 DEFAULT_CWQ = ROOT / "data/cwq_processed/test_literal_and_language_fixed.pkl"
+MASK_WRONG_TYPE = ROOT / "data/cwq_processed/mask_wrong_type_ids.json"
 DEFAULT_OUTPUT = ROOT / "reports/stage_pipeline_test/chain_decompose_test"
 
 DECOMP_PROMPT = '''Decompose the question into natural language sub-questions.
@@ -681,9 +683,11 @@ Step-by-step candidates:
 Rules:
 1. Each step connects FROM previous output TO next — select bridge relations
 2. Select 2-4 relevant relations per step. Pick the best candidates that match the step's purpose.
-3. Ignore unrelated attributes (currency, codes when asking about geography)
-4. If no relations fit a step, output empty list
-5. ORDER matters: rank by relevance to the step (most relevant first)
+3. When uncertain about a relation's relevance, INCLUDE it — missing a key relation is far worse
+   than having an extra irrelevant one.
+4. Ignore unrelated attributes (currency, codes when asking about geography)
+5. If no relations fit a step, output empty list
+6. ORDER matters: rank by relevance to the step (most relevant first)
 
 Output format:
 <analysis>
@@ -913,7 +917,7 @@ def parse_chain(text):
         node = m.group(2).strip()
         if not node or node.lower() in ('unknown', 'the', 'a'):
             node = 'node'
-        hops.append({'relation': m.group(1).strip(), 'endpoint': node, 'keyword': '', 'definition': ''})
+        hops.append({'relation': m.group(1).strip(), 'endpoint': node, 'keyword': '', 'definition': '', 'subquestion': ''})
 
     if not hops:
         return None
@@ -932,9 +936,11 @@ def parse_chain(text):
     if anm:
         kw = re.findall(r'-\s*Keyword:\s*(.+)', anm.group(1))
         df = re.findall(r'-\s*Definition:\s*(.+)', anm.group(1))
+        sq = re.findall(r'-\s*Sub-question:\s*(.+)', anm.group(1))
         for i, hop in enumerate(hops):
             if i < len(kw): hop['keyword'] = kw[i].strip()
             if i < len(df): hop['definition'] = df[i].strip()
+            if i < len(sq): hop['subquestion'] = sq[i].strip()
 
     return {'anchor': anchor, 'hops': hops, 'reasoning': reasoning,
             'endpoint_entities': endpoint_entities, 'answer_type': answer_type, 'raw': text}
@@ -3108,6 +3114,16 @@ def _render_path_tree(tree_data, max_lines=50, max_children=12):
             return cvt_id, []
         return cvt_id, [a.strip() for a in attrs_raw.split(", ") if a.strip()]
 
+    def _extract_inv_entities(cvt_display_name):
+        """Extract .inv attribute values from a CVT display string as separate named entities."""
+        _, attrs = _parse_cvt_display(cvt_display_name)
+        inv_entities = []
+        for attr in attrs:
+            if ".inv=" in attr:
+                rel_short, entity = attr.split(".inv=", 1)
+                inv_entities.append((rel_short, entity.strip()))
+        return inv_entities
+
     def _format_cvt_display(cvt_id, attrs):
         return f"{cvt_id}: [" + ", ".join(attrs) + "]"
 
@@ -3164,6 +3180,9 @@ def _render_path_tree(tree_data, max_lines=50, max_children=12):
                         if len(lines) >= max_lines:
                             return
                         lines.append(" " * (indent + 2) + f"- node{depth + 1}: {child_name}")
+                        for inv_rel, inv_ent in _extract_inv_entities(child_name):
+                            if len(lines) < max_lines:
+                                lines.append(" " * (indent + 4) + f"← also {inv_rel}: {inv_ent}")
                     omitted = len(child_names) - len(shown_names)
                     if omitted > 0 and len(lines) < max_lines:
                         lines.append(" " * (indent + 2) + f"- ... (+{omitted})")
@@ -3195,6 +3214,9 @@ def _render_path_tree(tree_data, max_lines=50, max_children=12):
                 folded = _fold_cvt_leaf_edges(child) if _is_cvt_display(child_name) else ""
                 suffix = f" ; {folded}" if folded else ""
                 lines.append(" " * (indent + 2) + f"- node{depth + 1}: {child_display}{suffix}")
+                for inv_rel, inv_ent in _extract_inv_entities(child_display):
+                    if len(lines) < max_lines:
+                        lines.append(" " * (indent + 4) + f"← also {inv_rel}: {inv_ent}")
                 if not folded:
                     _render_node(child, depth + 1, indent + 4)
             omitted = len(child_items) - len(shown_items)
@@ -3427,6 +3449,10 @@ Rate each entity: HIGH / MEDIUM / LOW ambiguity as starting point.
 Pick the entity with LOWEST ambiguity as anchor.
 Rule: the ACTIVE subject of the sentence is preferred over locative constraints.
 ("Who founded X" → X is anchor; "in Y" → Y is endpoint)
+Rule: When choosing between a specific named entity (event, unique title, person) and a
+generic entity (country, place, sport), ALWAYS prefer the specific named entity — it has
+fewer graph neighbors and produces more focused traversal.
+("2010 FIFA World Cup" > "Spain"; "I Am... World Tour" > "Beyoncé")
 
 ## Endpoint Selection (optional)
 From the REMAINING entities in the list, pick those that CONSTRAINT the answer path:
@@ -3538,8 +3564,8 @@ Reasoning: [1-3 short sentences. Identify the answer node and which endpoint con
 Analysis:
 1. [action description]
    - Keyword: core concept word
-   - Definition: RELATION SEMANTICS — what kind of link (containment, attribution, membership, temporal). NOT entity types.
-   (repeat for each hop)
+   - Definition: A concise dictionary-style definition of the relation concept in 15 words or less. Describe what the relation MEANS naturally. Do NOT use graph terminology (no "link", "node", "entity", "edge"). Examples: "neighboring countries sharing a common border", "the sport an athlete plays professionally", "a country's top-level administrative regions", "the official song representing a nation's identity".
+   - Sub-question: a complete natural language question for this specific hop, as if asking a person (e.g., "What country contains this department?", "Who is the governor of this state?", "What sport does this team play?").
 
 Chain:
 {anchor} -(action description)-> node ... -(final action)-> node"""
@@ -3897,16 +3923,24 @@ async def run_case(session, sample, pilot_row):
                         "llm_resolved": True,
                     })
 
-        # ── Shared: dual GTE + prune + expand ──────────────────────────
+        # ── Shared: multi-query GTE (definition + subquestion + question + keyword) + prune + expand ──
         step_candidates = {}
         gte_per_step = {}
         relation_retrieval_details = []
         for step in steps:
-            rq = step.get("definition") or step.get("question") or step.get("relation_query", "")
-            second_q = step.get("question") or step.get("relation_query", "")
+            # Build deduplicated queries: definition, subquestion, question, keyword, relation_query
+            _seen_q = set()
+            queries = []
+            for field in ["definition", "subquestion", "question", "keyword", "relation_query"]:
+                val = step.get(field, "")
+                if val and val.strip():
+                    ql = val.strip().lower()
+                    if ql not in _seen_q:
+                        _seen_q.add(ql)
+                        queries.append(val.strip())
             gte_all = {}
             queries_detail = []
-            for query in [rq, second_q]:
+            for query in queries:
                 rows = await gte_retrieve(session, query, rels, candidate_texts=rel_texts, top_k=10)
                 topk = []
                 for i, r in enumerate(rows):
@@ -3988,10 +4022,14 @@ async def run_case(session, sample, pilot_row):
                 paths=paths)
             all_subgraph_nodes |= hr_nodes
 
-            # Extract answer candidates from subgraph nodes (+ CVT expansion)
-            for node_idx in sorted(all_subgraph_nodes):
-                if node_idx == anchor_idx:
-                    continue
+            # Extract answer candidates from last 2 hops of each path (+ CVT expansion)
+            last2_nodes = set()
+            for path in paths:
+                nodes = path.get("nodes", [])
+                for n in nodes[-2:]:
+                    if n != anchor_idx:
+                        last2_nodes.add(n)
+            for node_idx in sorted(last2_nodes):
                 name = ents[node_idx] if 0 <= node_idx < len(ents) else ""
                 if is_cvt_like(name):
                     for cvt_idx, _ in expand_through_cvt(node_idx, h_ids, r_ids, t_ids, ents):
@@ -4334,6 +4372,7 @@ RULES:
 - For geographic constraints, only remove if graph evidence explicitly contradicts.
 - For temporal constraints, look for date values in evidence. No dates → do NOT filter.
 - "When" questions → output event NAME (e.g. "2014 World Series"), NOT raw timestamp.
+- Answer MUST be an exact entity string from GRAPH EVIDENCE or CANDIDATE ENTITIES. Never output a bare number, year, or timestamp — use the full entity name.
 - When in doubt, output ALL passing candidates. Over-output is better than discarding valid answers.
 
 ━━━ EXAMPLES (illustrate METHOD only — do NOT copy answers) ━━━
@@ -4510,7 +4549,11 @@ async def amain():
                         help="Number of relations to keep per step after pruning (default: 5)")
     parser.add_argument("--rerank-model", default="/zhaoshu/llm/Qwen/Qwen3-Reranker-0.6B",
                         help="Reranker model path (Qwen3-Reranker-0.6B)")
+    parser.add_argument("--reason-style", choices=["default", "check", "ecot", "entity"], default="default",
+                        help="Stage 8 prompt style: 'default', 'check' (checklist), 'ecot' (evidence-COT), or 'entity' (entity-centric 3-step)")
     args = parser.parse_args()
+    global REASON_STYLE
+    REASON_STYLE = args.reason_style
 
     pilot_rows = json.loads(Path(args.pilot_results).read_text())
     samples = pickle.loads(Path(args.cwq_pkl).read_bytes())
@@ -4520,6 +4563,12 @@ async def amain():
             sample_map[s["id"]] = s
         elif "question_id" in s:
             sample_map[s["question_id"]] = s
+
+    # Load mask: exclude truly wrong-type (答非所问) cases
+    masked_ids = set()
+    if MASK_WRONG_TYPE.exists():
+        masked_ids = set(json.loads(MASK_WRONG_TYPE.read_text()))
+        print(f"  Masked {len(masked_ids)} wrong-type cases")
 
     # Prepare cases
     cases_to_run = []
@@ -4531,6 +4580,8 @@ async def amain():
                     sample = s; break
         if not sample:
             print(f"SKIP: {pilot_row['case_id']}")
+            continue
+        if pilot_row["case_id"] in masked_ids:
             continue
         cases_to_run.append((sample, pilot_row, idx))
 
@@ -4843,6 +4894,7 @@ async def stage_1_decomposition(session, cases: List[CaseState]):
                     "relation_query": hop.get('keyword', hop['relation']),
                     "definition": hop.get('definition', ''),
                     "keyword": hop.get('keyword', ''),
+                    "subquestion": hop.get('subquestion', ''),
                     "endpoint": ep,
                     "endpoint_query": ep,
                 })
@@ -5198,13 +5250,28 @@ async def stage_3_gte_relation_retrieval(session, cases: List[CaseState]):
         return
 
     # Build flat list of all GTE calls: (cs, step, query)
+    # Queries: definition, subquestion, question, keyword, relation_query — deduplicated
     gte_calls = []
+    step_query_counts = []  # track per-(cs, step) query count for result distribution
     for cs in active:
+        cs_qcounts = []
         for step in cs.steps:
-            rq = step.get("definition") or step.get("question") or step.get("relation_query", "")
-            second_q = step.get("question") or step.get("relation_query", "")
-            for query in [rq, second_q]:
-                gte_calls.append((cs, step, query))
+            queries = []
+            for field in ["definition", "subquestion", "question", "keyword", "relation_query"]:
+                val = step.get(field, "")
+                if val and val.strip():
+                    queries.append(val.strip())
+            # Deduplicate (case-insensitive)
+            seen = set()
+            n = 0
+            for q in queries:
+                ql = q.lower()
+                if ql not in seen:
+                    seen.add(ql)
+                    gte_calls.append((cs, step, q))
+                    n += 1
+            cs_qcounts.append(n)
+        step_query_counts.append(cs_qcounts)
 
     _gte_sem3 = asyncio.Semaphore(3)
     async def _gte_limited3(coro):
@@ -5217,14 +5284,15 @@ async def stage_3_gte_relation_retrieval(session, cases: List[CaseState]):
 
     # Distribute results back
     call_idx = 0
-    for cs in active:
+    for cs_idx, cs in enumerate(active):
         cs.step_candidates = {}
         cs.gte_per_step = {}
         cs.relation_retrieval_details = []
-        for step in cs.steps:
+        for step_idx, step in enumerate(cs.steps):
+            n_queries = step_query_counts[cs_idx][step_idx]
             gte_all = {}
             queries_detail = []
-            for _ in range(2):  # two queries per step
+            for _ in range(n_queries):
                 result = gte_results[call_idx]
                 call_idx += 1
                 if isinstance(result, Exception):
@@ -5758,11 +5826,15 @@ async def stage_5_graph_traversal(cases: List[CaseState]):
             paths=cs.paths)
         cs.all_subgraph_nodes |= hr_nodes
 
-        # Answer candidates
+        # Answer candidates from last 2 hops of each path (+ CVT expansion)
         answer_candidates = []
-        for node_idx in sorted(cs.all_subgraph_nodes):
-            if node_idx == cs.anchor_idx:
-                continue
+        last2_nodes = set()
+        for path in cs.paths:
+            nodes = path.get("nodes", [])
+            for n in nodes[-2:]:
+                if n != cs.anchor_idx:
+                    last2_nodes.add(n)
+        for node_idx in sorted(last2_nodes):
             name = cs.ents[node_idx] if 0 <= node_idx < len(cs.ents) else ""
             if is_cvt_like(name):
                 for cvt_idx, _ in expand_through_cvt(node_idx, cs.h_ids, cs.r_ids, cs.t_ids, cs.ents):
@@ -5784,7 +5856,7 @@ async def stage_5_graph_traversal(cases: List[CaseState]):
         cs.answer_candidates = unique
 
         # ── Level 1-2: Progressive relation/layer filtering for candidate explosion ──
-        if len(cs.answer_candidates) > CANDIDATE_THRESHOLD and cs.paths:
+        if len(cs.paths) > CANDIDATE_THRESHOLD and cs.paths:
             step_rel_quality = evaluate_step_relations(
                 cs.anchor_idx, cs.paths, cs.step_relations, cs.ents)
 
@@ -5820,18 +5892,16 @@ async def stage_5_graph_traversal(cases: List[CaseState]):
                 paths_new = prefer_breakpoint_hit_paths(
                     paths_new, cs.breakpoints, cs.h_ids, cs.r_ids, cs.t_ids, cs.ents)
 
-                # Rebuild candidates from filtered paths
-                all_nodes_new = {cs.anchor_idx}
+                # Rebuild candidates from filtered paths (last 2 hops only)
+                last2_new = set()
                 for p in paths_new:
-                    all_nodes_new.update(p.get("nodes", []))
-                expanded_rels_new = filtered_step_relations
-                hr_triples_new, hr_nodes_new = _collect_hr_frontier(
-                    cs.anchor_idx, expanded_rels_new, cs.h_ids, cs.r_ids, cs.t_ids,
-                    paths=paths_new)
-                all_nodes_new |= hr_nodes_new
+                    nodes = p.get("nodes", [])
+                    for n in nodes[-2:]:
+                        if n != cs.anchor_idx:
+                            last2_new.add(n)
 
                 new_candidates = []
-                for node_idx in sorted(all_nodes_new):
+                for node_idx in sorted(last2_new):
                     if node_idx == cs.anchor_idx:
                         continue
                     name = cs.ents[node_idx] if 0 <= node_idx < len(cs.ents) else ""
@@ -5883,7 +5953,9 @@ async def stage_5_graph_traversal(cases: List[CaseState]):
                     cs.paths = paths_new
                     cs.step_relations = filtered_step_relations
                     cs.answer_candidates = unique_n
-                    cs.all_subgraph_nodes = all_nodes_new
+                    cs.all_subgraph_nodes = {cs.anchor_idx}
+                    for p in paths_new:
+                        cs.all_subgraph_nodes.update(p.get("nodes", []))
                     if paths_new:
                         cs.max_depth = max(p.get("depth", 0) for p in paths_new)
                         cs.max_cov = max(len(p.get("covered_steps", frozenset())) for p in paths_new)
@@ -5923,7 +5995,7 @@ async def stage_6_diagnosis_retry(session, cases: List[CaseState]):
 
     # ── Level 3: Re-prune relations for candidate explosion cases ──
     explosive = [cs for cs in active
-                 if len(cs.answer_candidates) > CANDIDATE_THRESHOLD and not cs.needs_direct_answer]
+                 if len(cs.paths) > CANDIDATE_THRESHOLD and not cs.needs_direct_answer]
     l3_count = 0
     for cs in explosive:
         # Try re-pruning with stricter prompt
@@ -5955,17 +6027,16 @@ async def stage_6_diagnosis_retry(session, cases: List[CaseState]):
         paths_new = prefer_breakpoint_hit_paths(
             paths_new, cs.breakpoints, cs.h_ids, cs.r_ids, cs.t_ids, cs.ents)
 
-        # Rebuild candidates
-        all_nodes_new = {cs.anchor_idx}
+        # Rebuild candidates (last 2 hops only)
+        last2_new = set()
         for p in paths_new:
-            all_nodes_new.update(p.get("nodes", []))
-        hr_triples_new, hr_nodes_new = _collect_hr_frontier(
-            cs.anchor_idx, new_step_relations, cs.h_ids, cs.r_ids, cs.t_ids,
-            paths=paths_new)
-        all_nodes_new |= hr_nodes_new
+            nodes = p.get("nodes", [])
+            for n in nodes[-2:]:
+                if n != cs.anchor_idx:
+                    last2_new.add(n)
 
         new_candidates = []
-        for node_idx in sorted(all_nodes_new):
+        for node_idx in sorted(last2_new):
             if node_idx == cs.anchor_idx:
                 continue
             name = cs.ents[node_idx] if 0 <= node_idx < len(cs.ents) else ""
@@ -6001,7 +6072,7 @@ async def stage_6_diagnosis_retry(session, cases: List[CaseState]):
 
     # ── Level 4: Anchor swap for persistent explosion ──
     still_explosive = [cs for cs in active
-                       if len(cs.answer_candidates) > CANDIDATE_THRESHOLD and not cs.needs_direct_answer]
+                       if len(cs.paths) > CANDIDATE_THRESHOLD and not cs.needs_direct_answer]
     l4_count = 0
     for cs in still_explosive:
         # Try a different anchor from NER top ents
@@ -6290,69 +6361,315 @@ Note: Graph triples could not be extracted, but answer candidates are available 
 GRAPH EVIDENCE:
 {pattern_text}
 
-━━━ EVIDENCE-BASED ANSWER SELECTION ━━━
+━━━ ENTITY-CENTRIC REASONING ━━━
 
-STEP 1 — LIST EVIDENCE (be concise)
-For each pattern, list the candidate entities and their supporting graph evidence.
-Format: Pattern N: [MATCH/MISMATCH] — one reason → candidates: [entity1, entity2, ...]
+STEP 1 — QUESTION UNDERSTANDING
+Answer type: what kind of entity the question seeks (person, country, event, year, etc.).
+Explicit constraints: conditions directly stated (dates, locations, superlatives, quantities).
+Implicit constraint heuristic (pick one):
+  - UNIQUE ROLE ("the governor/president/leader") without time qualifier → MOST RECENT only
+  - EVENTS/ACHIEVEMENTS ("wins/championships/movies/albums") → return ALL matching
+  - ATTRIBUTES/PROPERTIES ("languages/religions/currency") → return ALL that apply
+  - GROUP MEMBERSHIP ("countries in / states in / members of") → return ALL matching members
 
-STEP 2 — ELIMINATE by TYPE
-Answer type from question: ____
-Eliminate candidates that are NOT this type.
+STEP 2 — PER-CANDIDATE CONSTRAINT VERIFICATION
+For EVERY candidate entity found in GRAPH EVIDENCE (including intermediate nodes and CVT attribute values), check:
 
-STEP 3 — ELIMINATE by CONSTRAINTS
-Explicit constraints from question: ____
-Implicit constraints (apply heuristics):
-- UNIQUE ROLE ("the governor/president/leader") no time qualifier → most recent
-- EVENTS/ACHIEVEMENTS ("wins/championships/movies") → return ALL
-- ATTRIBUTES ("languages/religions/currency") → return ALL
-- GROUP MEMBERSHIP ("countries in/states in") → return ALL
-For each remaining candidate: PASS or FAIL with one reason.
-If graph evidence does NOT show failure → KEEP.
+2a. TYPE MATCH: Does this candidate's type match the answer type?
+  Format: entity → KEEP (type matches) / REMOVE (type mismatch, state why)
 
-STEP 4 — OUTPUT remaining candidates
-- 1 candidate → output it
-- Multiple + unique role → most recent by graph dates; no dates → output ALL
-- Multiple + no implicit limit → output ALL
-- NEVER discard based on singular phrasing alone
+2b. EXPLICIT CONSTRAINT CHECK (for type-matched candidates):
+  For each explicit constraint from the question, check against graph evidence:
+  Format: Constraint "[description]": entity1 PASS (evidence: ...), entity2 FAIL (evidence: ...)
+  If graph evidence does NOT show failure → KEEP the entity.
+  No dates in evidence → do NOT filter by time.
+
+2c. IMPLICIT CONSTRAINT CHECK (for candidates passing 2b):
+  Apply the heuristic from Step 1:
+  - If unique role → pick MOST RECENT by graph dates; no dates → output ALL
+  - If events/attributes/group → ALL candidates PASS
+
+  Format: entity → PASS / FAIL (one reason)
+
+STEP 3 — OUTPUT DECISION
+Collect ALL candidates that PASS steps 2a + 2b + 2c.
+- 1 entity → output it
+- Multiple + unique role heuristic → pick MOST RECENT by graph dates; no dates → output ALL
+- Multiple + events/attributes/group → output ALL
+- Zero entities passed → <answer>None</answer>
 
 RULES:
-- Prefer graph evidence over external knowledge. NEVER use outside information.
-- Answer may be at intermediate hop, not only terminal node.
-- No dates in evidence → do NOT filter by time.
-- "When" questions → output event NAME, not raw timestamp.
-- When in doubt, output ALL remaining candidates.
+- Graph evidence ONLY. No outside knowledge.
+- ANY entity in GRAPH EVIDENCE is a valid answer — including intermediate nodes and CVT attribute values.
+- NEVER decide answer count before completing Step 2. Evaluate ALL candidates first.
+- Singular/plural phrasing alone does NOT determine answer count.
+- "When" questions → output event NAME (e.g. "2014 World Series"), NOT raw timestamp.
+- Answer MUST be an exact entity string from GRAPH EVIDENCE or CANDIDATE ENTITIES. Never output a bare number, year, or timestamp — use the full entity name.
+- If unsure whether an entity satisfies a constraint → KEEP it.
+- Over-output is better than discarding valid answers.
 
 ━━━ EXAMPLES (illustrate METHOD only) ━━━
 
 Example A — TYPE FILTER + unique role:
 Q: "Who is the president of France?"
-Candidates: [Emmanuel Macron, François Hollande, France, President, 2017-05-14]
-Step 2 (type person): ELIMINATE [France, President, 2017-05-14]. Keep [Macron, Hollande].
-Step 3 (unique role, most recent): PASS=[Macron(recent)], FAIL=[Hollande(older)]
-→ Macron
+2a (type person): KEEP [Macron, Hollande]. REMOVE [France(country), President(role), 2017-05-14(date)].
+2b: No explicit time constraint.
+2c (unique role, most recent): Macron PASS (term start 2017-05-14), Hollande FAIL (term start 2012-05-15).
+3: Macron.
 
 Example B — EVENTS → return ALL:
 Q: "What movies did the actor who played Forrest Gump star in?"
-Candidates: [Forrest Gump, Tom Hanks, Saving Private Ryan, Cast Away, Actor, 1994]
-Step 2 (type movie): ELIMINATE [Tom Hanks, Actor, 1994]. Keep [Forrest Gump, Saving Private Ryan, Cast Away].
-Step 3 (events → ALL): All PASS.
-→ Forrest Gump | Saving Private Ryan | Cast Away
+2a (type movie): KEEP [Forrest Gump, Saving Private Ryan, Cast Away]. REMOVE [Tom Hanks(person), Actor(role), 1994(year)].
+2b: No additional constraints beyond basic fact.
+2c (events → ALL): All PASS.
+3: Forrest Gump | Saving Private Ryan | Cast Away.
 
 ━━━ OUTPUT FORMAT ━━━
-<evidence_summary>
-Pattern evaluation and elimination steps. Be brief: one line per step.
-</evidence_summary>
+<reasoning>
+Step 1: answer type, explicit constraints, implicit heuristic.
+Step 2a: type match per candidate.
+Step 2b: explicit constraint check per candidate.
+Step 2c: implicit constraint check per candidate.
+Step 3: passing set and output decision.
+</reasoning>
 <answer>\\boxed{{exact entity}}</answer>
-
-Multiple answers: <answer>\\boxed{{e1}} \\boxed{{e2}} \\boxed{{e3}}</answer>
+Multiple: <answer>\\boxed{{e1}} \\boxed{{e2}}</answer>
+No valid entity: <answer>None</answer>
 NO text after </answer> tag."""
 
         cs.llm_reasoning_prompt = reason_prompt
-        prompts.append([
-            {"role": "system", "content": "You are a precise graph QA system. List evidence first, then eliminate candidates step by step. ALWAYS answer. Apply elimination rules: type mismatch → remove; explicit constraint fail → remove; implicit heuristics: unique role → most recent, events/achievements → all, attributes → all, group membership → all. When in doubt, keep candidates. Exact graph strings only."},
-            {"role": "user", "content": reason_prompt},
-        ])
+        if REASON_STYLE == "check":
+            # ── Checklist v2: mechanical checks + type/granularity verification ──
+            n_cand = len(cs.answer_candidates) if cs.answer_candidates else 0
+            cand_limit = min(n_cand, 60)
+            cand_names = list(dict.fromkeys(cs.answer_candidates[:cand_limit])) if cs.answer_candidates else []
+            cand_list = "\n".join(f"  - {c}" for c in cand_names) if cand_names else "  (see graph evidence above)"
+            atype = cs.answer_type or "(infer from question)"
+            type_check_lines = "\n".join(
+                f"  {c} -> TYPE: [matches {atype}?] -> KEEP / REMOVE"
+                for c in cand_names[:25]
+            )
+            reason_prompt = f"""QUESTION: {cs.question}
+{answer_type_hint}{rewritten_hint}
+
+GRAPH EVIDENCE:
+{pattern_text}
+
+CANDIDATE ENTITIES:
+{cand_list}
+
+=== CHECKLIST ===
+
+□ ANSWER TYPE: {atype}
+
+□ TYPE FILTER — check each candidate's type matches answer type:
+{type_check_lines}
+
+□ CONSTRAINTS from question:
+  - ____
+  Per kept candidate: PASS / FAIL
+
+□ GRANULARITY CHECK:
+  Any candidate is a parent/child of another (e.g. city vs stadium, country vs sport)?
+  -> Pick the one matching question specificity.
+
+□ CARDINALITY (pick one):
+  [ ] unique role ("the X", no time) -> MOST RECENT only
+  [ ] events / achievements -> ALL
+  [ ] attributes / properties -> ALL
+  [ ] group membership -> ALL
+  [ ] none of the above -> ALL remaining
+
+□ KEPT AFTER FILTERS: [list here]
+
+RULES:
+- Graph evidence only. No outside knowledge.
+- No dates in evidence -> do NOT remove by time.
+- "When" -> event NAME, not raw year.
+- Answer MUST be an exact entity string from GRAPH EVIDENCE or CANDIDATE ENTITIES. Never output a bare number, year, or timestamp — use the full entity name.
+- Answer may be at intermediate hop.
+- In doubt -> KEEP.
+- NEVER output "None". If all removed, pick most specific candidate.
+
+ANSWER STRING (copy exactly from CANDIDATE ENTITIES above):
+____
+
+<answer>\\boxed{{exact entity}}</answer>
+Multiple: <answer>\\boxed{{e1}} \\boxed{{e2}}</answer>
+NO text after </answer>."""
+            cs.llm_reasoning_prompt = reason_prompt
+            prompts.append([
+                {"role": "system", "content": "You are a graph fact-checker. Fill the checklist mechanically. One word per judgement (KEEP/REMOVE, PASS/FAIL). No paragraphs. Always output an answer. Copy entity strings exactly from CANDIDATE ENTITIES."},
+                {"role": "user", "content": reason_prompt},
+            ])
+        elif REASON_STYLE == "ecot":
+            # ── Evidence-COT hybrid: checklist structure + 1-sentence evidence per item ──
+            n_cand = len(cs.answer_candidates) if cs.answer_candidates else 0
+            cand_limit = min(n_cand, 60)
+            cand_names = list(dict.fromkeys(cs.answer_candidates[:cand_limit])) if cs.answer_candidates else []
+            cand_list = "\n".join(f"  - {c}" for c in cand_names) if cand_names else "  (see graph evidence above)"
+            atype = cs.answer_type or "(infer from question)"
+            type_check_lines = "\n".join(
+                f"  {c} -> [{atype}?] KEEP/REMOVE because [one fact from graph]"
+                for c in cand_names[:25]
+            )
+            reason_prompt = f"""QUESTION: {cs.question}
+{answer_type_hint}{rewritten_hint}
+
+GRAPH EVIDENCE:
+{pattern_text}
+
+CANDIDATE ENTITIES:
+{cand_list}
+
+=== STRUCTURED EVIDENCE CHECK ===
+
+1. ANSWER TYPE: {atype}
+
+2. TYPE + EVIDENCE CHECK (one fact per candidate):
+{type_check_lines}
+
+3. CONSTRAINT CHECK:
+   Question requires: ____
+   Kept candidates that satisfy it: ____
+
+4. GRANULARITY: If any kept candidate is a parent of another (city vs venue), pick the specific one.
+
+5. CARDINALITY: unique role -> MOST RECENT | events/attributes -> ALL | in doubt -> ALL
+
+6. KEPT: [list final kept candidates here]
+
+RULES:
+- Graph evidence only. No outside knowledge.
+- No dates -> do NOT filter by time.
+- "When" -> event NAME (e.g. "2014 World Series"), NOT raw timestamp or year.
+- NEVER output "None". If all removed, pick most specific kept.
+- Answer MUST be an exact string from CANDIDATE ENTITIES above.
+
+<answer>\\boxed{{exact entity from CANDIDATE ENTITIES}}</answer>
+Multiple: <answer>\\boxed{{e1}} \\boxed{{e2}}</answer>
+NO text after </answer>."""
+            cs.llm_reasoning_prompt = reason_prompt
+            prompts.append([
+                {"role": "system", "content": "You are a precise graph QA checker. For each candidate, give ONE fact from graph evidence. Keep total under 10 lines. Answer MUST be an exact string from the candidate list. No outside knowledge."},
+                {"role": "user", "content": reason_prompt},
+            ])
+        elif REASON_STYLE == "entity":
+            # ── Entity-centric 3-step: basic fact → constraint check → output ──
+            n_cand = len(cs.answer_candidates) if cs.answer_candidates else 0
+            cand_limit = min(n_cand, 60)
+            cand_names = list(dict.fromkeys(cs.answer_candidates[:cand_limit])) if cs.answer_candidates else []
+            cand_list = "\n".join(f"  - {c}" for c in cand_names) if cand_names else "  (see graph evidence above)"
+            atype = cs.answer_type or "(infer from question)"
+
+            # Extract relation names from selected patterns for basic-fact disambiguation
+            rel_names = set()
+            for i in cs.selected_paths:
+                if i < len(cs.logical_paths):
+                    lp = cs.logical_paths[i]
+                    for hop in lp.get("hops", []):
+                        r = hop.get("relation", "")
+                        if r:
+                            rel_names.add(r)
+            rel_list = ", ".join(sorted(rel_names)[:12]) if rel_names else "(see evidence)"
+
+            reason_prompt = f"""QUESTION: {cs.question}
+{answer_type_hint}{rewritten_hint}
+
+GRAPH EVIDENCE:
+{pattern_text}
+
+CANDIDATE ENTITIES (traversal endpoints):
+{cand_list}
+
+NOTE: Any entity name appearing in GRAPH EVIDENCE (including intermediate nodes, CVT attribute values, and ← also lines) is also a valid answer. Do NOT restrict answers to the list above only.
+
+━━━ ENTITY-CENTRIC REASONING ━━━
+
+STEP 1 — QUESTION UNDERSTANDING
+Answer type: what kind of entity the question seeks (person, country, event, year, etc.).
+Available relations in evidence: {rel_list}
+Explicit constraints from the question (time, location, superlatives, quantities, etc.): ____
+Implicit constraint heuristic (pick one):
+  - UNIQUE ROLE ("the governor/president/leader") without time qualifier → MOST RECENT only
+  - EVENTS/ACHIEVEMENTS ("wins/championships/movies/albums") → return ALL matching
+  - ATTRIBUTES/PROPERTIES ("languages/religions/currency") → return ALL that apply
+  - GROUP MEMBERSHIP ("countries in / states in / members of") → return ALL matching members
+
+STEP 2 — PER-CANDIDATE CONSTRAINT VERIFICATION
+For EVERY candidate entity found in GRAPH EVIDENCE (including intermediate nodes and CVT attribute values), check:
+
+2a. TYPE MATCH: Does this candidate's type match the answer type?
+  Format: entity → KEEP (type matches) / REMOVE (type mismatch, state why)
+
+2b. EXPLICIT CONSTRAINT CHECK (for type-matched candidates):
+  For each explicit constraint from the question, check against graph evidence:
+  Format: Constraint "[description]": entity1 PASS (evidence: ...), entity2 FAIL (evidence: ...)
+  If graph evidence does NOT show failure → KEEP the entity.
+  No dates in evidence → do NOT filter by time.
+
+2c. IMPLICIT CONSTRAINT CHECK (for candidates passing 2b):
+  Apply the heuristic from Step 1:
+  - If unique role → pick MOST RECENT by graph dates; no dates → output ALL
+  - If events/attributes/group → ALL candidates PASS
+
+  Format: entity → PASS / FAIL (one reason)
+
+STEP 3 — OUTPUT DECISION
+Collect ALL candidates that PASS steps 2a + 2b + 2c.
+- 1 entity → output it
+- Multiple + unique role heuristic → pick MOST RECENT by graph dates; no dates → output ALL
+- Multiple + events/attributes/group → output ALL
+- Zero entities passed → <answer>None</answer>
+
+RULES:
+- Graph evidence ONLY. No outside knowledge.
+- ANY entity in GRAPH EVIDENCE is a valid answer — including intermediate nodes, CVT attribute values, and entities in ← also lines.
+- NEVER decide answer count before completing Step 2. Evaluate ALL candidates first.
+- Singular/plural phrasing alone does NOT determine answer count.
+- "When" questions → output event NAME (e.g. "2014 World Series"), NOT raw timestamp.
+- Answer MUST be an exact entity string from GRAPH EVIDENCE or CANDIDATE ENTITIES. Never output a bare number, year, or timestamp — use the full entity name.
+- If unsure whether an entity satisfies a constraint → KEEP it.
+- Over-output is better than discarding valid answers.
+
+━━━ EXAMPLES (illustrate METHOD only) ━━━
+
+Example A — TYPE FILTER + unique role:
+Q: "Who is the president of France?"
+2a (type person): KEEP [Macron, Hollande]. REMOVE [France(country), President(role), 2017-05-14(date)].
+2b: No explicit time constraint.
+2c (unique role, most recent): Macron PASS (term start 2017-05-14), Hollande FAIL (term start 2012-05-15).
+3: Macron.
+
+Example B — EVENTS → return ALL:
+Q: "What movies did the actor who played Forrest Gump star in?"
+2a (type movie): KEEP [Forrest Gump, Saving Private Ryan, Cast Away]. REMOVE [Tom Hanks(person), Actor(role), 1994(year)].
+2b: No additional constraints beyond basic fact.
+2c (events → ALL): All PASS.
+3: Forrest Gump | Saving Private Ryan | Cast Away.
+
+━━━ OUTPUT FORMAT ━━━
+<reasoning>
+Step 1: answer type, explicit constraints, implicit heuristic.
+Step 2a: type match per candidate.
+Step 2b: explicit constraint check per candidate.
+Step 2c: implicit constraint check per candidate.
+Step 3: passing set and output decision.
+</reasoning>
+<answer>\\boxed{{exact entity}}</answer>
+Multiple: <answer>\\boxed{{e1}} \\boxed{{e2}}</answer>
+No valid entity: <answer>None</answer>
+NO text after </answer> tag."""
+            cs.llm_reasoning_prompt = reason_prompt
+            prompts.append([
+                {"role": "system", "content": "You are a precise graph QA system using per-candidate constraint verification. First identify answer type and constraints, then check EACH candidate against type + explicit + implicit constraints, then output ALL passing candidates. Any entity in GRAPH EVIDENCE is valid, not just CANDIDATE ENTITIES. NEVER decide answer count before checking all candidates. Over-output is better than discarding."},
+                {"role": "user", "content": reason_prompt},
+            ])
+        else:
+            prompts.append([
+                {"role": "system", "content": "You are a precise graph QA system. List evidence first, then eliminate candidates step by step. ALWAYS answer. Apply elimination rules: type mismatch → remove; explicit constraint fail → remove; implicit heuristics: unique role → most recent, events/achievements → all, attributes → all, group membership → all. When in doubt, keep candidates. Exact graph strings only."},
+                {"role": "user", "content": reason_prompt},
+            ])
 
     # --- Direct answer cases: parametric-only reasoning ---
     for cs in direct_cases:
@@ -6394,6 +6711,159 @@ No reliable graph paths were found for this question. Use your parametric knowle
             cs.llm_f1 = llm_stats['f1']
             cs.llm_precision = llm_stats['precision']
             cs.llm_recall = llm_stats['recall']
+
+    # ── Front-end defense: retry if answer is a raw year/timestamp instead of entity ──
+    retry_cases = []
+    retry_prompts = []
+    for cs in cases_with_triples:
+        if not cs.answer_candidates or not cs.llm_answer:
+            continue
+        preds = [p.strip() for p in cs.llm_answer.split(" | ")]
+        invalid_preds = []
+        for p in preds:
+            # Only retry if answer looks like a raw year/timestamp (not a real entity)
+            if re.fullmatch(r'\d{4}(-\d{2}-\d{2}.*|-08:00)?', p):
+                invalid_preds.append(p)
+                continue
+            # Skip retry for anything else — it's likely a valid entity from evidence tree
+        if invalid_preds:
+            retry_cases.append(cs)
+            cand_str = ", ".join(cs.answer_candidates[:20])
+            # P4: detect if invalid answer is a raw year for a "when" question
+            is_year_retry = any(re.fullmatch(r'\d{4}(-\d{2}-\d{2}.*|-08:00)?', p) for p in invalid_preds)
+            year_hint = ""
+            if is_year_retry:
+                year_hint = """
+NOTE: You output a raw year/timestamp. The question asks "when" — the answer must be the
+EVENT ENTITY NAME (e.g. "2008 NBA Finals"), not just the year number. Pick the event entity."""
+            retry_prompts.append([
+                {"role": "system", "content": "Your previous answer was NOT a valid entity from the graph. You MUST pick from the candidate list. Use exact entity strings only — never raw years or timestamps."},
+                {"role": "user", "content": f"""QUESTION: {cs.question}
+
+Your previous answer was: {cs.llm_answer}
+This is NOT a valid entity from the graph.
+
+VALID CANDIDATES (pick one or more exact strings):
+{cand_str}
+{year_hint}
+Pick the candidate that best answers the question. Output ONLY the exact candidate string.
+
+<answer>\\boxed{{candidate}}</answer>"""},
+            ])
+
+    # P2: batch retry outside the loop
+    if retry_cases:
+        retry_responses = await batch_call_llm(session, retry_prompts, max_tokens=400)
+        for cs, raw in zip(retry_cases, retry_responses):
+            ans_match = re.search(r'<answer>(.*?)</answer>', raw or "", re.DOTALL)
+            if ans_match:
+                boxed = re.findall(r'\\boxed\{([^}]+)\}', ans_match.group(1))
+                if boxed:
+                    new_answer = " | ".join(b.strip() for b in boxed)
+                else:
+                    new_answer = ans_match.group(1).strip()
+            else:
+                lines = [l.strip() for l in (raw or "").strip().split('\n') if l.strip()]
+                new_answer = lines[-1] if lines else cs.llm_answer
+            cs.llm_answer = new_answer
+            cs.llm_reasoning_full += f"\n\n[FRONTEND RETRY] Original: invalid. Retry answer: {new_answer}"
+            llm_preds = [p.strip() for p in new_answer.split(" | ")]
+            cs.llm_hit = candidate_hit(llm_preds, cs.gt_answers)
+            llm_stats = compute_match_stats(llm_preds, cs.gt_answers)
+            cs.llm_f1 = llm_stats['f1']
+            cs.llm_precision = llm_stats['precision']
+            cs.llm_recall = llm_stats['recall']
+
+    # ── Path reselect retry: if LLM says "None", try different paths ──
+    none_cases = [cs for cs in cases_with_triples
+                  if cs.llm_answer and cs.llm_answer.strip().lower() in ("none", "n/a", "null", "")
+                  and cs.logical_paths and len(cs.logical_paths) > len(cs.selected_paths)]
+    if none_cases:
+        retry_prompts = []
+        for cs in none_cases:
+            prev_sel = set(cs.selected_paths)
+            remaining = [i for i in range(len(cs.logical_paths)) if i not in prev_sel]
+            if not remaining:
+                continue
+            # Re-select from remaining paths: pick top diverse ones not previously selected
+            seen_chains = set()
+            new_indices = []
+            for i in remaining:
+                lp = cs.logical_paths[i]
+                chain_sig = tuple(lp.get("rel_chain", [])[:2])
+                if chain_sig in seen_chains and len(seen_chains) >= 3:
+                    continue
+                seen_chains.add(chain_sig)
+                new_indices.append(i)
+                if len(new_indices) >= 4:
+                    break
+            if len(new_indices) < 1:
+                new_indices = remaining[:3]
+            cs.selected_paths = new_indices
+            cs._path_reselect_retry = True
+
+            # Rebuild evidence with new paths
+            selected_pattern_objs = [cs.logical_paths[i] for i in new_indices if i < len(cs.logical_paths)]
+            breakpoint_indices = set(cs.breakpoints.values())
+            selected_pattern_objs.extend(build_endpoint_rescue_patterns(
+                cs.paths, selected_pattern_objs, cs.ents, cs.rels, cs.anchor_idx, breakpoint_indices,
+            ))
+            pat_evidence = build_pattern_evidence_triples(
+                selected_pattern_objs, cs.ents, cs.rels, cs.h_ids, cs.r_ids, cs.t_ids, cs.anchor_idx,
+                max_grouped_lines=120)
+            if pat_evidence:
+                pattern_text = format_pattern_evidence(pat_evidence)
+            else:
+                candidates_str = ", ".join(cs.answer_candidates[:20]) if cs.answer_candidates else "No candidates"
+                pattern_text = f"ANSWER CANDIDATES FROM GRAPH TRAVERSAL:\n{candidates_str}"
+
+            answer_type_hint = f"\nAnswer type: {cs.answer_type}" if cs.answer_type else ""
+            rewritten_hint = ""
+            if hasattr(cs, 'rewritten_question') and cs.rewritten_question and cs.rewritten_question != cs.question:
+                rewritten_hint = f"\nRewritten: {cs.rewritten_question}"
+
+            retry_prompt = f"""QUESTION: {cs.question}
+{answer_type_hint}{rewritten_hint}
+
+GRAPH EVIDENCE (re-selected paths — previous paths had insufficient evidence):
+{pattern_text}
+
+Previous reasoning found NO valid answer. These are ALTERNATIVE paths. Find the answer here.
+
+<evidence_summary>
+Brief evaluation of new paths.
+</evidence_summary>
+<answer>\\boxed{{exact entity}}</answer>
+Multiple: <answer>\\boxed{{e1}} \\boxed{{e2}}</answer>
+NO text after </answer>."""
+            retry_prompts.append([
+                {"role": "system", "content": "You are a precise graph QA system. Previous paths had insufficient evidence. These are NEW alternative paths. Find the answer from the graph evidence. ALWAYS answer. Exact graph strings only."},
+                {"role": "user", "content": retry_prompt},
+            ])
+
+        if retry_prompts:
+            retry_responses = await batch_call_llm(session, retry_prompts, max_tokens=2000)
+            for cs, raw in zip([c for c in none_cases if hasattr(c, '_path_reselect_retry')], retry_responses):
+                ans_match = re.search(r'<answer>(.*?)</answer>', raw or "", re.DOTALL)
+                if ans_match:
+                    boxed = re.findall(r'\\boxed\{([^}]+)\}', ans_match.group(1))
+                    if boxed:
+                        new_answer = " | ".join(b.strip() for b in boxed)
+                    else:
+                        new_answer = ans_match.group(1).strip()
+                else:
+                    lines = [l.strip() for l in (raw or "").strip().split('\n') if l.strip()]
+                    new_answer = lines[-1] if lines else cs.llm_answer
+                cs.llm_reasoning_full += f"\n\n[PATH RESELECT RETRY] New paths selected. Retry answer: {new_answer}"
+                cs.llm_answer = new_answer
+                llm_preds = [p.strip() for p in new_answer.split(" | ")]
+                cs.llm_hit = candidate_hit(llm_preds, cs.gt_answers)
+                llm_stats = compute_match_stats(llm_preds, cs.gt_answers)
+                cs.llm_f1 = llm_stats['f1']
+                cs.llm_precision = llm_stats['precision']
+                cs.llm_recall = llm_stats['recall']
+                if hasattr(cs, '_path_reselect_retry'):
+                    del cs._path_reselect_retry
 
     # Mark all cases as completed
     for cs in cases:
