@@ -614,16 +614,6 @@ async def gte_retrieve(session, query, candidates, candidate_texts=None, top_k=1
     return data.get("results", [])
 
 
-async def gte_retrieve_batch(session, queries, candidates, candidate_texts=None, top_k=10):
-    """Batch retrieve: all queries share same candidate pool, one HTTP call."""
-    payload = {"queries": queries, "candidates": candidates,
-               "candidate_texts": candidate_texts, "top_k": top_k}
-    async with session.post(f"{GTE_API_URL}/retrieve_batch", json=payload,
-                            timeout=aiohttp.ClientTimeout(total=120)) as resp:
-        data = await resp.json()
-    return data.get("results", [])
-
-
 def score_causal_tier(hit_set, bridge_length=0):
     """Score path by decomposition layer coverage using lexicographic tuple.
 
@@ -4606,8 +4596,6 @@ async def amain():
                         help="Stage 8 prompt style: 'default', 'check' (checklist), 'ecot' (evidence-COT), or 'entity' (entity-centric 3-step)")
     parser.add_argument("--inject-decomp", default=None,
                         help="Path to golden results JSON. Injects Stage 0/1/1.5 outputs from golden, skipping LLM calls for those stages.")
-    parser.add_argument("--batch-size", type=int, default=50,
-                        help="Number of cases per batch in stage mode (default: 50, 0=unlimited)")
     args = parser.parse_args()
     global REASON_STYLE
     REASON_STYLE = args.reason_style
@@ -5334,35 +5322,14 @@ async def stage_3_gte_relation_retrieval(session, cases: List[CaseState]):
             cs_qcounts.append(n)
         step_query_counts.append(cs_qcounts)
 
-    # Group queries by case for batch retrieval (one HTTP call per case)
-    # Each case has its own candidate pool (cs.rels), so we batch queries per case
-    gte_results = [None] * len(gte_calls)
-    case_query_ranges = {}  # cs_idx -> [(start, end)]
-    call_idx = 0
-    for cs_idx, cs in enumerate(active):
-        n_total = sum(step_query_counts[cs_idx])
-        case_query_ranges[cs_idx] = (call_idx, call_idx + n_total)
-        queries = [q for _, _, q in gte_calls[call_idx:call_idx + n_total]]
-        call_idx += n_total
-
-    # Process cases in parallel (one batch HTTP call per case)
-    _gte_sem3 = asyncio.Semaphore(5)
-    async def _batch_one_case(cs_idx, cs, start, end):
-        queries = [q for _, _, q in gte_calls[start:end]]
+    _gte_sem3 = asyncio.Semaphore(3)
+    async def _gte_limited3(coro):
         async with _gte_sem3:
-            try:
-                batch_result = await gte_retrieve_batch(
-                    session, queries, cs.rels, candidate_texts=cs.rel_texts, top_k=10)
-                for i, r in enumerate(batch_result):
-                    gte_results[start + i] = r
-            except Exception as e:
-                for i in range(start, end):
-                    gte_results[i] = e
-
-    await asyncio.gather(*[
-        _batch_one_case(cs_idx, cs, *case_query_ranges[cs_idx])
-        for cs_idx, cs in enumerate(active)
-    ])
+            return await coro
+    gte_results = await asyncio.gather(*[
+        _gte_limited3(gte_retrieve(session, query, cs.rels, candidate_texts=cs.rel_texts, top_k=10))
+        for cs, step, query in gte_calls
+    ], return_exceptions=True)
 
     # Distribute results back
     call_idx = 0
@@ -5434,51 +5401,35 @@ async def stage_4_relation_pruning(session, cases: List[CaseState]):
                 f"Step {sn}: {s['question']}\n  Purpose: {s.get('definition', '')}\n  Candidates:\n" + "\n".join(cand_lines))
         chain_text = "\n".join(chain_lines)
         blocks_text = "\n\n".join(step_blocks)
-        n_steps = len(cs.steps)
-        # Describe what each step should find
-        step_descriptions = []
-        for si, s in enumerate(cs.steps):
-            sn = s["step"]
-            role = "starting point" if si == 0 else "step %d output" % (sn - 1)
-            source = "anchor entity" if si == 0 else "result of step %d" % (sn - 1)
-            step_descriptions.append(f"  Step {sn} (from {role}): Find relations that bridge from the {source} to answer \"{s['question']}\"")
-        step_desc_text = "\n".join(step_descriptions)
-
-        prompt = f"""You are selecting knowledge graph relations for a {n_steps}-step reasoning chain.
+        prompt = f"""Analyze and select knowledge graph relations for each step of this reasoning chain.
 
 Question: {cs.question}
 
 Reasoning chain:
 {chain_text}
 
-What each step needs:
-{step_desc_text}
-
-Candidate relations per step (from semantic retrieval):
+Step-by-step candidates:
 {blocks_text}
 
-Task: For each step, identify the MOST RELEVANT relations that directly bridge from the previous step's output to the next. Be selective — pick only relations that have a clear functional role in the chain.
-
 Rules:
-1. Relations must bridge FROM previous step's output TO next step — not just topically related
-2. Rank by confidence: most directly useful first, weaker matches last
-3. Select only relations you are confident serve the step's purpose — do NOT include "just in case" candidates
-4. Most steps need only 2-5 well-chosen relations; rarely more than 5
-5. If a step has no clearly relevant candidates, output an empty list
-6. Do NOT list all candidates — your job is to FILTER, not re-rank everything
+1. Each step connects FROM previous output TO next — select bridge relations
+2. Select 2-4 relevant relations per step. Pick the best candidates that match the step's purpose.
+3. Ignore unrelated attributes
+4. If no relations fit a step, output empty list
+5. ORDER matters: rank by relevance to the step (most relevant first)
 
-Output:
-<reasoning>
-For each step, briefly explain what it needs and WHY each selected relation fits (one line per relation).
-</reasoning>
+Output format:
+<analysis>
+One sentence per step: what it needs and which relations fit.
+</analysis>
 <selected>
-step_1: [3, 1, 5]
-step_2: [2]
+step_1: [3, 1]
+step_2: [5, 2]
 </selected>
 
-Numbers are 1-indexed candidate ranks from each step's list, ORDERED by confidence (highest first)."""
+Numbers are RANKED: first = most relevant."""
         prompts.append([
-            {"role": "system", "content": "You are a knowledge graph relation selector for multi-step QA. Analyze the chain, then pick the most relevant relations for each step. Be selective — filter to only genuinely useful relations, ranked by confidence. Output <reasoning> and <selected> XML tags."},
+            {"role": "system", "content": "You are a knowledge graph relation selector for multi-step QA. Analyze the full chain, then select relevant relations per step. Output <analysis> and <selected> XML tags."},
             {"role": "user", "content": prompt},
         ])
 
@@ -5513,13 +5464,12 @@ Numbers are 1-indexed candidate ranks from each step's list, ORDERED by confiden
                 cands = cs.step_candidates.get(sn, [])
                 result[sn] = [idx for idx, _, _ in cands[:3]]
 
-        # Build step_relations: LLM-selected, truncated to max 5 per step
-        MAX_RELS_PER_STEP = 5
+        # Build step_relations: LLM-selected only (no padding)
         cs.step_relations = []
         for step in cs.steps:
             sn = step["step"]
             ranked = result.get(sn, [])
-            cs.step_relations.append(ranked[:MAX_RELS_PER_STEP])
+            cs.step_relations.append(ranked[:5])
 
         cs.prune_debug = {
             "prompt": prompts[ci][1]["content"],
@@ -7093,18 +7043,28 @@ def _case_state_to_result_dict(cs: CaseState) -> Dict[str, Any]:
 
 
 async def _run_stage_mode(cases_to_run, args):
+    """Process all cases stage-by-stage with batch LLM calls."""
     import time as _time
 
-    total = len(cases_to_run)
-    batch_size = getattr(args, 'batch_size', 0)
-    if batch_size <= 0 or batch_size >= total:
-        batch_size = total  # unlimited
+    # Initialize CaseStates
+    case_states = []
+    for sample, pilot_row, idx in cases_to_run:
+        gt = pilot_row.get("gt", pilot_row.get("ground_truth", pilot_row.get("gt_answers", [])))
+        cs = CaseState(
+            case_id=pilot_row["case_id"],
+            case_num=idx,
+            sample=sample,
+            pilot_row=pilot_row,
+            question=pilot_row["question"],
+            gt_answers=gt if isinstance(gt, list) else [gt],
+        )
+        case_states.append(cs)
 
-    print(f"\n=== Stage-batch mode: {total} cases, batch_size={batch_size} ===")
+    total = len(case_states)
+    print(f"\n=== Stage-batch mode: {total} cases ===")
 
     wall_start = _time.perf_counter()
 
-    # ── Pre-load data that is shared across ALL chunks ──
     # GT anchor override: use q_entity from ROG-CWQ pkl as anchor
     gt_anchor_map = {}  # case_id -> q_entity_id_list[0]
     if getattr(args, 'gt_anchor', False):
@@ -7124,167 +7084,109 @@ async def _run_stage_mode(cases_to_run, args):
                         }
         print(f"  GT anchor: loaded {len(gt_anchor_map)} cases with q_entity")
 
-    # Pre-load inject_map once (keyed by case_id, applied per-chunk)
-    inject_map = {}
-    if getattr(args, 'inject_decomp', None):
-        inject_map = {r["case_id"]: r for r in json.loads(Path(args.inject_decomp).read_text())}
+    async with aiohttp.ClientSession() as session:
+        # Always run Stage 0 to load KG data (ents, rels, h_ids, etc.)
+        await stage_0_ner_resolve(session, case_states)
 
-    # Accumulate all CaseStates across chunks for final summary/fail_traces
-    all_case_states = []
-    all_rows = []
-    num_batches = (total + batch_size - 1) // batch_size
-
-    for batch_idx in range(num_batches):
-        chunk_start = batch_idx * batch_size
-        chunk_end = min(chunk_start + batch_size, total)
-        chunk_cases = cases_to_run[chunk_start:chunk_end]
-        chunk_num = chunk_end - chunk_start
-
-        print(f"\n{'─'*60}")
-        print(f"  Batch {batch_idx + 1}/{num_batches}: cases [{chunk_start + 1}..{chunk_end}] ({chunk_num} cases)")
-        print(f"{'─'*60}")
-
-        # Initialize CaseStates for this chunk
-        case_states = []
-        for sample, pilot_row, idx in chunk_cases:
-            gt = pilot_row.get("gt", pilot_row.get("ground_truth", pilot_row.get("gt_answers", [])))
-            cs = CaseState(
-                case_id=pilot_row["case_id"],
-                case_num=idx,
-                sample=sample,
-                pilot_row=pilot_row,
-                question=pilot_row["question"],
-                gt_answers=gt if isinstance(gt, list) else [gt],
-            )
-            case_states.append(cs)
-
-        # ── Run full pipeline for this chunk ──
-        async with aiohttp.ClientSession() as session:
-            # Stage 0: NER resolve (loads KG data)
-            await stage_0_ner_resolve(session, case_states)
-
-            # ── Inject golden Stage 1a/1/1.5 outputs if requested ──
-            if inject_map:
-                injected = 0
-                for cs in case_states:
-                    g = inject_map.get(cs.case_id)
-                    if not g:
-                        continue
-                    # Stage 1a (entity analysis)
-                    cs._1a_raw = g.get("stage_1a_raw")
-                    cs._1a_anchor = g.get("stage_1a_anchor")
-                    cs._1a_endpoints = g.get("stage_1a_endpoints")
-                    cs._1a_answer_type = g.get("stage_1a_answer_type")
-                    cs._1a_rewritten = g.get("stage_1a_rewritten")
-                    cs._1a_interpretation = g.get("stage_1a_interpretation")
-                    cs.answer_type = g.get("stage_1a_answer_type") or g.get("answer_type")
-                    if cs._1a_rewritten:
-                        cs.rewritten_question = cs._1a_rewritten
-                    # Stage 1 (decomposition)
-                    cs.decomp_raw = g.get("decomposition")
-                    cs.decomp_question = g.get("decomposition_question", "")
-                    cs.steps = g.get("steps_parsed", [])
-                    cs.anchor_name = g.get("anchor_name")
-                    # Resolve anchor_idx from ents by name
-                    cs.anchor_idx = None
-                    if cs.anchor_name and cs.ents:
+        # ── Inject golden Stage 1a/1/1.5 outputs if requested ──
+        inject_map = {}
+        if getattr(args, 'inject_decomp', None):
+            inject_map = {r["case_id"]: r for r in json.loads(Path(args.inject_decomp).read_text())}
+            injected = 0
+            for cs in case_states:
+                g = inject_map.get(cs.case_id)
+                if not g:
+                    continue
+                # Stage 1a (entity analysis)
+                cs._1a_raw = g.get("stage_1a_raw")
+                cs._1a_anchor = g.get("stage_1a_anchor")
+                cs._1a_endpoints = g.get("stage_1a_endpoints")
+                cs._1a_answer_type = g.get("stage_1a_answer_type")
+                cs._1a_rewritten = g.get("stage_1a_rewritten")
+                cs._1a_interpretation = g.get("stage_1a_interpretation")
+                cs.answer_type = g.get("stage_1a_answer_type") or g.get("answer_type")
+                if cs._1a_rewritten:
+                    cs.rewritten_question = cs._1a_rewritten
+                # Stage 1 (decomposition)
+                cs.decomp_raw = g.get("decomposition")
+                cs.decomp_question = g.get("decomposition_question", "")
+                cs.steps = g.get("steps_parsed", [])
+                cs.anchor_name = g.get("anchor_name")
+                # Resolve anchor_idx from ents by name
+                cs.anchor_idx = None
+                if cs.anchor_name and cs.ents:
+                    for i, e in enumerate(cs.ents):
+                        if e == cs.anchor_name:
+                            cs.anchor_idx = i
+                            break
+                    if cs.anchor_idx is None:
+                        # Fuzzy: find entity containing anchor name
+                        an_lower = cs.anchor_name.lower()
                         for i, e in enumerate(cs.ents):
-                            if e == cs.anchor_name:
+                            if an_lower in e.lower() or e.lower() in an_lower:
                                 cs.anchor_idx = i
                                 break
-                        if cs.anchor_idx is None:
-                            # Fuzzy: find entity containing anchor name
-                            an_lower = cs.anchor_name.lower()
-                            for i, e in enumerate(cs.ents):
-                                if an_lower in e.lower() or e.lower() in an_lower:
-                                    cs.anchor_idx = i
-                                    break
-                    # Breakpoints: convert {str_step: str_entity} → {int_step: int_idx}
-                    bp_raw = g.get("breakpoints", {})
-                    cs.breakpoints = {}
-                    if bp_raw:
-                        ent_to_idx = {e: i for i, e in enumerate(cs.ents)}
-                        for k, v in bp_raw.items():
-                            idx_val = ent_to_idx.get(v)
-                            if idx_val is not None:
-                                cs.breakpoints[int(k)] = idx_val
-                    # Stage 1.5 (reflection)
-                    cs.decomp_retry = g.get("decomp_retry", False)
-                    cs.decomp_reflect_raw = g.get("decomp_reflect_raw")
-                    cs.decomp_retry_reason = g.get("decomp_retry_reason")
-                    injected += 1
-                print(f"    Injected golden decomp for {injected}/{chunk_num} cases (skipping Stage 1/1.5)")
+                # Breakpoints: convert {str_step: str_entity} → {int_step: int_idx}
+                bp_raw = g.get("breakpoints", {})
+                cs.breakpoints = {}
+                if bp_raw:
+                    ent_to_idx = {e: i for i, e in enumerate(cs.ents)}
+                    for k, v in bp_raw.items():
+                        idx = ent_to_idx.get(v)
+                        if idx is not None:
+                            cs.breakpoints[int(k)] = idx
+                # Stage 1.5 (reflection)
+                cs.decomp_retry = g.get("decomp_retry", False)
+                cs.decomp_reflect_raw = g.get("decomp_reflect_raw")
+                cs.decomp_retry_reason = g.get("decomp_retry_reason")
+                injected += 1
+            print(f"  Injected golden decomp for {injected}/{total} cases (skipping Stage 1/1.5)")
 
-            # Override anchor with GT q_entity after stage 0 (ents loaded)
-            if gt_anchor_map:
-                overridden = 0
-                for cs in case_states:
-                    gt_info = gt_anchor_map.get(cs.case_id)
-                    if not gt_info:
-                        continue
-                    idx_val = gt_info["idx"]
-                    if 0 <= idx_val < len(cs.ents):
-                        cs.anchor_idx = idx_val
-                        cs.anchor_name = cs.ents[idx_val]
-                        overridden += 1
-                print(f"    GT anchor: overridden {overridden}/{chunk_num} anchors")
+        # Override anchor with GT q_entity after stage 0 (ents loaded)
+        if gt_anchor_map:
+            overridden = 0
+            for cs in case_states:
+                gt_info = gt_anchor_map.get(cs.case_id)
+                if not gt_info:
+                    continue
+                idx = gt_info["idx"]
+                if 0 <= idx < len(cs.ents):
+                    cs.anchor_idx = idx
+                    cs.anchor_name = cs.ents[idx]
+                    overridden += 1
+            print(f"  GT anchor: overridden {overridden}/{total} anchors")
 
-            if not inject_map:
-                await stage_1_decomposition(session, case_states)
-                await stage_1_5_decomposition_reflect(session, case_states)
-            await stage_2_entity_resolution(session, case_states)
+        if not inject_map:
+            await stage_1_decomposition(session, case_states)
+            await stage_1_5_decomposition_reflect(session, case_states)
+        await stage_2_entity_resolution(session, case_states)
 
-            # Re-apply GT anchor after stage 2 (stage 2 may override it)
-            if gt_anchor_map:
-                for cs in case_states:
-                    gt_info = gt_anchor_map.get(cs.case_id)
-                    if gt_info:
-                        idx_val = gt_info["idx"]
-                        if 0 <= idx_val < len(cs.ents):
-                            cs.anchor_idx = idx_val
-                            cs.anchor_name = cs.ents[idx_val]
-            await stage_3_gte_relation_retrieval(session, case_states)
-            if args.prune == "rerank":
-                await stage_4_rerank_pruning(case_states, args.rerank_model, args.prune_top_k)
-            else:
-                await stage_4_relation_pruning(session, case_states)
-            await stage_5_graph_traversal(case_states)
-            await stage_6_diagnosis_retry(session, case_states)
-            await stage_7_path_selection(session, case_states)
-            await stage_8_answer_reasoning(session, case_states)
+        # Re-apply GT anchor after stage 2 (stage 2 may override it)
+        if gt_anchor_map:
+            for cs in case_states:
+                gt_info = gt_anchor_map.get(cs.case_id)
+                if gt_info:
+                    idx = gt_info["idx"]
+                    if 0 <= idx < len(cs.ents):
+                        cs.anchor_idx = idx
+                        cs.anchor_name = cs.ents[idx]
+        await stage_3_gte_relation_retrieval(session, case_states)
+        if args.prune == "rerank":
+            await stage_4_rerank_pruning(case_states, args.rerank_model, args.prune_top_k)
+        else:
+            await stage_4_relation_pruning(session, case_states)
+        await stage_5_graph_traversal(case_states)
+        await stage_6_diagnosis_retry(session, case_states)
+        await stage_7_path_selection(session, case_states)
+        await stage_8_answer_reasoning(session, case_states)
 
-        # Incremental save: convert to result dicts and free CaseState memory
-        batch_rows = [_case_state_to_result_dict(cs) for cs in case_states]
-        all_rows.extend(batch_rows)
-        all_case_states.extend(case_states)
-        # Free heavy KG data from completed chunk to reduce memory pressure
-        for cs in case_states:
-            cs.sample = None
-            cs.pilot_row = None
-            cs.ents = []
-            cs.rels = []
-            cs.h_ids = []
-            cs.r_ids = []
-            cs.t_ids = []
-            cs.rel_texts = []
-            cs.ent_candidates = []
-            cs.ner_scored = []
-            cs.paths = []
-            cs.logical_paths = []
-        # Write incremental results to disk
-        out = Path(args.output_dir)
-        out.mkdir(parents=True, exist_ok=True)
-        (out / "results.json").write_text(json.dumps(all_rows, ensure_ascii=False, indent=2))
-        print(f"  Batch {batch_idx + 1} complete: {chunk_num} cases (saved {len(all_rows)} total)")
-
-    # ── Aggregate results across all batches ──
     wall_time = _time.perf_counter() - wall_start
 
-    case_states = all_case_states
-    total = len(case_states)
-
-    # Results already saved incrementally; just use all_rows
-    rows = all_rows
+    # Collect results
+    rows = [_case_state_to_result_dict(cs) for cs in case_states]
+    out = Path(args.output_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "results.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2))
 
     cases = len(rows)
     if cases == 0:
@@ -7453,6 +7355,7 @@ async def _run_stage_mode(cases_to_run, args):
         trace_path = out / "fail_traces.txt"
         trace_path.write_text('\n\n'.join(fail_traces), encoding='utf-8')
         print(f"  Fail traces written to: {trace_path} ({len(fail_traces)} cases)")
+
 
 if __name__ == "__main__":
     asyncio.run(amain())
