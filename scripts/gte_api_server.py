@@ -122,6 +122,18 @@ class PrecomputeRequest(BaseModel):
     candidate_texts: Optional[List[str]] = None
 
 
+class RetrieveBatchRequest(BaseModel):
+    queries: List[str]
+    candidates: List[str]
+    candidate_texts: Optional[List[str]] = None
+    top_k: int = 5
+    instruct: Optional[str] = None
+
+
+class RetrieveBatchResponse(BaseModel):
+    results: List[List[dict]]
+
+
 class CacheStatsResponse(BaseModel):
     size: int
     max_size: int
@@ -235,6 +247,45 @@ async def retrieve(req: RetrieveRequest):
             "score": float(scores[idx]),
         })
     return RetrieveResponse(results=results)
+
+
+@app.post("/retrieve_batch", response_model=RetrieveBatchResponse)
+async def retrieve_batch(req: RetrieveBatchRequest):
+    """Batch retrieve: encode all queries at once, compute similarity once.
+
+    All queries share the same candidate pool (common in KGQA pipelines).
+    Candidates are encoded once, queries are batch-encoded, then top-k
+    is computed per query locally — no per-query HTTP overhead.
+    """
+    cand_texts = req.candidate_texts if req.candidate_texts else req.candidates
+
+    # Encode all queries with Instruct prefix (batched internally)
+    task = req.instruct if req.instruct else TASK_DESC
+    q_texts = [f'Instruct: {task}\nQuery: {q}' for q in req.queries]
+    q_embs = _encode(q_texts, batch_size=DEFAULT_BATCH_SIZE, max_length=MAX_QUERY_LEN)
+
+    # Encode candidates once (cached)
+    c_embs = _encode_cached(cand_texts, batch_size=DEFAULT_BATCH_SIZE, max_length=MAX_CAND_LEN)
+
+    # Compute similarities for all queries at once
+    scores = q_embs @ c_embs.T  # (num_queries, num_candidates)
+    top_k = min(req.top_k, len(req.candidates))
+
+    all_results = []
+    for i in range(len(req.queries)):
+        row_scores = scores[i]
+        top_indices = np.argsort(row_scores)[::-1][:top_k]
+        results = []
+        for idx in top_indices:
+            results.append({
+                "index": int(idx),
+                "candidate": req.candidates[idx],
+                "text": cand_texts[idx],
+                "score": float(row_scores[idx]),
+            })
+        all_results.append(results)
+
+    return RetrieveBatchResponse(results=all_results)
 
 
 @app.post("/precompute")
