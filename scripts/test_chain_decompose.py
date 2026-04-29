@@ -894,11 +894,15 @@ def parse_chain(text):
     if m:
         reasoning = m.group(1).strip()
 
-    # Extract answer_type
+    # Extract answer_type (XML tag or legacy format)
     answer_type = None
-    at_match = re.search(r'Answer_type:\s*(.+)', text)
-    if at_match:
-        answer_type = at_match.group(1).strip()
+    at_xml = re.search(r'<answer_type>(.*?)</answer_type>', text, re.DOTALL)
+    if at_xml:
+        answer_type = at_xml.group(1).strip()
+    else:
+        at_match = re.search(r'Answer_type:\s*(.+)', text)
+        if at_match:
+            answer_type = at_match.group(1).strip()
 
     cm = re.search(r'Chain:\s*\n?(.*?)(?=\n\s*(Analysis:|Endpoints:)|\nAnalysis:|\nEndpoints:|$)', text, re.DOTALL)
     if not cm:
@@ -3481,24 +3485,61 @@ Start with "The [answer type] that..." or "The [answer type] where/when/which...
 The rewrite must contain a placeholder for the sought answer, e.g. "[Answer]".
 Do NOT rewrite the endpoint constraint as the answer.
 
-Examples:
-Question: Which region with a specified time zone contains a given country?
-Entities: [time zone] | [country]
-Answer_type: region
-Rewritten: The region [Answer] that contains the given country and has the specified time zone.
+## Output format
+Wrap each field in XML tags. Example outputs:
 
-Question: What country bordering a given country contains an airport that serves a given city?
-Entities: [city] | [border country]
-Answer_type: country
-Rewritten: The country [Answer] that borders the given country and contains an airport serving the given city.
+Example 1:
+Entities from knowledge graph: Eiffel Tower
+Question: What is the capital of the country where the Eiffel Tower is located?
 
-## Output (exact format)
-Reasoning: [one sentence per entity analyzing ambiguity]
-Anchor: [chosen entity from the list only]
-Endpoints: [Entity from the list only] (or "none")
-Interpretation: [1-2 sentences explaining what the question asks, what role the answer plays]
-Answer_type: [free-form noun phrase describing what the answer IS, e.g. person, country, government_type, language, sport, event, year, monetary_value, percentage, etc.]
-Rewritten: [declarative sentence based on interpretation]"""
+<reasoning>Eiffel Tower is a unique landmark with LOW ambiguity as anchor. It determines a specific country.</reasoning>
+<anchor>Eiffel Tower</anchor>
+<endpoints>none</endpoints>
+<interpretation>The question asks for the capital city of the country containing the Eiffel Tower. The answer is a city name.</interpretation>
+<answer_type>city</answer_type>
+<rewritten>The city [Answer] that is the capital of the country where the Eiffel Tower is located.</rewritten>
+
+Example 2:
+Entities from knowledge graph: Lou Seal
+Question: Lou Seal is the mascot for the team that last won the World Series when?
+
+<reasoning>Lou Seal is a unique mascot name with LOW ambiguity. It identifies one specific team.</reasoning>
+<anchor>Lou Seal</anchor>
+<endpoints>none</endpoints>
+<interpretation>The question asks for the year when the sports team associated with mascot Lou Seal last won the World Series. The answer is a year.</interpretation>
+<answer_type>year</answer_type>
+<rewritten>The year [Answer] when the team for which Lou Seal is the mascot last won the World Series.</rewritten>
+
+Example 3:
+Entities from knowledge graph: Afghan National Anthem
+Question: The national anthem Afghan National Anthem is from the country which practices what religion?
+
+<reasoning>Afghan National Anthem is a unique title with LOW ambiguity. Only one entity available so it is the anchor.</reasoning>
+<anchor>Afghan National Anthem</anchor>
+<endpoints>none</endpoints>
+<interpretation>The question asks for the religion practiced in the country that has the Afghan National Anthem. The answer is a religion name.</interpretation>
+<answer_type>religion</answer_type>
+<rewritten>The religion [Answer] that is practiced in the country which has the Afghan National Anthem as its national anthem.</rewritten>
+
+Example 4:
+Entities from knowledge graph: Brad Stevens | 2008 NBA Finals
+Question: What year did the basketball team coached by Brad Stevens win the 2008 NBA Finals?
+
+<reasoning>Brad Stevens is a specific person with LOW ambiguity. 2008 NBA Finals is a specific event but the question asks about the team's win year, not the event itself. Brad Stevens as the coaching starting point is the better anchor.</reasoning>
+<anchor>Brad Stevens</anchor>
+<endpoints>2008 NBA Finals</endpoints>
+<interpretation>The question asks for the year when the team coached by Brad Stevens won. The answer is a year.</interpretation>
+<answer_type>year</answer_type>
+<rewritten>The year [Answer] when the basketball team coached by Brad Stevens won.</rewritten>
+
+Now analyze the given question and entities. Output:
+
+<reasoning>[one sentence per entity analyzing ambiguity]</reasoning>
+<anchor>[chosen entity from the list only]</anchor>
+<endpoints>[Entity from the list only, or "none"]</endpoints>
+<interpretation>[1-2 sentences explaining what the question asks, what role the answer plays]</interpretation>
+<answer_type>[free-form noun phrase: person, country, government_type, language, sport, event, year, religion, college, movie, sports team, location, currency, etc.]</answer_type>
+<rewritten>[declarative sentence based on interpretation]</rewritten>"""
 
 # Stage 1b: Chain decomposition (given anchor, endpoints, rewritten question)
 CHAIN_PROMPT = """Entities: {entities}
@@ -4551,8 +4592,10 @@ async def amain():
                         help="Number of relations to keep per step after pruning (default: 5)")
     parser.add_argument("--rerank-model", default="/zhaoshu/llm/Qwen/Qwen3-Reranker-0.6B",
                         help="Reranker model path (Qwen3-Reranker-0.6B)")
-    parser.add_argument("--reason-style", choices=["default", "check", "ecot", "entity"], default="default",
+    parser.add_argument("--reason-style", choices=["default", "check", "ecot", "entity", "entity-lite"], default="default",
                         help="Stage 8 prompt style: 'default', 'check' (checklist), 'ecot' (evidence-COT), or 'entity' (entity-centric 3-step)")
+    parser.add_argument("--inject-decomp", default=None,
+                        help="Path to golden results JSON. Injects Stage 0/1/1.5 outputs from golden, skipping LLM calls for those stages.")
     args = parser.parse_args()
     global REASON_STYLE
     REASON_STYLE = args.reason_style
@@ -4789,21 +4832,18 @@ async def stage_1_decomposition(session, cases: List[CaseState]):
         interpretation = ""
 
         if raw_1a:
-            am = re.search(r'Anchor:\s*(.+)', raw_1a)
-            if am:
-                anchor_name = am.group(1).strip()
-            em = re.search(r'Endpoints:\s*(.+)', raw_1a)
-            if em:
-                endpoints_str = em.group(1).strip()
-            im = re.search(r'Interpretation:\s*(.+)', raw_1a)
-            if im:
-                interpretation = im.group(1).strip()
-            atm = re.search(r'Answer_type:\s*(.+)', raw_1a)
-            if atm:
-                answer_type = atm.group(1).strip()
-            rwm = re.search(r'Rewritten:\s*(.+)', raw_1a)
-            if rwm:
-                rewritten = rwm.group(1).strip()
+            def _xml(tag, text):
+                m = re.search(rf'<{tag}>(.*?)</{tag}>', text, re.DOTALL)
+                return m.group(1).strip() if m else None
+            def _line(prefix, text):
+                m = re.search(rf'{prefix}:\s*(.+)', text)
+                return m.group(1).strip() if m else None
+
+            anchor_name = _xml('anchor', raw_1a) or _line('Anchor', raw_1a)
+            endpoints_str = _xml('endpoints', raw_1a) or _line('Endpoints', raw_1a) or "none"
+            interpretation = _xml('interpretation', raw_1a) or _line('Interpretation', raw_1a) or ""
+            answer_type = _xml('answer_type', raw_1a) or _line('Answer_type', raw_1a)
+            rewritten = _xml('rewritten', raw_1a) or _line('Rewritten', raw_1a)
 
         cs._1a_anchor = anchor_name
         cs._1a_endpoints = endpoints_str
@@ -5252,7 +5292,7 @@ async def stage_3_gte_relation_retrieval(session, cases: List[CaseState]):
         return
 
     # Build flat list of all GTE calls: (cs, step, query)
-    # Queries: definition, subquestion, question, keyword, relation_query — deduplicated
+    # Queries: definition, subquestion, question, keyword, relation_query, + original question
     gte_calls = []
     step_query_counts = []  # track per-(cs, step) query count for result distribution
     for cs in active:
@@ -5263,6 +5303,13 @@ async def stage_3_gte_relation_retrieval(session, cases: List[CaseState]):
                 val = step.get(field, "")
                 if val and val.strip():
                     queries.append(val.strip())
+            # Add original question as stable semantic anchor (same for all models)
+            if cs.question and cs.question.strip():
+                queries.append(cs.question.strip())
+            # Add rewritten question if available (richer semantics)
+            rw = getattr(cs, 'rewritten_question', '') or getattr(cs, '_1a_rewritten', '')
+            if rw and rw.strip() and rw.strip().lower() != cs.question.strip().lower():
+                queries.append(rw.strip())
             # Deduplicate (case-insensitive)
             seen = set()
             n = 0
@@ -6442,7 +6489,59 @@ No valid entity: <answer>None</answer>
 NO text after </answer> tag."""
 
         cs.llm_reasoning_prompt = reason_prompt
-        if REASON_STYLE == "check":
+        if REASON_STYLE == "entity-lite":
+            # ── Lite version for 9B models: 2-step high-recall, no None ──
+            n_cand = len(cs.answer_candidates) if cs.answer_candidates else 0
+            cand_limit = min(n_cand, 60)
+            cand_names = list(dict.fromkeys(cs.answer_candidates[:cand_limit])) if cs.answer_candidates else []
+            cand_list = "\n".join(f"  - {c}" for c in cand_names) if cand_names else "  (see graph evidence above)"
+            atype = cs.answer_type or "(infer from question)"
+            reason_prompt = f"""QUESTION: {cs.question}
+{answer_type_hint}{rewritten_hint}
+
+GRAPH EVIDENCE:
+{pattern_text}
+
+CANDIDATE ENTITIES:
+{cand_list}
+
+━━━ ANSWER SELECTION ━━━
+
+STEP 1 — Identify what the question needs.
+Answer type: {atype}
+Key constraints from the question: list them briefly.
+Cardinality: Does the question ask for ONE specific role (e.g. "the governor", "the president")? If yes → pick the most recent one with dates in evidence. Otherwise → output ALL matching candidates.
+
+STEP 2 — Evaluate each candidate.
+For each candidate in CANDIDATE ENTITIES:
+- KEEP if type roughly matches answer type.
+- KEEP if no evidence contradicts it.
+- REMOVE only if graph evidence explicitly shows it is WRONG type or contradicts a constraint.
+
+RULES:
+- Use graph evidence only. No outside knowledge.
+- Do NOT remove a candidate for missing evidence. Remove only if evidence explicitly contradicts.
+- Do NOT output None. If uncertain, output the best matching candidate(s).
+- Prefer over-output to under-output.
+- "When" questions → output event NAME (e.g. "2014 World Series"), NOT raw timestamp.
+- Answer MUST be an exact entity string from GRAPH EVIDENCE or CANDIDATE ENTITIES.
+- Copy entity strings exactly. Never output Freebase IDs (m.0xxx).
+- Over-output is better than discarding valid answers.
+
+━━━ OUTPUT ━━━
+<reasoning>
+Step 1: answer type, constraints, cardinality decision.
+Step 2: per-candidate KEEP/REMOVE with one reason each.
+</reasoning>
+<answer>\\boxed{{exact entity}}</answer>
+Multiple: <answer>\\boxed{{e1}} \\boxed{{e2}}</answer>
+NO text after </answer> tag."""
+            cs.llm_reasoning_prompt = reason_prompt
+            prompts.append([
+                {"role": "system", "content": "You are a precise graph QA assistant. Always output at least one entity from CANDIDATE ENTITIES. Never output None. Copy entity strings exactly."},
+                {"role": "user", "content": reason_prompt},
+            ])
+        elif REASON_STYLE == "check":
             # ── Checklist v2: mechanical checks + type/granularity verification ──
             n_cand = len(cs.answer_candidates) if cs.answer_candidates else 0
             cand_limit = min(n_cand, 60)
@@ -6986,7 +7085,62 @@ async def _run_stage_mode(cases_to_run, args):
         print(f"  GT anchor: loaded {len(gt_anchor_map)} cases with q_entity")
 
     async with aiohttp.ClientSession() as session:
+        # Always run Stage 0 to load KG data (ents, rels, h_ids, etc.)
         await stage_0_ner_resolve(session, case_states)
+
+        # ── Inject golden Stage 1a/1/1.5 outputs if requested ──
+        inject_map = {}
+        if getattr(args, 'inject_decomp', None):
+            inject_map = {r["case_id"]: r for r in json.loads(Path(args.inject_decomp).read_text())}
+            injected = 0
+            for cs in case_states:
+                g = inject_map.get(cs.case_id)
+                if not g:
+                    continue
+                # Stage 1a (entity analysis)
+                cs._1a_raw = g.get("stage_1a_raw")
+                cs._1a_anchor = g.get("stage_1a_anchor")
+                cs._1a_endpoints = g.get("stage_1a_endpoints")
+                cs._1a_answer_type = g.get("stage_1a_answer_type")
+                cs._1a_rewritten = g.get("stage_1a_rewritten")
+                cs._1a_interpretation = g.get("stage_1a_interpretation")
+                cs.answer_type = g.get("stage_1a_answer_type") or g.get("answer_type")
+                if cs._1a_rewritten:
+                    cs.rewritten_question = cs._1a_rewritten
+                # Stage 1 (decomposition)
+                cs.decomp_raw = g.get("decomposition")
+                cs.decomp_question = g.get("decomposition_question", "")
+                cs.steps = g.get("steps_parsed", [])
+                cs.anchor_name = g.get("anchor_name")
+                # Resolve anchor_idx from ents by name
+                cs.anchor_idx = None
+                if cs.anchor_name and cs.ents:
+                    for i, e in enumerate(cs.ents):
+                        if e == cs.anchor_name:
+                            cs.anchor_idx = i
+                            break
+                    if cs.anchor_idx is None:
+                        # Fuzzy: find entity containing anchor name
+                        an_lower = cs.anchor_name.lower()
+                        for i, e in enumerate(cs.ents):
+                            if an_lower in e.lower() or e.lower() in an_lower:
+                                cs.anchor_idx = i
+                                break
+                # Breakpoints: convert {str_step: str_entity} → {int_step: int_idx}
+                bp_raw = g.get("breakpoints", {})
+                cs.breakpoints = {}
+                if bp_raw:
+                    ent_to_idx = {e: i for i, e in enumerate(cs.ents)}
+                    for k, v in bp_raw.items():
+                        idx = ent_to_idx.get(v)
+                        if idx is not None:
+                            cs.breakpoints[int(k)] = idx
+                # Stage 1.5 (reflection)
+                cs.decomp_retry = g.get("decomp_retry", False)
+                cs.decomp_reflect_raw = g.get("decomp_reflect_raw")
+                cs.decomp_retry_reason = g.get("decomp_retry_reason")
+                injected += 1
+            print(f"  Injected golden decomp for {injected}/{total} cases (skipping Stage 1/1.5)")
 
         # Override anchor with GT q_entity after stage 0 (ents loaded)
         if gt_anchor_map:
@@ -7002,8 +7156,9 @@ async def _run_stage_mode(cases_to_run, args):
                     overridden += 1
             print(f"  GT anchor: overridden {overridden}/{total} anchors")
 
-        await stage_1_decomposition(session, case_states)
-        await stage_1_5_decomposition_reflect(session, case_states)
+        if not inject_map:
+            await stage_1_decomposition(session, case_states)
+            await stage_1_5_decomposition_reflect(session, case_states)
         await stage_2_entity_resolution(session, case_states)
 
         # Re-apply GT anchor after stage 2 (stage 2 may override it)
